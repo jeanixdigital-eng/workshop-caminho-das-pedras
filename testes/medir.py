@@ -252,7 +252,14 @@ def main():
                     pg.wait_for_timeout(800)
                     t("redirecionou para next", pg.url.startswith("https://example.com/pagamento-simulado"), pg.url)
                 else:
-                    t("redirecionou para o Mercado Pago (link da pessoa)", "mercadopago.com" in pg.url, pg.url[:90])
+                    # 08/09: o destino MUDOU. Antes o porteiro devolvia o link do Checkout Pro;
+                    # agora ele devolve a NOSSA página de pagamento com o token da sessão, e o
+                    # link do Mercado Pago virou reserva (o `montaResposta` do porteiro tenta os
+                    # dois, nessa ordem). 🔑 Aceitar os dois é o certo: fixar um só transformaria
+                    # este teste numa trava contra a própria rede de segurança.
+                    destino_ok = "checkout.html?c=" in pg.url or "mercadopago.com" in pg.url
+                    t("redirecionou para o pagamento (nossa página, ou o Mercado Pago como reserva)",
+                      destino_ok, pg.url[:95])
             ctx.close()
         nav.close()
     sem_travessao()
