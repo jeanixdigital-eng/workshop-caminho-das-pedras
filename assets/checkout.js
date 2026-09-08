@@ -17,6 +17,24 @@
 (function () {
   'use strict';
 
+  /* O identificador do aparelho, nas tres vias que existem, em ordem de confianca.
+     🔑 Medido em 08/09: a doc do Mercado Pago diz que o SDK JS ja entrega isso em
+     `MP_DEVICE_SESSION_ID` e NAO entrega. Quem entrega e o security.js, que a
+     pagina carrega logo depois do SDK. A terceira via (a chave global `armor.`)
+     fica como rede: se o script mudar de nome de variavel, o valor ainda esta la,
+     guardado no NOME da global.
+     ⛔ Sem este valor o antifraude recusa cartao legitimo por "risco alto". */
+  function idDoAparelho() {
+    try {
+      if (typeof window.idDoAparelho === 'string' && window.idDoAparelho) return window.idDoAparelho;
+      if (typeof window.MP_DEVICE_SESSION_ID === 'string' && window.MP_DEVICE_SESSION_ID) return window.MP_DEVICE_SESSION_ID;
+      var k = Object.keys(window).find(function (n) { return n.indexOf('armor.') === 0; });
+      if (k) return k;
+    } catch (e) {}
+    return '';
+  }
+
+
   var BASE = 'https://n8n-webhook.clinixsystem.com.br';
   var URL_SESSAO = BASE + '/webhook/wcp/checkout/sessao';
   var URL_PAGAR = BASE + '/webhook/wcp/pagamento/criar';
@@ -327,7 +345,7 @@
       issuer_id: '',
       email: '',
       cpf: '',
-      device_id: window.MP_DEVICE_SESSION_ID || ''
+      device_id: idDoAparelho()
     };
     for (var k in extra) { if (Object.prototype.hasOwnProperty.call(extra, k)) p[k] = extra[k]; }
     return p;

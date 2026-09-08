@@ -14,6 +14,14 @@
 <link rel="stylesheet" href="assets/estilo.css">
 <link rel="stylesheet" href="assets/checkout.css">
 <script src="https://sdk.mercadopago.com/js/v2" defer></script>
+<!-- 🔑 O script de segurança do Mercado Pago, que gera o identificador do aparelho.
+     A documentação deles diz que ele NÃO é necessário quando já se usa o SDK JS,
+     porque "o Device ID é obtido por padrão". **Medido em 08/09: é falso.** Com o
+     SDK sozinho, `window.MP_DEVICE_SESSION_ID` fica `undefined`; o valor existe,
+     mas guardado no NOME de uma global que começa com `armor.`, não onde a doc diz.
+     ⛔ Sem ele o pagamento vai sem identificador e o antifraude recusa cartão
+     legítimo por "risco alto": foi o que aconteceu no 1º teste real do Jean. -->
+<script src="https://www.mercadopago.com/v2/security.js" view="checkout" output="idDoAparelho" defer></script>
 <script src="assets/checkout.js" defer></script>
 </head>
 <body class="checkout">
