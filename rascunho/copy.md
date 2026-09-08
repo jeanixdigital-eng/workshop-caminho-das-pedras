@@ -175,7 +175,7 @@ Deixa o seu contato. O pagamento vem em seguida.
 - Cidade: `Cidade da clínica (opcional)`
 
 **Consentimento (caixa de marcar):**
-Autorizo o uso do meu nome, WhatsApp e e-mail para a inscrição no workshop e para as mensagens sobre ele, como descrito na [Política de Privacidade].
+Autorizo o uso do meu nome, WhatsApp e e-mail para a inscrição no workshop, para as mensagens sobre ele e, depois dele, para uma mensagem sobre o caminho seguinte, como descrito na [Política de Privacidade].
 
 **Botão de envio:**
 Ir para o pagamento
@@ -200,6 +200,8 @@ Este workshop trata dos números da clínica. Ele não promete resultado, de fat
 Vendido por [PENDENTE: confirmar se é Clinix System, CNPJ 49.828.144/0001-20].
 
 [Política de Privacidade] · Para não receber mais mensagens, responda SAIR no WhatsApp.
+
+> 🔄 08/09, depois do parecer da Alba: a frase do consentimento passou a nomear a mensagem pós-workshop (a política §3 e §4 já a listavam como finalidade coberta pela caixa; a caixa não dizia). Ajuste feito pelo Jarvis, na forma que a Alba sugeriu; a Lia revisa se quiser outra redação.
 
 ## PENDÊNCIAS
 
