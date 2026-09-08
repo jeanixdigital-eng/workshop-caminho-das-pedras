@@ -38,6 +38,7 @@
   var BASE = 'https://n8n-webhook.clinixsystem.com.br';
   var URL_SESSAO = BASE + '/webhook/wcp/checkout/sessao';
   var URL_PAGAR = BASE + '/webhook/wcp/pagamento/criar';
+  var URL_ESTADO = BASE + '/webhook/wcp/pagamento/estado';
 
   var el = function (id) { return document.getElementById(id); };
   var estado = el('estado'), recusa = el('recusa'), recusaTexto = el('recusa-texto');
@@ -45,6 +46,7 @@
   var erroCpf = el('erro-cpf'), botaoCpf = el('cpf-segue');
   var caixaPix = el('pix'), imgPix = el('pix-qr'), codPix = el('pix-codigo');
   var prazoPix = el('pix-prazo'), copiado = el('pix-copiado');
+  var linhaVigia = el('pix-vigia'), caixaPago = el('pago'), caixaAcoes = el('pix-acoes');
 
   var sessao = null, token = null, controlador = null, emailPix = '', pronto = false;
 
@@ -314,6 +316,7 @@
         pedeCpf();
         return Promise.reject();
       }
+      pedidoPix = { email: emailPix, cpf: cpf };
       return seguiu(envia(montaPedido('bank_transfer', { payment_method_id: 'pix', email: emailPix, cpf: cpf })));
     }
 
@@ -391,7 +394,7 @@
       location.assign('obrigado.html?p=' + encodeURIComponent(String(j.payment_id || '')));
       return true;
     }
-    if (j.pix && j.pix.qr_code) { mostraPix(j.pix); return true; }
+    if (j.pix && j.pix.qr_code) { mostraPix(j.pix, j.payment_id); return true; }
     if (estadoPag === 'rejected') {
       mostraErro(null, RECUSA_CARTAO[j.status_detail] ||
         'O pagamento não foi autorizado. Você pode usar outro cartão ou pagar no Pix.');
@@ -408,18 +411,24 @@
 
   /* ---------- 6. Pix na nossa página ---------- */
 
-  function mostraPix(pix) {
+  function mostraPix(pix, idPagamento) {
     desmonta();
     limpaErro();
     if (caixaCpf) caixaCpf.hidden = true;
     if (estado) estado.hidden = true;
-    if (imgPix && pix.qr_code_base64) imgPix.src = 'data:image/png;base64,' + pix.qr_code_base64;
+    /* Um Pix novo apaga o que sobrou do anterior: confirmação, caminhos de
+       recomeço e a linha do vigia. */
+    if (caixaPago) caixaPago.hidden = true;
+    if (caixaAcoes) caixaAcoes.hidden = true;
+    texto(copiado, '');
+    if (imgPix && pix.qr_code_base64) { imgPix.src = 'data:image/png;base64,' + pix.qr_code_base64; imgPix.hidden = false; }
     else if (imgPix) imgPix.hidden = true;
     if (codPix) codPix.value = String(pix.qr_code || '');
     var quando = pix.expira_em ? quandoVence(pix.expira_em) : '';
     texto(prazoPix, quando ? 'O código vale até ' + quando + '.' : '');
     if (caixaPix) caixaPix.hidden = false;
     if (caixaPix) { caixaPix.setAttribute('tabindex', '-1'); try { caixaPix.focus(); } catch (e) {} }
+    comecaVigia(idPagamento, pix.expira_em);
   }
 
   if (el('pix-copiar')) {
@@ -440,7 +449,192 @@
     });
   }
 
-  /* ---------- 7. O CPF que o Brick não entrega ---------- */
+  /* ---------- 7. O vigia do Pix: quem conta que o pagamento caiu ---------- */
+
+  /* Porta pública, só de leitura:
+       GET /webhook/wcp/pagamento/estado?c=<token da sessão>&p=<payment_id>
+         200 {ok:true, pago:<bool>, status, status_detail, encerrado:<bool>}
+         404 {ok:false, codigo:'PAGAMENTO_NAO_ENCONTRADO'}
+     ⛔ Ela devolve SÓ estado: nada de valor, nome ou e-mail. A credencial é o
+        token da sessão, que já está na URL desta página, e nenhum cabeçalho
+        nosso vai junto.
+     🔑 Cada pergunta daqui que o banco ainda não respondeu vira uma chamada ao
+        Mercado Pago. Por isso o ritmo cresce, o laço tem fim e a aba escondida
+        não pergunta nada. */
+
+  var VIGIA_TETO = 2 * 60 * 60 * 1000;   /* teto absoluto do laço: 2 horas */
+  var VIGIA_PADRAO = 30 * 60 * 1000;     /* prazo suposto quando o servidor não disse qual é */
+
+  var vigia = { id: '', inicio: 0, venceEm: 0, timer: null, ativo: false, consultando: false };
+  var pedidoPix = null;   /* e-mail e CPF do último Pix, para gerar outro sem pedir de novo */
+
+  function agora() { return Date.now(); }
+
+  /* Ritmo educado. O primeiro meio minuto é quando a pessoa está digitando a
+     senha no aplicativo do banco, e é ali que responder rápido vale alguma
+     coisa. Passado isso, a espera é do banco, não dela: perguntar de três em
+     três segundos só gasta chamada nossa e do Mercado Pago. */
+  function ritmo(decorrido) {
+    if (decorrido < 30000) return 3000;
+    if (decorrido < 120000) return 5000;
+    return 10000;
+  }
+
+  var FIM_DO_PIX = {
+    rejected: 'O banco não autorizou este Pix, e nada foi cobrado de você. Você pode gerar outro código agora ou pagar no cartão.',
+    cancelled: 'Este Pix foi cancelado antes de ser pago, e nada foi cobrado de você. Você pode gerar outro código agora ou pagar no cartão.',
+    refunded: 'Este pagamento foi devolvido. Se não foi você que pediu a devolução, me chama no direct do @dieymisson_.'
+  };
+
+  function vigiaTexto(t, esperando) {
+    if (!linhaVigia) return;
+    linhaVigia.className = esperando ? 'pix-vigia pix-vigia--esperando' : 'pix-vigia';
+    linhaVigia.textContent = '';
+    if (t) linhaVigia.appendChild(comLink(t));
+  }
+
+  function paraVigia() {
+    vigia.ativo = false;
+    if (vigia.timer) { clearTimeout(vigia.timer); vigia.timer = null; }
+  }
+
+  function agendaVigia() {
+    if (vigia.timer) { clearTimeout(vigia.timer); vigia.timer = null; }
+    if (!vigia.ativo || document.hidden) return;
+    vigia.timer = setTimeout(bateVigia, ritmo(agora() - vigia.inicio));
+  }
+
+  function bateVigia() {
+    if (vigia.timer) { clearTimeout(vigia.timer); vigia.timer = null; }
+    if (!vigia.ativo || document.hidden) return;
+    if (agora() >= vigia.venceEm) { paraVigia(); pixVenceu(); return; }
+    if (vigia.consultando) { agendaVigia(); return; }
+    vigia.consultando = true;
+    var ctrl = new AbortController();
+    var t = setTimeout(function () { ctrl.abort(); }, 15000);
+    fetch(URL_ESTADO + '?c=' + encodeURIComponent(token) + '&p=' + encodeURIComponent(vigia.id),
+          { method: 'GET', signal: ctrl.signal })
+      .then(function (r) {
+        return r.json().catch(function () { return null; }).then(function (j) {
+          if (r.ok && j && j.ok === true) leEstado(j);
+          /* ⛔ Resposta que não é 200 NÃO vira aviso na tela. Consulta é
+             conferência, não é o pagamento: o dinheiro pode ter caído mesmo
+             assim, e assustar quem acabou de pagar é pior do que ficar quieto.
+             Tenta de novo no próximo ciclo, até o prazo do Pix acabar. */
+        });
+      })
+      .catch(function () { /* rede caiu no meio: mesmo silêncio, mesma razão. */ })
+      .then(function () { clearTimeout(t); vigia.consultando = false; agendaVigia(); });
+  }
+
+  function comecaVigia(id, expiraEm) {
+    paraVigia();
+    vigia.id = String(id || '');
+    /* ⛔ Sem payment_id não há o que perguntar. Nada de laço no vazio. */
+    if (!vigia.id) { vigiaTexto(''); return; }
+    vigia.inicio = agora();
+    var fim = expiraEm ? new Date(expiraEm).getTime() : 0;
+    if (!isFinite(fim) || fim <= 0) fim = agora() + VIGIA_PADRAO;
+    vigia.venceEm = Math.min(fim, agora() + VIGIA_TETO);
+    if (agora() >= vigia.venceEm) { pixVenceu(); return; }
+    vigia.ativo = true;
+    vigiaTexto('Estou de olho aqui. Assim que o seu Pix cair, esta tela avisa.', true);
+    agendaVigia();
+  }
+
+  function leEstado(j) {
+    if (j.pago === true) { paraVigia(); pixCaiu(); return; }
+    var s = String(j.status || '');
+    if (s === 'rejected' || s === 'cancelled' || j.encerrado === true) { paraVigia(); pixNaoVale(s); }
+  }
+
+  function pixCaiu() {
+    limpaErro();
+    if (caixaPix) caixaPix.hidden = true;
+    if (caixaAcoes) caixaAcoes.hidden = true;
+    vigiaTexto('Pagamento aprovado. O acesso chega no seu WhatsApp.');
+    if (caixaPago) { caixaPago.hidden = false; try { caixaPago.focus(); } catch (e) {} }
+    marcaCompraNoPixel(vigia.id);
+    /* Dois segundos para a pessoa ler a confirmação antes de a tela trocar. */
+    setTimeout(function () {
+      location.assign('obrigado.html?p=' + encodeURIComponent(vigia.id));
+    }, 2000);
+  }
+
+  /* O pixel da Meta, se ele existir nesta página. `eventID` aqui é o mesmo
+     número que o servidor manda como `event_id`: é por ele que a Meta junta os
+     dois avisos e não conta a mesma venda duas vezes. */
+  function marcaCompraNoPixel(id) {
+    try {
+      if (typeof window.fbq !== 'function') return;
+      var v = sessao ? Number(sessao.valor) : NaN;
+      var dados = { currency: 'BRL' };
+      if (isFinite(v) && v > 0) dados.value = v;
+      window.fbq('track', 'Purchase', dados, { eventID: String(id) });
+    } catch (e) {}
+  }
+
+  /* O código morto sai da tela: ninguém deve pagar um Pix que não vale mais.
+     ⛔ O texto de reserva não afirma que nada foi cobrado: num estado final que
+        eu não conheço, quem sabe o que aconteceu com o dinheiro é o Mercado
+        Pago, não esta tela. */
+  function pixNaoVale(s) {
+    if (caixaPix) caixaPix.hidden = true;
+    vigiaTexto(FIM_DO_PIX[s] ||
+      'O Mercado Pago encerrou este pagamento. Se você já pagou, a confirmação chega no seu WhatsApp. Se não chegar nada, me chama no direct do @dieymisson_.');
+    mostraCaminhos();
+  }
+
+  function pixVenceu() {
+    if (caixaPix) caixaPix.hidden = true;
+    vigiaTexto('O prazo deste código venceu. Se você já pagou, fique tranquilo: a confirmação chega no seu WhatsApp. Se ainda não pagou, gere outro código agora.');
+    mostraCaminhos();
+  }
+
+  function mostraCaminhos() {
+    if (!caixaAcoes) return;
+    caixaAcoes.hidden = false;
+    var b = el('pix-refazer');
+    if (b) { try { b.focus(); } catch (e) {} }
+  }
+
+  /* A aba escondida é a pessoa dentro do aplicativo do banco. Perguntar para uma
+     tela que ninguém está vendo é gastar chamada à toa, e a volta para a aba é o
+     instante exato em que a resposta importa: por isso a volta pergunta na hora,
+     sem esperar o próximo ciclo. */
+  document.addEventListener('visibilitychange', function () {
+    if (!vigia.ativo) return;
+    if (document.hidden) { if (vigia.timer) { clearTimeout(vigia.timer); vigia.timer = null; } return; }
+    bateVigia();
+  });
+  window.addEventListener('pagehide', paraVigia);
+
+  if (el('pix-refazer')) {
+    el('pix-refazer').addEventListener('click', function () {
+      var b = this;
+      /* Sem o pedido guardado não dá para refazer daqui sem inventar dado:
+         recarregar devolve a pessoa ao formulário, com a sessão da URL. */
+      if (!pedidoPix) { location.reload(); return; }
+      paraVigia();
+      if (caixaAcoes) caixaAcoes.hidden = true;
+      vigiaTexto('Gerando outro código do Pix.', true);
+      b.disabled = true; b.setAttribute('aria-busy', 'true');
+      envia(montaPedido('bank_transfer', { payment_method_id: 'pix', email: pedidoPix.email, cpf: pedidoPix.cpf }))
+        .then(function (ok) {
+          b.disabled = false; b.removeAttribute('aria-busy');
+          if (!ok) { vigiaTexto(''); mostraCaminhos(); }
+        });
+    });
+  }
+
+  /* Pagar no cartão é voltar ao formulário do Mercado Pago. Recarregar é o
+     caminho honesto: a sessão da URL continua valendo e o Brick monta de novo,
+     com cartão e Pix. */
+  if (el('pix-cartao')) {
+    el('pix-cartao').addEventListener('click', function () { paraVigia(); location.reload(); });
+  }
+
+  /* ---------- 8. O CPF que o Brick não entrega ---------- */
 
   function digitos(v) { return String(v || '').replace(/\D/g, ''); }
 
@@ -479,12 +673,13 @@
       if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)) { mostraErro('SEM_EMAIL'); return; }
       texto(erroCpf, '');
       limpaErro();
+      pedidoPix = { email: email, cpf: cpf };
       botaoCpf.disabled = true; botaoCpf.setAttribute('aria-busy', 'true');
       envia(montaPedido('bank_transfer', { payment_method_id: 'pix', email: email, cpf: cpf }))
         .then(function () { botaoCpf.disabled = false; botaoCpf.removeAttribute('aria-busy'); });
     });
   }
 
-  /* ---------- 8. Começa ---------- */
+  /* ---------- 9. Começa ---------- */
   pedeSessao();
 })();

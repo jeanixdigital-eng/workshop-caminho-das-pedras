@@ -119,7 +119,30 @@
           <button type="button" class="btn btn-secondary cta btn-block" id="pix-copiar">Copiar o código</button>
           <p class="pix-copiado" id="pix-copiado" role="status"></p>
           <p class="miudo">Abra o aplicativo do seu banco, escolha Pix, cole o código e confirme. O acesso chega no seu WhatsApp assim que o pagamento cair.</p>
-          <p class="miudo">Não feche esta página enquanto paga. Se fechar, você não perde a compra: o mesmo código vale até o prazo acima, e a confirmação segue chegando no WhatsApp.</p>
+          <p class="miudo">Depois de pagar você pode fechar esta página: você não perde a compra, porque a confirmação chega no seu WhatsApp de qualquer jeito. Se ficar aqui, esta tela avisa assim que o pagamento cair.</p>
+        </div>
+
+        <!-- A linha que conta o que está acontecendo com o Pix. Ela existe desde
+             o começo, vazia, porque é ela que o leitor de tela anuncia quando o
+             estado muda. Quem escreve nela é o vigia do checkout.js. -->
+        <p class="pix-vigia" id="pix-vigia" role="status" aria-live="polite"></p>
+
+        <!-- Pagamento confirmado. ⚠️ Esta tela só aparece quando o SERVIDOR diz
+             que o pagamento caiu. Nada aqui acredita na URL nem no navegador. -->
+        <div class="pago" id="pago" hidden tabindex="-1">
+          <p class="pago-marca" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+          </p>
+          <h3 class="pago-titulo">O seu Pix caiu. A vaga é sua.</h3>
+          <p class="pago-texto">O Mercado Pago confirmou o pagamento agora. O acesso ao workshop chega no seu WhatsApp, no número que você deixou na inscrição.</p>
+          <p class="miudo">Estou te levando para a próxima página.</p>
+        </div>
+
+        <!-- O caminho de quem ficou sem Pix válido: recusado, cancelado ou
+             vencido. Beco não, caminho. -->
+        <div class="pix-acoes" id="pix-acoes" hidden>
+          <button type="button" class="btn btn-primary cta btn-block" id="pix-refazer">Gerar outro código do Pix</button>
+          <button type="button" class="btn btn-secondary cta btn-block" id="pix-cartao">Pagar no cartão</button>
         </div>
       </section>
 

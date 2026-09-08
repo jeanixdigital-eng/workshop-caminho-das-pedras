@@ -175,6 +175,41 @@
 .pix-copiado:empty { display: none; }
 .pix .miudo { margin-bottom: var(--space-4); }
 
+/* ---------- 7.1 O vigia: a tela conta o que aconteceu com o Pix ---------- */
+
+/* A linha que o leitor de tela anuncia. Ela nasce vazia e some enquanto está
+   vazia: é a mudança do conteúdo dela que vira o anúncio. */
+.pix-vigia {
+  margin: 0 0 var(--space-6);
+  font-size: 15px; line-height: 23px; color: var(--color-neutral-200);
+  max-width: var(--measure);
+}
+.pix-vigia:empty { display: none; }
+.pix-vigia a { color: var(--color-accent); }
+/* O ponto que pulsa enquanto a espera dura. Ele é enfeite: o recado inteiro está
+   no texto, e quem pediu menos movimento no sistema não vê movimento nenhum. */
+.pix-vigia--esperando::before {
+  content: ""; display: inline-block; vertical-align: middle;
+  width: 8px; height: 8px; margin-right: 10px; border-radius: 50%;
+  background: var(--color-accent);
+  animation: pix-pulso 1.6s ease-in-out infinite;
+}
+@keyframes pix-pulso { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .pix-vigia--esperando::before { animation: none; } }
+
+/* Pagamento confirmado. O foco vem para cá quando o servidor diz que caiu, e o
+   contorno existe porque foco que ninguém vê não é foco. */
+.pago[hidden] { display: none; }
+.pago { max-width: var(--measure); }
+.pago:focus { outline: 2px solid var(--color-accent); outline-offset: 6px; border-radius: var(--radius-md); }
+.pago-marca { margin: 0 0 var(--space-4); line-height: 0; color: var(--color-accent); }
+.pago-titulo { margin: 0 0 var(--space-4); font-size: 19px; line-height: 26px; letter-spacing: -.01em; }
+.pago-texto { margin: 0 0 var(--space-4); font-size: 15px; line-height: 23px; color: var(--color-neutral-200); }
+
+/* Recusado, cancelado ou vencido: o caminho de volta, nunca uma tela morta. */
+.pix-acoes[hidden] { display: none; }
+.pix-acoes { display: grid; gap: var(--space-4); }
+
 /* ---------- 8. Selos: o que é verdade sobre este pagamento ---------- */
 
 .selos-lista { margin: 0 0 var(--space-6); padding: 0; list-style: none; }
