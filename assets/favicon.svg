@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Workshop 19/10">
+  <!-- Cores do Nocturne, escritas aqui porque SVG servido como arquivo não
+       enxerga as variáveis da folha: --color-bg #161826, --color-accent #9184d9. -->
+  <rect width="64" height="64" rx="14" fill="#161826"/>
+  <rect x="0.5" y="0.5" width="63" height="63" rx="13.5" fill="none" stroke="#9184d9" stroke-opacity="0.45"/>
+  <!-- o sinal de dividir: a conta da hora clínica é uma divisão -->
+  <circle cx="32" cy="21" r="3.6" fill="#9184d9"/>
+  <rect x="15" y="30.2" width="34" height="3.6" rx="1.8" fill="#9184d9"/>
+  <circle cx="32" cy="43" r="3.6" fill="#9184d9"/>
+</svg>

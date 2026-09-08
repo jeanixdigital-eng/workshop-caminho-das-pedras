@@ -9,7 +9,11 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="Política de Privacidade · Workshop 19/10 · R$ 97 · a conta que a sua clínica não faz">
-<meta name="theme-color" content="#F6F3EC">
+<meta name="theme-color" content="#161826"><!-- = --color-bg do Nocturne; meta não aceita var() -->
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<!-- Inter hospedada por nós; nenhuma requisição de terceiro sai desta página. -->
+<link rel="stylesheet" href="assets/inter.css">
+<link rel="stylesheet" href="nocturne/styles.css">
 <link rel="stylesheet" href="assets/estilo.css">
 </head>
 <body>
@@ -18,12 +22,17 @@
 
 <div class="faixa" role="note">VERSÃO DE TRABALHO · 8 pendências</div>
 
-<header class="topo">
-  <div class="container">Dr. Dieymisson Mendes · CRO-MG <mark class="pendente">PENDENTE: número</mark></div>
+<header class="cabecalho">
+  <nav class="nav" aria-label="Identificação">
+    <span class="nav-brand">Dr. Dieymisson Mendes</span>
+    <span class="nav-cro">CRO-MG <mark class="pendente">PENDENTE: número</mark></span>
+    <a class="btn btn-secondary cta" href="index.html">Voltar para a página do workshop</a>
+  </nav>
 </header>
 
 <main id="conteudo" class="politica">
-  <div class="container">
+  <div class="wrap">
+    <p class="kicker">Workshop 19/10</p>
     <h1>Política de Privacidade</h1>
     <p class="versao">Workshop de 19 de outubro · versão 2026-09-08</p>
 
@@ -56,7 +65,7 @@
     <section id="s2" aria-labelledby="h-s2">
       <h2 id="h-s2">2. O que coletamos, exatamente</h2>
       <h3>2.1 O que você digita no formulário</h3>
-      <table>
+      <table class="table">
         <thead>
           <tr><th scope="col">Dado</th><th scope="col">Obrigatório?</th><th scope="col">Para quê</th></tr>
         </thead>
@@ -101,7 +110,7 @@
 
     <section id="s5" aria-labelledby="h-s5">
       <h2 id="h-s5">5. Onde os dados ficam e quem mais tem acesso</h2>
-      <table>
+      <table class="table">
         <thead>
           <tr><th scope="col">Fornecedor</th><th scope="col">O que faz</th><th scope="col">O que recebe</th></tr>
         </thead>
@@ -157,7 +166,7 @@
 </main>
 
 <footer class="rodape">
-  <div class="container">
+  <div class="wrap">
     <p>Dr. Dieymisson Mendes · CRO-MG <mark class="pendente">PENDENTE: número</mark> · Dental Center, Taiobeiras e Mato Verde, MG</p>
     <p>Este workshop trata dos números da clínica. Ele não promete resultado, de faturamento, de crescimento ou de pacientes, e não é orientação clínica.</p>
     <p>Vendido por <mark class="pendente">PENDENTE: confirmar se é Clinix System, CNPJ 49.828.144/0001-20</mark>.</p>

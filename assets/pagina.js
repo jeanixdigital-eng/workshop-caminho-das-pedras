@@ -105,7 +105,7 @@
     ok.textContent = '';
     ok.appendChild(p);
     var a = document.createElement('a');
-    a.className = 'cta'; a.href = next; a.textContent = 'Ir para o pagamento';
+    a.className = 'btn btn-primary cta'; a.href = next; a.textContent = 'Ir para o pagamento';
     ok.appendChild(a);
     if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
     setTimeout(function () { location.assign(next); }, 400);
@@ -159,6 +159,21 @@
     var atualiza = function () { barra.classList.toggle('visivel', heroFora && !inscricaoVisivel); };
     new IntersectionObserver(function (es) { heroFora = !es[es.length - 1].isIntersecting; atualiza(); }).observe(heroCta);
     new IntersectionObserver(function (es) { inscricaoVisivel = es[es.length - 1].isIntersecting; atualiza(); }).observe(inscricao);
+  }
+
+  /* ---------- Entrada dos blocos: só IntersectionObserver, e só se a pessoa
+       não pediu menos movimento. Sem ScrollTrigger, sem cálculo de posição. ---------- */
+  var querMovimento = !window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var alvos = document.querySelectorAll('.revela');
+  if (querMovimento && 'IntersectionObserver' in window && alvos.length) {
+    var obs = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('dentro'); obs.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    Array.prototype.forEach.call(alvos, function (el) { obs.observe(el); });
+  } else {
+    Array.prototype.forEach.call(alvos, function (el) { el.classList.add('dentro'); });
   }
 
   /* ---------- Pixel da Meta: só com data-pixel-id preenchido (§5). Hoje vazio: nenhuma requisição sai daqui ---------- */

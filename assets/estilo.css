@@ -1,295 +1,672 @@
-/* Página de venda do Workshop (frente @dieymisson_) · CSS compartilhado por index.html e privacidade.html
-   Sistema de design: rascunho/estrutura.md §3 (Gael, 08/09/2026).
-   Papel, tinta e vermelho só no número ruim. Tipografia do sistema: zero fonte carregada. Uma coluna de 680 px. */
+/* ══════════════════════════════════════════════════════════════════════════
+   Página de venda do Workshop · assets/estilo.css
+   Carrega DEPOIS de nocturne/styles.css. O Nocturne é a fonte da verdade do
+   visual: cor, fonte, espaço, raio e sombra saem SEMPRE das variáveis dele
+   (--color-*, --font-*, --space-*, --radius-*, --shadow-*).
+   ⛔ nocturne/styles.css é cópia de leitura do projeto remoto: não se edita.
+   O que é nosso vive aqui, e está declarado no bloco "adições" abaixo.
+   Contrato de comportamento: rascunho/estrutura.md §2 (formulário) e §5.
+   ══════════════════════════════════════════════════════════════════════════ */
 
-/* ---------- 1. Tokens ---------- */
 :root {
-  --papel: #F6F3EC;
-  --papel-2: #EDE8DD;
-  --branco: #FFFFFF;
-  --tinta: #14120F;
-  --tinta-2: #2B2823;
-  --grafite: #4A4741;
-  --vermelho: #B42318;
-  --erro-fundo: #FBEAE8;
-  --borda: #8A847A;
-  --linha: #D9D4C9;
-  --pendente: #FFE45C;
+  /* Ritmo do template de landing do Nocturne: uma unidade só. Toda
+     entrelinha e toda margem de bloco é múltipla dela (meio-passo = 14px). */
+  --leading: 28px;
+  --meio: 14px;
+  --edge: clamp(20px, 5vw, 72px);   /* goteira */
+  --measure: 58ch;                  /* medida de leitura */
+  --coluna: 1240px;                 /* teto da coluna; o ar sobra à direita */
 
-  --t-h1: clamp(2.125rem, 1.4rem + 3.2vw, 3.5rem);
-  --t-num: clamp(2.5rem, 1.5rem + 5vw, 5rem);
-  --t-num-2: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem);
-  --t-h2: clamp(1.5rem, 1.1rem + 1.8vw, 2.25rem);
-  --t-h3: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
-  --t-lead: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
-  --t-cit: clamp(1.25rem, 1.05rem + 1.2vw, 1.75rem);
-  --t-corpo: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
-  --t-peq: 0.9375rem;
-  --t-min: 0.875rem;
-
-  --e1: 8px;
-  --e2: 16px;
-  --e3: 24px;
-  --e4: 32px;
-  --e5: 48px;
-  --e6: 64px;
-
-  --fonte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --foco: 3px solid var(--tinta);
+  /* ─── ADIÇÕES NOSSAS AO SISTEMA (o Nocturne é monocromático e não tem
+     nem vermelho nem amarelo). As duas foram derivadas na MESMA escala
+     tonal do sistema, em OKLCH, para não parecerem cor de fora:
+       L = 0.780  → a lightness exata de --color-accent-400 (#b5abfc)
+       C = 0.125  → a chroma do --color-accent (0.124), a mesma "força"
+       H = 25     → vermelho   ·   H = 85 → amarelo
+     --ruim  #fd968f  contraste 8,33:1 sobre --color-bg (AA e AAA)
+     --pend  #dcb14f  contraste 8,76:1 sobre --color-bg (AA e AAA)
+     Uso permitido: --ruim SÓ como tinta dos dois números ruins da conta
+     (marca, nunca fundo); --pend SÓ nas marcas de pendência da versão de
+     trabalho, que somem quando a página for publicada. */
+  --ruim: #fd968f;
+  --pend: #dcb14f;
 }
 
-/* ---------- 2. Base ---------- */
-*, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+/* ---------- 1. Fundo "aceso" e base ---------- */
+
+html { scroll-padding-top: 96px; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
 body {
-  margin: 0;
-  background: var(--papel);
-  color: var(--tinta);
-  font-family: var(--fonte);
-  font-size: var(--t-corpo);
-  font-weight: 400;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: var(--leading);
+  min-height: 100%;
+  background:
+    radial-gradient(1200px 720px at 82% -160px,
+      color-mix(in srgb, var(--color-accent-900) 75%, transparent), transparent 60%),
+    radial-gradient(1100px 800px at -10% 100%,
+      color-mix(in srgb, black 30%, transparent), transparent 55%),
+    var(--color-bg);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
-  overflow-wrap: break-word;
 }
-h1, h2, h3, p, ul, ol, dl, dd, blockquote { margin: 0; }
-img { display: block; max-width: 100%; height: auto; }
-a { color: inherit; }
-[hidden] { display: none !important; }
-:focus-visible { outline: var(--foco); outline-offset: 2px; }
 
-h1 { font-size: var(--t-h1); line-height: 1.08; letter-spacing: -0.02em; font-weight: 700; }
-h2 { font-size: var(--t-h2); line-height: 1.15; letter-spacing: -0.015em; font-weight: 700; margin-bottom: var(--e4); }
-h3 { font-size: var(--t-h3); line-height: 1.3; font-weight: 700; }
-p { max-width: 65ch; }
-p + p { margin-top: var(--e2); }
-strong { font-weight: 700; }
+p { margin: 0 0 var(--leading); }
+p:last-child { margin-bottom: 0; }
+strong { font-weight: 600; }
 
-/* ---------- 3. Grade ---------- */
-.container { max-width: 680px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 40px); }
-.secao { padding: clamp(56px, 8vw, 112px) 0; }
-.secao--papel2 { background: var(--papel-2); }
-.secao h2 + h3, .secao h2 + p, .secao h2 + ul, .secao h2 + ol { margin-top: 0; }
-.grupo { margin-top: var(--e5); }
-.grupo > h3 { margin-bottom: var(--e2); }
+/* ---------- 2. Grade: conteúdo abraça a borda esquerda ---------- */
 
-/* ---------- 4. Topo: pular, faixa de trabalho, header ---------- */
+.wrap {
+  width: 100%;
+  max-width: var(--coluna);
+  margin-inline: 0 auto;
+  padding-inline: var(--edge);
+}
+.secao { padding-block: calc(var(--leading) * 2); }
+@media (min-width: 900px) { .secao { padding-block: calc(var(--leading) * 3); } }
+
+/* Faixa de superfície (alternância de fundo), sangrando de borda a borda */
+.secao--tinta {
+  background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+  border-block: 1px solid var(--color-divider);
+}
+
+/* ---------- 3. Etiqueta de seção (.kicker) ---------- */
+
+.kicker {
+  position: relative;
+  font-family: var(--font-heading);
+  font-size: 13px; line-height: 20px;
+  letter-spacing: .06em; text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--meio);
+}
+/* O traço de 44px é uma marca curta de acento: fica sólido, não some. */
+@media (min-width: 1280px) {
+  .kicker::before {
+    content: ""; position: absolute; left: -64px; top: 10px;
+    width: 44px; height: 1px; background: var(--color-accent);
+  }
+}
+
+/* ---------- 4. Títulos: hierarquia por tamanho e espaço, peso ≤ 500 ---------- */
+
+.display {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(34px, 6.4vw, 76px);
+  line-height: 1.11;
+  letter-spacing: -.015em;
+  margin: 0 0 var(--leading) -0.06em;   /* alinhamento óptico do Inter */
+  max-width: 14em;
+  text-box: trim-both cap alphabetic;
+}
+.display .line { display: block; }
+
+.titulo--grande { font-size: clamp(34px, 5vw, 64px); max-width: 16ch; }
+.titulo {
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.14; letter-spacing: -.015em;
+  margin: 0 0 var(--leading);
+  max-width: 20ch;
+}
+.sub {
+  font-size: clamp(19px, 1.6vw, 22px);
+  line-height: 1.3; letter-spacing: -.01em;
+  margin: calc(var(--leading) * 1.5) 0 var(--meio);
+  color: var(--color-neutral-200);
+}
+.secao > .wrap > .sub:first-of-type { margin-top: 0; }
+
+.lead {
+  font-size: clamp(17px, 1.35vw, 20px);
+  line-height: 1.5;
+  max-width: 46ch;
+  color: var(--color-neutral-300);   /* 11,8:1 sobre o fundo */
+  margin: 0 0 var(--leading);
+}
+.corpo { max-width: var(--measure); color: var(--color-neutral-200); }
+.miudo {
+  font-size: 14px; line-height: 22px;
+  color: var(--color-neutral-400);   /* 8,7:1 sobre o fundo */
+  max-width: var(--measure);
+}
+
+/* ---------- 5. Navegação ---------- */
+
 .pular {
-  position: absolute; left: -10000px; top: 8px; z-index: 20;
-  padding: 12px 16px; background: var(--tinta); color: #fff;
-  border-radius: 8px; font-weight: 700; text-decoration: none;
+  position: absolute; left: -9999px; top: 0; z-index: 90;
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-surface); color: var(--color-text);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-md);
+  text-decoration: none;
 }
-.pular:focus { left: 8px; outline: var(--foco); outline-offset: 3px; }
+.pular:focus { left: var(--space-4); top: var(--space-4); }
 
 .faixa {
-  min-height: 28px; padding: 4px 12px;
-  background: var(--pendente); color: var(--tinta);
-  font-size: var(--t-min); font-weight: 600; line-height: 20px; text-align: center;
+  font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--pend);
+  background: color-mix(in srgb, var(--pend) 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--pend) 28%, transparent);
+  padding: var(--space-2) var(--edge);
 }
 
-.topo { min-height: 56px; display: flex; align-items: center; font-size: var(--t-min); color: var(--grafite); }
-
-/* ---------- 5. Marcador de pendência (some na versão final: remover cada <mark>) ---------- */
-.pendente {
-  background: var(--pendente); color: var(--tinta);
-  font-weight: 600; padding: 2px 6px; border-radius: 4px;
+.cabecalho {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--color-bg) 84%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
 }
-.pendente--linha { display: inline-block; margin-bottom: var(--e3); }
-
-/* ---------- 6. Botão CTA (único estilo de botão da página) ---------- */
-.cta {
-  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; min-height: 56px; padding: 0 24px;
-  background: var(--tinta); color: #fff;
-  font-family: inherit; font-size: 1.0625rem; font-weight: 700; line-height: 1.2;
-  border: 0; border-radius: 8px; text-decoration: none; cursor: pointer;
-  transition: background-color .15s ease, transform .1s ease;
+.cabecalho::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent);
 }
-.cta:hover { background: var(--tinta-2); }
-.cta:active { transform: translateY(1px); }
-.cta:focus-visible { outline: var(--foco); outline-offset: 3px; }
-.cta[disabled] { cursor: progress; opacity: .7; }
-.cta[aria-busy="true"]::before {
-  content: ""; width: 16px; height: 16px; flex: none;
-  border: 2px solid rgba(255, 255, 255, .35); border-top-color: #fff; border-radius: 50%;
+.nav {
+  max-width: var(--coluna); margin-inline: 0 auto;
+  padding: var(--space-3) var(--edge);
+  gap: var(--space-4); flex-wrap: wrap;
+}
+.nav-brand { font-size: 17px; margin-right: var(--space-4); letter-spacing: -.01em; }
+.nav-cro {
+  font-size: 12px; color: var(--color-neutral-400);
+  margin-right: auto; letter-spacing: .04em;
+}
+.nav .btn { flex: none; }
+@media (max-width: 719px) {
+  .nav-brand { font-size: 15px; margin-right: var(--space-2); }
+  .nav .cta { display: none; }   /* no celular, a barra fixa faz esse papel */
+}
+
+/* Barra de progresso de leitura: puro CSS, sem ouvir scroll no JS. */
+.progresso {
+  position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
+  transform: scaleX(0); transform-origin: 0 50%;
+  background: var(--color-accent);
+}
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .progresso { animation: avanca linear both; animation-timeline: scroll(root block); }
+    @keyframes avanca { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  }
+}
+
+/* ---------- 6. Botões (contornados, nunca preenchidos) ---------- */
+
+.btn.cta {
+  min-height: 56px; font-size: 16px;
+  padding-inline: calc(var(--space-8) * 1.1);
+  border-radius: var(--radius-md);
+  transition: background-color .16s ease, border-color .16s ease;
+}
+.btn.btn-ghost.cta { padding-inline: var(--space-6); }
+@media (prefers-reduced-motion: reduce) { .btn.cta { transition: none; } }
+
+.botoes {
+  display: flex; flex-wrap: wrap; gap: var(--space-4);
+  margin-bottom: var(--meio);
+}
+@media (max-width: 519px) {
+  .botoes { display: grid; justify-items: start; }
+  .botoes .btn-primary.cta { width: 100%; }
+}
+
+button.cta[aria-busy="true"]::before {
+  content: ""; width: 16px; height: 16px; flex: none; margin-right: var(--space-2);
+  border: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+  border-top-color: var(--color-accent); border-radius: 50%;
   animation: gira .8s linear infinite;
 }
 @keyframes gira { to { transform: rotate(360deg); } }
-@media (min-width: 768px) { .cta { width: auto; min-width: 280px; } }
+@media (prefers-reduced-motion: reduce) { button.cta[aria-busy="true"]::before { animation: none; } }
+
+.seta { width: 16px; height: 16px; flex: none; }
 
 /* ---------- 7. Hero ---------- */
-.hero { padding-top: 40px; }
-.hero h1 { margin-bottom: var(--e2); }
-.lead { font-size: var(--t-lead); line-height: 1.45; max-width: 34em; margin-bottom: var(--e3); }
-.micro { font-size: var(--t-peq); color: var(--grafite); margin-top: var(--e2); }
 
-/* ---------- 8. Citações ---------- */
-.frases { list-style: none; padding: 0; }
-.frases li { font-size: var(--t-lead); line-height: 1.45; max-width: 34em; }
-.frases li + li { margin-top: var(--e3); }
-
-.ancora {
-  font-size: var(--t-cit); line-height: 1.3; font-weight: 700;
-  border-left: 4px solid var(--tinta); padding-left: var(--e3);
-  margin-bottom: var(--e4); max-width: 28em;
+.hero { padding-top: calc(var(--leading) * 1.5); padding-bottom: calc(var(--leading) * 2); }
+@media (min-width: 900px) { .hero { padding-top: calc(var(--leading) * 3); } }
+.hero .micro {
+  font-size: 14px; line-height: 22px; color: var(--color-neutral-400);
+  margin: 0;
 }
 
-/* ---------- 9. A conta ---------- */
-.tres { padding-left: 1.4em; max-width: 60ch; }
-.tres li + li { margin-top: var(--e1); }
+/* ---------- 8. Faixa de números (a única inundação de acento permitida) ---------- */
 
-.num { background: var(--branco); border: 1px solid var(--linha); border-radius: 12px; padding: 20px 24px; }
-.num + .num { margin-top: var(--e2); }
-.num__rotulo { font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); line-height: 1.4; }
-.num__valor {
-  display: block; margin-top: var(--e1);
-  font-size: min(var(--t-num-2), 8vw); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em;
+.numeros {
+  background:
+    radial-gradient(900px 300px at 18% -40%, var(--color-section-glow), transparent 70%),
+    var(--color-section);
+  border-block: 1px solid color-mix(in srgb, var(--color-section-ghost) 60%, transparent);
+  padding-block: calc(var(--leading) * 1.75);
+}
+.numeros-grade {
+  display: grid; gap: var(--leading);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 720px) { .numeros-grade { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-8); max-width: 1000px; } }
+.numeros dt {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(32px, 4.4vw, 52px); line-height: 1.05; letter-spacing: -.02em;
   font-variant-numeric: tabular-nums; white-space: nowrap;
+  color: var(--color-neutral-100);
 }
-/* teto por largura de tela: R$ 394.249,81 nunca quebra nem vaza do card no celular (estrutura §8) */
-.num__valor--grande { font-size: min(var(--t-num), 9.2vw, 4.25rem); line-height: 1; }
-.num__valor--ruim { color: var(--vermelho); }
-.num__passo { font-size: var(--t-peq); color: var(--grafite); margin-top: var(--e2); }
-.num__passo + .num__valor { margin-top: 4px; }
-.num__origem { font-size: var(--t-peq); color: var(--grafite); line-height: 1.5; margin-top: var(--e2); max-width: 65ch; }
-.op { text-align: center; font-size: var(--t-h2); font-weight: 700; line-height: 1; color: var(--grafite); padding: var(--e2) 0; }
-.conta-fim { margin-top: var(--e5); }
-
-/* ---------- 10. Os cinco números ---------- */
-.cinco { list-style: none; padding: 0; counter-reset: n; }
-.cinco li { counter-increment: n; display: grid; grid-template-columns: 2.5rem 1fr; column-gap: var(--e2); }
-.cinco li + li { margin-top: var(--e3); }
-.cinco li::before { content: counter(n); font-size: var(--t-h2); font-weight: 700; line-height: 1.15; letter-spacing: -0.015em; }
-.cinco li > div { min-width: 0; }
-.cinco strong { display: block; font-size: var(--t-h3); line-height: 1.3; margin-bottom: 4px; }
-.perto { background: var(--papel-2); border-radius: 12px; padding: var(--e3); margin-top: var(--e4); }
-.perto p { max-width: none; }
-
-/* ---------- 11. Quem faz ---------- */
-.assinatura { font-size: var(--t-h3); font-weight: 700; border-top: 1px solid var(--linha); padding-top: var(--e3); margin-top: var(--e4); }
-
-/* ---------- 12. Detalhes ---------- */
-.detalhes { border-top: 1px solid var(--linha); }
-.detalhes > div { padding: var(--e2) 0; border-bottom: 1px solid var(--linha); }
-.detalhes dt { font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); margin-bottom: 4px; line-height: 1.4; }
-.detalhes dd { max-width: 65ch; }
-@media (min-width: 768px) {
-  .detalhes > div { display: grid; grid-template-columns: 10rem 1fr; column-gap: var(--e3); }
-  .detalhes dt { margin: 0; padding-top: .35em; }
+.numeros dd {
+  margin: var(--space-3) 0 0;
+  font-size: 13px; line-height: 19px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--color-accent-200);    /* 10,8:1 sobre --color-section */
+}
+.numeros .origem {
+  margin: var(--leading) 0 0; font-size: 13px; line-height: 20px;
+  color: var(--color-neutral-300);   /* 8,9:1 sobre --color-section */
 }
 
-/* ---------- 13. FAQ ---------- */
-.faq details { border-bottom: 1px solid var(--linha); }
-.faq details:first-of-type { border-top: 1px solid var(--linha); }
-.faq summary {
-  list-style: none; cursor: pointer; min-height: 48px;
-  display: flex; align-items: center; justify-content: space-between; gap: var(--e2);
-  padding: 12px 0;
-}
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; flex: none; width: 24px; text-align: center; font-size: 1.5rem; font-weight: 400; line-height: 1; color: var(--grafite); }
-.faq details[open] summary::after { content: "−"; }
-.faq summary:hover h3 { color: var(--tinta-2); }
-.faq summary:focus-visible { outline: var(--foco); outline-offset: 2px; }
-.faq .resposta { padding: var(--e1) 40px var(--e4) 0; }
+/* ---------- 9. PARA QUEM: as frases do dentista ---------- */
 
-/* ---------- 14. Formulário ---------- */
-.form-titulo { margin: var(--e5) 0 var(--e3); }
-.campo { margin-bottom: var(--e3); }
-.campo label { display: block; font-weight: 700; margin-bottom: 6px; }
-.form input[type="text"], .form input[type="tel"], .form input[type="email"] {
-  display: block; width: 100%; height: 48px; padding: 0 14px;
-  background: var(--branco); color: var(--tinta);
-  border: 1px solid var(--borda); border-radius: 8px;
-  font-family: inherit; font-size: 1rem; line-height: 1.2;
+.frases { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-4); }
+@media (min-width: 900px) { .frases { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); } }
+.frases li {
+  position: relative;
+  padding: var(--space-6) var(--space-6) var(--space-6) calc(var(--space-6) + 14px);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  box-shadow: var(--shadow-sm);
+  font-size: 17px; line-height: 26px; color: var(--color-neutral-200);
 }
-.form input:focus { border: 2px solid var(--tinta); padding: 0 13px; outline: var(--foco); outline-offset: 2px; }
-.form input[aria-invalid="true"] { border: 2px solid var(--vermelho); padding: 0 13px; }
-.campo-erro { font-size: var(--t-peq); color: var(--vermelho); margin-top: 6px; }
+/* marca curta de acento: fica sólida */
+.frases li::before {
+  content: ""; position: absolute; left: var(--space-6); top: var(--space-8); bottom: var(--space-8);
+  width: 2px; background: var(--color-accent); border-radius: 2px;
+}
+.filtro { margin-top: calc(var(--leading) * 1.5); }
+
+/* ---------- 10. A CONTA ---------- */
+
+.pendente {
+  background: color-mix(in srgb, var(--pend) 13%, transparent);
+  color: var(--pend);
+  border: 1px solid color-mix(in srgb, var(--pend) 38%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 1px 7px; font-size: .88em;
+  box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
+.pendente--linha { display: inline-block; margin-bottom: var(--leading); }
+
+.receita { list-style: none; counter-reset: r; padding: 0; margin: 0 0 calc(var(--leading) * 1.5); max-width: var(--measure); }
+.receita li {
+  counter-increment: r; position: relative;
+  padding: var(--meio) 0 var(--meio) 44px;
+  font-size: 17px; line-height: 26px; color: var(--color-neutral-200);
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;
+}
+.receita li::before {
+  content: counter(r, decimal-leading-zero);
+  position: absolute; left: 0; top: var(--meio);
+  font-family: var(--font-heading); font-size: 13px; line-height: 26px;
+  letter-spacing: .06em; color: var(--color-accent); font-variant-numeric: tabular-nums;
+}
+
+/* A conta armada */
+.equacao {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: var(--space-4) var(--space-6);
+  margin-bottom: var(--leading);
+}
+.parcela { display: flex; flex-direction: column; gap: var(--space-2); }
+@media (min-width: 720px) { .parcela .rotulo { max-width: 16ch; } }
+.rotulo {
+  font-size: 12px; line-height: 18px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--color-neutral-400); margin: 0;
+}
+.parcela-valor {
+  display: block;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(30px, 3.6vw, 44px); line-height: 1.05; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+  color: var(--color-neutral-200);
+}
+.op {
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 2.6vw, 32px); line-height: 1;
+  color: var(--color-accent);
+}
+@media (max-width: 719px) {
+  /* conta armada: o operador ganha a própria linha, encostado à esquerda */
+  .equacao { display: block; }
+  .op { margin: var(--space-4) 0; }
+  .parcela + .op { margin-top: var(--space-6); }
+}
+@media (min-width: 720px) {
+  /* alinha o operador ao miolo do número, não ao meio da caixa toda */
+  .op { align-self: flex-start; margin-top: calc(18px + var(--space-2) + 6px); }
+}
+.parcela--total .parcela-valor {
+  font-size: clamp(56px, 8.4vw, 104px);
+  color: var(--color-text);
+  margin-left: -.03em;
+}
+.parcela--total .rotulo { color: var(--color-accent); }
+.equacao-nota { margin: 0 0 calc(var(--leading) * 1.5); }
+
+/* Os dois números ruins */
+.maus { display: grid; gap: var(--leading); margin-top: var(--leading); }
+@media (min-width: 900px) { .maus { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); } }
+.mau {
+  padding-top: var(--leading);
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent) no-repeat top / 100% 1px;
+}
+.mau .rotulo { max-width: 34ch; }
+@media (min-width: 900px) { .mau .rotulo { min-height: 54px; } }
+.mau-valor {
+  display: block; margin-top: var(--space-3);
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(30px, 4.4vw, 50px); line-height: 1.05; letter-spacing: -.02em;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+  color: var(--ruim);                 /* 8,33:1 sobre --color-bg */
+}
+.mau-passo {
+  margin: var(--space-3) 0 0; font-size: 13px; line-height: 20px;
+  letter-spacing: .04em; color: var(--color-neutral-400);
+  font-variant-numeric: tabular-nums;
+}
+.mau .miudo { margin-top: var(--space-6); }
+.conta-fim { margin-top: calc(var(--leading) * 1.5); }
+
+/* ---------- 11. O QUE ACONTECE NO DIA: linhas numeradas ---------- */
+
+.linhas { list-style: none; counter-reset: l; padding: 0; margin: 0; }
+.linhas li {
+  counter-increment: l;
+  display: grid; gap: 0 var(--space-6);
+  grid-template-columns: 40px minmax(0, 1fr);
+  padding-block: var(--leading);
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;
+}
+.linhas li:first-child { padding-top: 0; }
+@media (min-width: 900px) {
+  .linhas li { grid-template-columns: 64px minmax(0, 22ch) minmax(0, 1fr); gap: 0 var(--space-8); }
+}
+.linhas li::before {
+  content: counter(l, decimal-leading-zero);
+  grid-row: 1 / span 2;
+  font-family: var(--font-heading); font-size: 13px; line-height: 26px;
+  letter-spacing: .06em; color: var(--color-accent); font-variant-numeric: tabular-nums;
+}
+@media (min-width: 900px) { .linhas li::before { grid-row: 1; } }
+.linha-t {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 19px; line-height: 26px; letter-spacing: -.01em;
+  color: var(--color-text); margin: 0 0 var(--space-3);
+}
+@media (min-width: 900px) { .linha-t { margin-bottom: 0; } }
+.linha-b { margin: 0; font-size: 15px; line-height: 24px; color: var(--color-neutral-400); }
+.fecho { margin-top: var(--leading); }
+
+.perto {
+  display: flex; gap: var(--space-6); align-items: flex-start;
+  margin-top: calc(var(--leading) * 1.5);
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  box-shadow: var(--shadow-sm);
+  max-width: 62ch;
+}
+.perto svg { flex: none; color: var(--color-accent); margin-top: 3px; }
+.perto p { margin: 0; font-size: 15px; line-height: 24px; color: var(--color-neutral-200); }
+
+/* ---------- 12. Citação (aspa pendurada) ---------- */
+
+.citacao {
+  margin: 0 0 var(--leading);
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(23px, 2.9vw, 36px); line-height: 1.24; letter-spacing: -.015em;
+  color: var(--color-text);
+  max-width: 24ch;
+  text-indent: -0.474em;      /* pendura a aspa de abertura */
+}
+.citacao::before { content: "\201C"; }
+.citacao::after { content: "\201D"; }
+.citacao--curta { max-width: 22ch; }
+
+/* ---------- 13. QUEM FAZ ---------- */
+
+.assinatura {
+  margin-top: var(--leading); padding-top: var(--meio);
+  font-family: var(--font-heading); font-size: 15px;
+  color: var(--color-neutral-300);
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent) no-repeat top / 100% 1px;
+  max-width: var(--measure);
+}
+
+/* ---------- 14. DETALHES ---------- */
+
+.detalhes { margin: 0; max-width: 72ch; }
+.detalhes > div {
+  display: grid; gap: var(--space-2) var(--space-8);
+  grid-template-columns: 1fr;
+  padding-block: var(--space-6);
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;
+}
+@media (min-width: 720px) { .detalhes > div { grid-template-columns: 15ch minmax(0, 1fr); } }
+.detalhes dt {
+  font-size: 12px; line-height: 20px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--color-accent);
+}
+.detalhes dd { margin: 0; font-size: 16px; line-height: 25px; color: var(--color-neutral-200); }
+
+/* ---------- 15. FAQ ---------- */
+
+.faq-lista { max-width: 76ch; }
+.faq-lista details {
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;
+}
+.faq-lista summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-6);
+  min-height: 48px; padding-block: var(--meio);
+  cursor: pointer; list-style: none;
+}
+.faq-lista summary::-webkit-details-marker { display: none; }
+.faq-lista summary h3 {
+  margin: 0; font-size: 18px; line-height: 26px; letter-spacing: -.01em;
+  color: var(--color-text);
+}
+.faq-lista summary:hover h3 { color: var(--color-accent); }
+.faq-lista summary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.faq-lista .chev {
+  flex: none; width: 18px; height: 18px; color: var(--color-accent);
+  transition: transform .18s ease;
+}
+.faq-lista details[open] .chev { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .faq-lista .chev { transition: none; } }
+.resposta { padding: 0 0 var(--leading); max-width: var(--measure); }
+.resposta p { margin: 0; font-size: 16px; line-height: 26px; color: var(--color-neutral-300); }
+
+/* ---------- 16. Inscrição e formulário ---------- */
+
+.inscricao-grade { display: grid; gap: calc(var(--leading) * 1.5); }
+@media (min-width: 980px) {
+  .inscricao-grade { grid-template-columns: minmax(0, 1fr) minmax(0, 460px); gap: var(--space-8) calc(var(--leading) * 2); align-items: start; }
+}
+.form-caixa {
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+.form-titulo { margin: 0 0 var(--leading); font-size: 19px; line-height: 26px; letter-spacing: -.01em; }
+
+.form .field { margin-bottom: var(--space-6); }
+.form .field > label { font-size: 13px; margin-bottom: 6px; color: var(--color-neutral-300); }
+.form .input {
+  min-height: 48px; padding: 12px 14px; font-size: 16px; line-height: 24px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  border-color: var(--color-neutral-600);   /* 3,5:1 sobre o cartão */
+}
+.form .input:hover { border-color: var(--color-neutral-400); }
+.form .input::placeholder { color: var(--color-neutral-500); }
+.form .input[aria-invalid="true"] { border-color: var(--ruim); }
+.campo-erro { margin: 6px 0 0; font-size: 13px; line-height: 20px; color: var(--ruim); }
 .campo-erro:empty { display: none; }
 
-.aceite {
-  display: flex; align-items: flex-start; gap: 12px; min-height: 44px;
-  font-size: var(--t-peq); font-weight: 400; line-height: 1.5; cursor: pointer;
+/* especificidade acima de `.field > label` do Nocturne, que impõe display:block */
+.form .field > label.aceite {
+  display: flex; align-items: flex-start; gap: var(--space-4);
+  min-height: 44px; margin-bottom: 0; cursor: pointer;
+  font-size: 14px; line-height: 22px; color: var(--color-neutral-300);
 }
-.campo .aceite { display: flex; margin-bottom: 0; font-weight: 400; }
-.aceite input { flex: none; width: 24px; height: 44px; margin: 0; accent-color: var(--tinta); cursor: pointer; }
-.aceite input:focus-visible { outline: var(--foco); outline-offset: 2px; }
+.aceite input {
+  flex: none; width: 24px; height: 44px; margin: 0; cursor: pointer;
+  position: relative; appearance: none; -webkit-appearance: none;
+  background: transparent; border: 0;
+}
+.aceite input::before {
+  content: ""; position: absolute; left: 0; top: 10px; width: 24px; height: 24px;
+  border: 1px solid var(--color-neutral-500); border-radius: var(--radius-sm);
+  background: var(--color-bg);
+}
+.aceite input:hover::before { border-color: var(--color-accent); }
+.aceite input:checked::before {
+  border-color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 22%, transparent);
+}
+.aceite input:checked::after {
+  content: ""; position: absolute; left: 8px; top: 15px; width: 7px; height: 12px;
+  border: 2px solid var(--color-accent); border-top: 0; border-left: 0;
+  transform: rotate(42deg);
+}
+.aceite input:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 .aceite span { padding-top: 11px; }
-.aceite a { text-decoration: underline; text-underline-offset: 2px; }
 
 .form-erro {
-  background: var(--erro-fundo); color: var(--vermelho);
-  border-left: 4px solid var(--vermelho); border-radius: 8px;
-  padding: var(--e2); font-size: var(--t-peq); line-height: 1.5;
-  margin-bottom: var(--e3); max-width: none;
+  margin-bottom: var(--space-6); padding: var(--space-4) var(--space-6);
+  font-size: 14px; line-height: 22px; color: var(--ruim);
+  border: 1px solid color-mix(in srgb, var(--ruim) 40%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--ruim) 8%, transparent);
 }
 .form-erro:empty { display: none; }
-.form-erro a { text-decoration: underline; text-underline-offset: 2px; }
-
-.form-ok { font-size: var(--t-lead); line-height: 1.45; font-weight: 700; margin-top: var(--e5); }
+.form-erro a { color: var(--ruim); }
 .form-ok:empty { display: none; }
-.form-ok p { max-width: 34em; }
-.form-ok .cta { margin-top: var(--e3); }
+.form-ok p { font-size: 17px; line-height: 27px; color: var(--color-text); }
+.form-ok .cta { margin-top: var(--space-6); }
 
-/* campo-armadilha: fora da tela, nunca display:none (§2.3) */
+/* campo-armadilha: fora da tela, nunca display:none (estrutura §2.3) */
 .hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 
-/* ---------- 15. Rodapé ---------- */
-.rodape { border-top: 1px solid var(--linha); padding: var(--e5) 0 var(--e6); font-size: var(--t-peq); color: var(--grafite); }
-.rodape p { max-width: 65ch; }
-.rodape a { display: inline-block; padding: 12px 0; margin: -12px 0; text-decoration: underline; text-underline-offset: 2px; }
-.rodape a:hover { color: var(--tinta); }
+/* ---------- 17. Rodapé ---------- */
 
-/* ---------- 16. Barra fixa de CTA (só no celular; pagina.js liga e desliga) ---------- */
-.barra { display: none; }
-@media (max-width: 767.98px) {
-  .venda { padding-bottom: 80px; }
-  .barra {
-    display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
-    background: var(--papel); border-top: 1px solid var(--linha);
-    padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
-    opacity: 0; visibility: hidden;
-    transition: opacity .15s ease, visibility 0s linear .15s;
+.rodape { padding-block: calc(var(--leading) * 2); }
+.rodape .wrap {
+  padding-top: calc(var(--leading) * 1.5);
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent) no-repeat top / 100% 1px;
+}
+.rodape p {
+  margin: 0 0 var(--meio); max-width: 70ch;
+  font-size: 13px; line-height: 21px; color: var(--color-neutral-400);
+}
+.rodape a { display: inline-block; padding-block: 11px; margin-block: -11px; }
+
+/* ---------- 18. Barra fixa de CTA no celular (estrutura §3.6) ---------- */
+
+.barra {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  padding: var(--space-4) var(--edge) calc(var(--space-4) + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--color-bg) 88%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  transform: translateY(110%); visibility: hidden;
+  transition: transform .22s ease, visibility .22s;
+}
+.barra::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent);
+}
+.barra.visivel { transform: none; visibility: visible; }
+.barra .cta { width: 100%; }
+@media (prefers-reduced-motion: reduce) { .barra { transition: none; } }
+@media (min-width: 720px) { .barra { display: none; } }
+
+/* ---------- 19. Movimento (só entrada, só com IntersectionObserver) ---------- */
+
+/* Só translada: o estado de repouso NUNCA esconde conteúdo. Sem JavaScript,
+   com o observador falhando ou numa captura de página inteira, o bloco está
+   lá e legível; o movimento é o único que se perde. */
+@media (prefers-reduced-motion: no-preference) {
+  .revela { transform: translateY(12px); }
+  .revela.dentro { transform: none; transition: transform .55s cubic-bezier(.22,.61,.36,1); }
+}
+
+/* ---------- 20. Página de privacidade ---------- */
+
+.politica { padding-block: calc(var(--leading) * 2) calc(var(--leading) * 2.5); }
+.politica h1 { font-size: clamp(30px, 3.8vw, 46px); line-height: 1.12; margin: 0 0 var(--space-3); }
+.politica .versao { font-size: 14px; color: var(--color-accent); margin-bottom: var(--leading); }
+.politica > .wrap > p { max-width: var(--measure); color: var(--color-neutral-200); }
+.politica section { margin-top: calc(var(--leading) * 1.5); max-width: 78ch; }
+.politica h2 {
+  font-size: 21px; line-height: 29px; margin: 0 0 var(--meio);
+  padding-top: var(--meio);
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent) no-repeat top / 100% 1px;
+}
+.politica p, .politica li { color: var(--color-neutral-200); }
+.politica p { max-width: var(--measure); }
+.politica ol, .politica ul { padding-left: 1.35em; margin: 0 0 var(--leading); max-width: var(--measure); }
+.politica li { margin-bottom: var(--space-3); }
+
+.indice {
+  margin: var(--leading) 0 0; padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+.indice ol { columns: 2; column-gap: var(--space-8); margin: 0; padding-left: 1.2em; max-width: none; }
+@media (max-width: 640px) { .indice ol { columns: 1; } }
+.indice li { margin-bottom: var(--space-2); font-size: 14px; }
+.indice a { text-decoration: none; }
+.indice a:hover { text-decoration: underline; }
+
+.politica .table { margin-bottom: var(--leading); }
+.politica .table td { color: var(--color-neutral-200); vertical-align: top; }
+@media (max-width: 640px) {
+  .politica .table, .politica .table tbody, .politica .table tr, .politica .table td { display: block; width: 100%; }
+  .politica .table thead { position: absolute; left: -10000px; }
+  .politica .table tr { padding-block: var(--space-4); }
+  .politica .table td { padding: 2px 0; }
+  .politica .table td::before {
+    content: attr(data-label); display: block;
+    font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--color-neutral-400);
   }
-  .barra.visivel { opacity: 1; visibility: visible; transition-delay: 0s; }
-  .barra .cta { min-height: 52px; }
 }
+.voltar { display: inline-block; margin-top: calc(var(--leading) * 1.5); padding-block: 11px; }
 
-/* ---------- 17. Política de privacidade ---------- */
-.politica { --t-corpo: clamp(1.0625rem, 1rem + 0.3vw, 1.125rem); padding: var(--e5) 0 var(--e6); }
-.politica h1 { font-size: var(--t-h2); margin-bottom: var(--e2); }
-.politica .versao { color: var(--grafite); font-size: var(--t-peq); }
-.politica .aplica { margin-top: var(--e4); }
-.politica .rotulo { display: block; font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); margin-bottom: 4px; }
-.politica .indice { margin-top: var(--e4); padding-top: var(--e3); border-top: 1px solid var(--linha); }
-.politica .indice ol { padding-left: 1.6em; columns: 1; }
-.politica .indice li + li { margin-top: 0; }
-.politica .indice a { display: block; padding: 10px 0; text-decoration: underline; text-underline-offset: 2px; }
-.politica section { margin-top: var(--e5); padding: 0; }
-.politica h2 { font-size: 1.375rem; line-height: 1.3; letter-spacing: 0; margin-bottom: var(--e2); }
-.politica h3 { margin: var(--e3) 0 var(--e1); }
-.politica ol:not(.indice ol) { padding-left: 1.4em; max-width: 65ch; }
-.politica li + li { margin-top: var(--e1); }
-.politica .pendente { display: inline; }
-.politica p + .pendente, .politica table + .pendente { display: inline-block; margin-top: var(--e2); }
-.politica a { text-decoration: underline; text-underline-offset: 2px; }
-.politica .voltar { display: inline-block; padding: 12px 0; margin-top: var(--e5); font-weight: 700; }
+/* O campo-armadilha herda a altura dos campos reais: ele fica fora da tela,
+   mas o medidor de alvo de toque olha a caixa dele como olha a dos outros. */
+.hp input { display: block; width: 100%; height: 48px; }
 
-.politica table { width: 100%; border-collapse: collapse; margin: var(--e2) 0; font-size: var(--t-peq); line-height: 1.5; }
-.politica th, .politica td { text-align: left; vertical-align: top; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--linha); }
-.politica th { font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); }
-@media (max-width: 639.98px) {
-  .politica table, .politica tbody, .politica tr, .politica td { display: block; }
-  .politica thead { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
-  .politica tr { padding: 12px 0; border-bottom: 1px solid var(--linha); }
-  .politica td { padding: 4px 0; border: 0; }
-  .politica td::before { content: attr(data-label); display: block; font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); }
+.politica h3 {
+  font-size: 16px; line-height: 24px; letter-spacing: 0;
+  color: var(--color-accent); margin: var(--leading) 0 var(--space-3);
 }
-
-/* ---------- 18. Movimento reduzido ---------- */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition: none !important; animation: none !important; }
-  html { scroll-behavior: auto; }
-}
+.politica .aplica .rotulo { display: block; margin-bottom: var(--space-2); }
+.politica .indice a { color: var(--color-neutral-200); }
+.politica .indice a:hover { color: var(--color-accent); }
+.politica .pendente { display: inline-block; margin-bottom: var(--leading); }

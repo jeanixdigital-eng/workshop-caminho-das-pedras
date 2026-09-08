@@ -14,7 +14,11 @@
 <meta property="og:image" content="assets/og.png"><!-- PENDENTE do endereço: trocar por URL absoluta (WhatsApp não lê caminho relativo) -->
 <!-- <meta property="og:url" content=""> pendente do endereço final (estrutura §4) -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#F6F3EC">
+<meta name="theme-color" content="#161826"><!-- = --color-bg do Nocturne; meta não aceita var() -->
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<!-- Inter hospedada por nós; nenhuma requisição de terceiro sai desta página. -->
+<link rel="stylesheet" href="assets/inter.css">
+<link rel="stylesheet" href="nocturne/styles.css">
 <link rel="stylesheet" href="assets/estilo.css">
 <script src="assets/pagina.js" defer></script>
 </head>
@@ -22,143 +26,189 @@
 
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
-<div class="faixa" role="note">VERSÃO DE TRABALHO · <span id="n-pendencias">9</span> pendências</div>
+<div class="faixa" role="note">VERSÃO DE TRABALHO · <span id="n-pendencias">10</span> pendências</div>
 
-<header class="topo">
-  <div class="container">Dr. Dieymisson Mendes · CRO-MG <mark class="pendente">PENDENTE: número</mark></div>
+<header class="cabecalho">
+  <nav class="nav" aria-label="Identificação e inscrição">
+    <span class="nav-brand">Dr. Dieymisson Mendes</span>
+    <span class="nav-cro">CRO-MG <mark class="pendente">PENDENTE: número</mark></span>
+    <a class="btn btn-primary cta" href="#inscricao">Quero fazer a conta</a>
+  </nav>
+  <div class="progresso" aria-hidden="true"></div>
 </header>
 
 <main id="conteudo">
 
   <section class="secao hero" id="topo" aria-labelledby="h-topo">
-    <div class="container">
-      <h1 id="h-topo">Dia 19 de outubro eu vou fazer a sua conta com você.</h1>
+    <div class="wrap">
+      <p class="kicker">Workshop 19/10</p>
+      <h1 class="display" id="h-topo"><span class="line">Dia 19 de outubro eu vou fazer a sua conta com você.</span></h1>
       <p class="lead">Não é motivação e não é aula assistida. É um workshop ao vivo e online em que você abre a sua planilha e levanta, comigo, os números que a sua clínica tem e você não sabe de cor.</p>
-      <a class="cta" id="cta-hero" href="#inscricao">Quero fazer a conta</a>
+      <div class="botoes">
+        <a class="btn btn-primary cta" id="cta-hero" href="#inscricao">Quero fazer a conta</a>
+        <a class="btn btn-ghost cta" href="#a-conta">A conta
+          <svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15m0 0 6-6m-6 6-6-6"/></svg>
+        </a>
+      </div>
       <p class="micro">Segunda, 19 de outubro de 2026 · R$ 97 · ao vivo e online</p>
     </div>
   </section>
 
+  <section class="numeros" aria-labelledby="h-numeros">
+    <div class="wrap">
+      <h2 class="kicker" id="h-numeros">Na minha clínica, agosto de 2026</h2>
+      <dl class="numeros-grade">
+        <div>
+          <dt>R$ 41,34</dt>
+          <dd>Por hora de cadeira</dd>
+        </div>
+        <div>
+          <dt>84</dt>
+          <dd>Faltas em agosto</dd>
+        </div>
+        <div>
+          <dt>R$ 394.249,81</dt>
+          <dd>Orçamentos não aprovados</dd>
+        </div>
+      </dl>
+      <p class="origem">Os números desta página são da minha clínica, com o mês declarado. <mark class="pendente">PENDENTE: aprovação D4 do Dr. Dieymisson para expor estes números</mark></p>
+    </div>
+  </section>
+
   <section class="secao" id="para-quem" aria-labelledby="h-para-quem">
-    <div class="container">
-      <h2 id="h-para-quem">É para você se uma destas frases é sua:</h2>
-      <ul class="frases">
+    <div class="wrap">
+      <p class="kicker">Para quem</p>
+      <h2 class="titulo" id="h-para-quem">É para você se uma destas frases é sua:</h2>
+      <ul class="frases revela">
         <li>"Atendo o dia inteiro, a agenda não tem buraco, e no fim do mês não sobra nada."</li>
         <li>"Sei o faturamento de cabeça. O lucro, não."</li>
         <li>"Tem orçamento na gaveta que eu nunca retomei."</li>
         <li>"Tive três faltas semana passada e não fiz conta nenhuma sobre isso."</li>
       </ul>
-      <div class="grupo">
-        <h3>Não é para você se:</h3>
-        <p>Você ainda não tem clínica funcionando: sem agenda e sem custo fixo, não há número para levantar, e o workshop é isso. Você quer sair motivado: daqui você sai com uma conta feita, e conta feita costuma incomodar.</p>
+      <div class="filtro">
+        <h3 class="sub">Não é para você se:</h3>
+        <p class="corpo">Você ainda não tem clínica funcionando: sem agenda e sem custo fixo, não há número para levantar, e o workshop é isso. Você quer sair motivado: daqui você sai com uma conta feita, e conta feita costuma incomodar.</p>
       </div>
     </div>
   </section>
 
-  <section class="secao secao--papel2" id="a-conta" aria-labelledby="h-a-conta">
-    <div class="container">
+  <section class="secao secao--tinta" id="a-conta" aria-labelledby="h-a-conta">
+    <div class="wrap">
+      <h2 class="titulo titulo--grande" id="h-a-conta">A conta</h2>
       <mark class="pendente pendente--linha">PENDENTE: aprovação D4 do Dr. Dieymisson para expor estes números</mark>
-      <h2 id="h-a-conta">A conta</h2>
 
-      <h3>A hora clínica, em três linhas:</h3>
-      <ol class="tres">
+      <h3 class="sub">A hora clínica, em três linhas:</h3>
+      <ol class="receita">
         <li>Pegue tudo que a clínica paga por mês mesmo de porta fechada.</li>
         <li>Divida pelas horas de cadeira que você tem no mês.</li>
         <li>O resultado é quanto custa uma hora da sua cadeira, com paciente ou sem.</li>
       </ol>
 
-      <div class="grupo">
-        <h3>Na minha clínica, agosto de 2026:</h3>
+      <h3 class="sub">Na minha clínica, agosto de 2026:</h3>
 
-        <div class="num">
-          <div class="num__rotulo">Custo fixo do mês</div>
-          <span class="num__valor">R$ 40.844</span>
+      <div class="equacao revela">
+        <div class="parcela">
+          <p class="rotulo">Custo fixo do mês</p>
+          <span class="parcela-valor">R$ 40.844</span>
         </div>
         <div class="op" aria-hidden="true">÷</div>
-        <div class="num">
-          <div class="num__rotulo">Horas de cadeira no mês</div>
-          <span class="num__valor">988</span>
-          <p class="num__origem">São 4 cadeiras, 9 horas e meia por dia, 26 dias. É a média de 2026, não a contagem exata de agosto, e eu digo isso porque número redondo demais é número chutado.</p>
+        <div class="parcela">
+          <p class="rotulo">Horas de cadeira no mês</p>
+          <span class="parcela-valor">988</span>
         </div>
         <div class="op" aria-hidden="true">=</div>
-        <div class="num">
-          <div class="num__rotulo">Por hora de cadeira</div>
-          <span class="num__valor num__valor--grande">R$ 41,34</span>
-          <p class="num__origem">R$ 40.844 ÷ 988 horas = R$ 41,34 por hora de cadeira. Vazia ou ocupada, ela custou isso.</p>
+        <div class="parcela parcela--total">
+          <p class="rotulo">Por hora de cadeira</p>
+          <span class="parcela-valor">R$ 41,34</span>
         </div>
       </div>
 
-      <div class="grupo">
-        <h3>Agora os dois números que quase ninguém põe na frente da hora clínica:</h3>
+      <p class="miudo equacao-nota">São 4 cadeiras, 9 horas e meia por dia, 26 dias. É a média de 2026, não a contagem exata de agosto, e eu digo isso porque número redondo demais é número chutado. R$ 40.844 ÷ 988 horas = R$ 41,34 por hora de cadeira. Vazia ou ocupada, ela custou isso.</p>
 
-        <div class="num">
-          <div class="num__rotulo">Faltas em agosto</div>
-          <span class="num__valor num__valor--ruim">84</span>
-          <p class="num__passo">84 × R$ 41,34 =</p>
-          <span class="num__valor num__valor--grande num__valor--ruim">R$ 3.472,56</span>
-          <p class="num__origem">Contadas na agenda, sem aviso, sem remarcação. Contando uma hora por falta, que é a conta mais simples e a que a gente refina no dia, são 84 horas pagas com a cadeira vazia: 84 × R$ 41,34 = R$ 3.472,56 de estrutura paga para ninguém sentar.</p>
+      <h3 class="sub">Agora os dois números que quase ninguém põe na frente da hora clínica:</h3>
+
+      <div class="maus">
+        <div class="mau revela">
+          <p class="rotulo">Faltas em agosto</p>
+          <span class="mau-valor">84</span>
+          <p class="mau-passo">84 × R$ 41,34 =</p>
+          <span class="mau-valor">R$ 3.472,56</span>
+          <p class="miudo">Contadas na agenda, sem aviso, sem remarcação. Contando uma hora por falta, que é a conta mais simples e a que a gente refina no dia, são 84 horas pagas com a cadeira vazia: 84 × R$ 41,34 = R$ 3.472,56 de estrutura paga para ninguém sentar.</p>
         </div>
-        <div class="num">
-          <div class="num__rotulo">Orçamentos apresentados e não aprovados no fechamento de agosto</div>
-          <span class="num__valor num__valor--ruim">490</span>
-          <p class="num__passo">somando</p>
-          <span class="num__valor num__valor--grande num__valor--ruim">R$ 394.249,81</span>
-          <p class="num__origem">É a foto do fechamento, e inclui o que ainda está no prazo de decisão. Mesmo assim: dinheiro que já esteve na mesa, com o paciente diagnosticado e o orçamento na mão dele.</p>
+        <div class="mau revela">
+          <p class="rotulo">Orçamentos apresentados e não aprovados no fechamento de agosto</p>
+          <span class="mau-valor">490</span>
+          <p class="mau-passo">somando</p>
+          <span class="mau-valor">R$ 394.249,81</span>
+          <p class="miudo">É a foto do fechamento, e inclui o que ainda está no prazo de decisão. Mesmo assim: dinheiro que já esteve na mesa, com o paciente diagnosticado e o orçamento na mão dele.</p>
         </div>
       </div>
 
-      <p class="conta-fim">Essa é a versão simples da conta. No dia a gente refina com a sua ocupação real. Mas é ela que a maioria nunca fez, e é ela que troca a pergunta "quanto eu faturei?" por "quanto cada hora de cadeira me devolveu?".</p>
+      <p class="corpo conta-fim">Essa é a versão simples da conta. No dia a gente refina com a sua ocupação real. Mas é ela que a maioria nunca fez, e é ela que troca a pergunta "quanto eu faturei?" por "quanto cada hora de cadeira me devolveu?".</p>
     </div>
   </section>
 
   <section class="secao" id="o-que-acontece" aria-labelledby="h-o-que-acontece">
-    <div class="container">
-      <h2 id="h-o-que-acontece">Você não assiste. Você faz.</h2>
-      <p>Durante o workshop você abre a sua planilha, ou uma folha em branco, e levanta os cinco números que a sua clínica tem e você não sabe de cor. Eu faço a mesma conta na tela, com os números da minha clínica, enquanto você faz a sua.</p>
+    <div class="wrap">
+      <p class="kicker">O que acontece no dia</p>
+      <h2 class="titulo" id="h-o-que-acontece">Você não assiste. Você faz.</h2>
+      <p class="lead">Durante o workshop você abre a sua planilha, ou uma folha em branco, e levanta os cinco números que a sua clínica tem e você não sabe de cor. Eu faço a mesma conta na tela, com os números da minha clínica, enquanto você faz a sua.</p>
 
-      <div class="grupo">
-        <h3>Os cinco números que você vai levantar:</h3>
-        <ol class="cinco" role="list">
-          <li><div><strong>Quanto a clínica custa por mês de porta fechada.</strong> Aluguel, folha, contador, software, energia, internet, parcela do equipamento. Tudo que você paga mesmo se ninguém for atendido. Material, laboratório e comissão ficam de fora: isso sobe com a produção.</div></li>
-          <li><div><strong>Quantas horas de cadeira você tem no mês.</strong> Cadeiras em uso, vezes horas por dia, vezes dias trabalhados. É a capacidade, não o que foi ocupado.</div></li>
-          <li><div><strong>Quanto entra de verdade por procedimento.</strong> O que cai na conta, com o desconto que você dá no balcão. Não o que está na tabela.</div></li>
-          <li><div><strong>Quantas faltas você teve no mês passado.</strong> Número absoluto, contado na sua agenda. Remarcação avisada não conta. Falta é a cadeira que ficou parada sem aviso.</div></li>
-          <li><div><strong>Quanto você apresentou de orçamento e não fechou.</strong> Os últimos 90 dias. É o dinheiro que já esteve na mesa e não virou nada.</div></li>
-        </ol>
-      </div>
+      <h3 class="sub">Os cinco números que você vai levantar:</h3>
+      <ol class="linhas">
+        <li class="revela">
+          <p class="linha-t">Quanto a clínica custa por mês de porta fechada.</p>
+          <p class="linha-b">Aluguel, folha, contador, software, energia, internet, parcela do equipamento. Tudo que você paga mesmo se ninguém for atendido. Material, laboratório e comissão ficam de fora: isso sobe com a produção.</p>
+        </li>
+        <li class="revela">
+          <p class="linha-t">Quantas horas de cadeira você tem no mês.</p>
+          <p class="linha-b">Cadeiras em uso, vezes horas por dia, vezes dias trabalhados. É a capacidade, não o que foi ocupado.</p>
+        </li>
+        <li class="revela">
+          <p class="linha-t">Quanto entra de verdade por procedimento.</p>
+          <p class="linha-b">O que cai na conta, com o desconto que você dá no balcão. Não o que está na tabela.</p>
+        </li>
+        <li class="revela">
+          <p class="linha-t">Quantas faltas você teve no mês passado.</p>
+          <p class="linha-b">Número absoluto, contado na sua agenda. Remarcação avisada não conta. Falta é a cadeira que ficou parada sem aviso.</p>
+        </li>
+        <li class="revela">
+          <p class="linha-t">Quanto você apresentou de orçamento e não fechou.</p>
+          <p class="linha-b">Os últimos 90 dias. É o dinheiro que já esteve na mesa e não virou nada.</p>
+        </li>
+      </ol>
 
-      <div class="grupo">
-        <p>Com os cinco na mão, a gente faz a conta da hora clínica, põe as faltas e os orçamentos parados na frente dela, e você vê, no seu número, por onde o dinheiro escorreu.</p>
-      </div>
+      <p class="corpo fecho">Com os cinco na mão, a gente faz a conta da hora clínica, põe as faltas e os orçamentos parados na frente dela, e você vê, no seu número, por onde o dinheiro escorreu.</p>
 
       <div class="perto">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6a1 1 0 0 1 1 1v1H8V5a1 1 0 0 1 1-1Z"/><path d="M8 6H6.5A1.5 1.5 0 0 0 5 7.5v11A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5v-11A1.5 1.5 0 0 0 17.5 6H16"/><path d="M9 12h6M9 16h4"/></svg>
         <p><strong>O que ter por perto no dia:</strong> o extrato do mês passado, a agenda do mês passado e a pasta de orçamentos. Se você não tiver nenhum desses números prontos, tudo bem. Metade do workshop é justamente levantar eles.</p>
       </div>
     </div>
   </section>
 
-  <section class="secao" id="nao-vou-fazer" aria-labelledby="h-nao-vou-fazer">
-    <div class="container">
-      <h2 id="h-nao-vou-fazer">O que eu não vou fazer</h2>
-      <blockquote class="ancora">Eu não vou te prometer 35% de crescimento. Eu vou te mostrar onde estão os seus 35%.</blockquote>
-      <p>Não vou te falar de mentalidade. Mentalidade é o vídeo 49. Antes disso tem 48 contas pra fazer, e a primeira é a da sua hora clínica.</p>
-      <p>Não vou te apressar. Não tem contagem regressiva nesta página nem "últimas vagas". A data é 19 de outubro e o preço é R$ 97. Você decide no seu tempo.</p>
+  <section class="secao secao--tinta" id="nao-vou-fazer" aria-labelledby="h-nao-vou-fazer">
+    <div class="wrap">
+      <h2 class="titulo" id="h-nao-vou-fazer">O que eu não vou fazer</h2>
+      <blockquote class="citacao">Eu não vou te prometer 35% de crescimento. Eu vou te mostrar onde estão os seus 35%.</blockquote>
+      <p class="corpo">Não vou te falar de mentalidade. Mentalidade é o vídeo 49. Antes disso tem 48 contas pra fazer, e a primeira é a da sua hora clínica.</p>
+      <p class="corpo">Não vou te apressar. Não tem contagem regressiva nesta página nem "últimas vagas". A data é 19 de outubro e o preço é R$ 97. Você decide no seu tempo.</p>
     </div>
   </section>
 
   <section class="secao" id="quem-faz" aria-labelledby="h-quem-faz">
-    <div class="container">
-      <h2 id="h-quem-faz">Quem faz a conta com você</h2>
-      <blockquote class="ancora">Eu sou dentista, tenho clínica, e mostro a conta que a sua clínica não faz.</blockquote>
-      <p>Dr. Dieymisson Mendes. Cirurgião-dentista, implantodontia e prótese. Dono do Dental Center, em Taiobeiras e Mato Verde, MG. Autor do método O Caminho das Pedras: 50 vídeos em 8 partes, que começam pelo dinheiro que está escorrendo da clínica hoje e deixam mentalidade para o fim, de propósito.</p>
-      <p>Os números desta página são da minha clínica, com o mês declarado. Eu não uso número de outra clínica para te convencer.</p>
+    <div class="wrap">
+      <h2 class="titulo" id="h-quem-faz">Quem faz a conta com você</h2>
+      <blockquote class="citacao citacao--curta">Eu sou dentista, tenho clínica, e mostro a conta que a sua clínica não faz.</blockquote>
+      <p class="corpo">Dr. Dieymisson Mendes. Cirurgião-dentista, implantodontia e prótese. Dono do Dental Center, em Taiobeiras e Mato Verde, MG. Autor do método O Caminho das Pedras: 50 vídeos em 8 partes, que começam pelo dinheiro que está escorrendo da clínica hoje e deixam mentalidade para o fim, de propósito.</p>
+      <p class="corpo">Os números desta página são da minha clínica, com o mês declarado. Eu não uso número de outra clínica para te convencer.</p>
       <p class="assinatura">Dr. Dieymisson Mendes · CRO-MG <mark class="pendente">PENDENTE: número</mark></p>
     </div>
   </section>
 
   <section class="secao" id="detalhes" aria-labelledby="h-detalhes">
-    <div class="container">
-      <h2 id="h-detalhes">Detalhes</h2>
+    <div class="wrap">
+      <h2 class="titulo" id="h-detalhes">Detalhes</h2>
       <dl class="detalhes">
         <div><dt>Data</dt><dd>segunda-feira, 19 de outubro de 2026</dd></div>
         <div><dt>Horário</dt><dd><mark class="pendente">PENDENTE: horário</mark></dd></div>
@@ -170,97 +220,105 @@
     </div>
   </section>
 
-  <section class="secao faq" id="faq" aria-labelledby="h-faq">
-    <div class="container">
-      <h2 id="h-faq">FAQ</h2>
-      <details>
-        <summary><h3>Mais um guru de gestão?</h3></summary>
-        <div class="resposta"><p>Não. Eu sou dentista, atendo na minha clínica, e os números que você vai ver no dia são dela, com o mês declarado. Guru promete percentual. Eu me recuso a prometer, e mostro a conta.</p></div>
-      </details>
-      <details>
-        <summary><h3>Funciona em clínica pequena, do interior?</h3></summary>
-        <div class="resposta"><p>A minha é em Taiobeiras e Mato Verde, MG. Os números desta página saíram de lá. A conta é a mesma com uma cadeira ou com quatro. O que muda é o número que sai, e ele é seu.</p></div>
-      </details>
-      <details>
-        <summary><h3>Não tenho tempo para mais um curso.</h3></summary>
-        <div class="resposta"><p>Não é curso. É uma conta, feita numa segunda-feira, em <mark class="pendente">PENDENTE: duração</mark>. Você já assistiu a muito conteúdo de gestão e concordou com quase tudo. Não mudou nada porque assistir não muda número. Aqui você faz a conta.</p></div>
-      </details>
-      <details>
-        <summary><h3>Preciso ter planilha ou sistema?</h3></summary>
-        <div class="resposta"><p>Não. Precisa da agenda do mês passado e do que a clínica paga todo mês. Se tiver planilha, use. Se não tiver, folha e caneta resolvem. O sistema de gestão pode ficar fechado: falta sem aviso se conta na agenda, não no relatório.</p></div>
-      </details>
-      <details>
-        <summary><h3>E se eu não puder no dia?</h3></summary>
-        <div class="resposta"><p>O ingresso de R$ 97 é o ao vivo. A gravação não faz parte dele. Existe uma oferta à parte, só para quem comprou, que inclui a gravação. <mark class="pendente">PENDENTE: confirmar com o Bruno</mark></p></div>
-      </details>
-      <details>
-        <summary><h3>Isso é curso de mentalidade?</h3></summary>
-        <div class="resposta"><p>Não. Quase todo programa de gestão odontológica no Brasil começa por mentalidade e visão de futuro. Este começa pelo contrário, e de propósito: pelo dinheiro que já está escorrendo da sua clínica hoje. Ninguém nunca quebrou por falta de propósito. Quebra por falta de margem.</p></div>
-      </details>
+  <section class="secao" id="faq" aria-labelledby="h-faq">
+    <div class="wrap">
+      <h2 class="titulo" id="h-faq">FAQ</h2>
+      <div class="faq-lista">
+        <details>
+          <summary><h3>Mais um guru de gestão?</h3><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="resposta"><p>Não. Eu sou dentista, atendo na minha clínica, e os números que você vai ver no dia são dela, com o mês declarado. Guru promete percentual. Eu me recuso a prometer, e mostro a conta.</p></div>
+        </details>
+        <details>
+          <summary><h3>Funciona em clínica pequena, do interior?</h3><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="resposta"><p>A minha é em Taiobeiras e Mato Verde, MG. Os números desta página saíram de lá. A conta é a mesma com uma cadeira ou com quatro. O que muda é o número que sai, e ele é seu.</p></div>
+        </details>
+        <details>
+          <summary><h3>Não tenho tempo para mais um curso.</h3><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="resposta"><p>Não é curso. É uma conta, feita numa segunda-feira, em <mark class="pendente">PENDENTE: duração</mark>. Você já assistiu a muito conteúdo de gestão e concordou com quase tudo. Não mudou nada porque assistir não muda número. Aqui você faz a conta.</p></div>
+        </details>
+        <details>
+          <summary><h3>Preciso ter planilha ou sistema?</h3><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="resposta"><p>Não. Precisa da agenda do mês passado e do que a clínica paga todo mês. Se tiver planilha, use. Se não tiver, folha e caneta resolvem. O sistema de gestão pode ficar fechado: falta sem aviso se conta na agenda, não no relatório.</p></div>
+        </details>
+        <details>
+          <summary><h3>E se eu não puder no dia?</h3><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="resposta"><p>O ingresso de R$ 97 é o ao vivo. A gravação não faz parte dele. Existe uma oferta à parte, só para quem comprou, que inclui a gravação. <mark class="pendente">PENDENTE: confirmar com o Bruno</mark></p></div>
+        </details>
+        <details>
+          <summary><h3>Isso é curso de mentalidade?</h3><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+          <div class="resposta"><p>Não. Quase todo programa de gestão odontológica no Brasil começa por mentalidade e visão de futuro. Este começa pelo contrário, e de propósito: pelo dinheiro que já está escorrendo da sua clínica hoje. Ninguém nunca quebrou por falta de propósito. Quebra por falta de margem.</p></div>
+        </details>
+      </div>
     </div>
   </section>
 
-  <section class="secao secao--papel2" id="inscricao" aria-labelledby="h-inscricao">
-    <div class="container">
-      <h2 id="h-inscricao">Segunda, 19 de outubro. A sua conta, feita com você.</h2>
-      <blockquote class="ancora">Você não sai daqui com inspiração. Sai com o seu número na mão.</blockquote>
-      <p class="micro">R$ 97 · Pix ou cartão · ao vivo e online</p>
-
-      <h3 class="form-titulo" id="h-form">Deixa o seu contato. O pagamento vem em seguida.</h3>
-
-      <form id="form-inscricao" class="form" method="post" action="https://n8n-webhook.clinixsystem.com.br/webhook/wcp/form/lead" aria-labelledby="h-form">
-        <input type="hidden" name="politica_versao" value="2026-09-08">
-        <input type="hidden" name="utm_source" value="">
-        <input type="hidden" name="utm_medium" value="">
-        <input type="hidden" name="utm_campaign" value="">
-        <input type="hidden" name="fbclid" value="">
-        <input type="hidden" name="pagina" value="">
-
-        <div class="hp" aria-hidden="true">
-          <label for="site_url">Não preencha este campo</label>
-          <input type="text" id="site_url" name="site_url" tabindex="-1" autocomplete="off">
+  <section class="secao secao--tinta" id="inscricao" aria-labelledby="h-inscricao">
+    <div class="wrap">
+      <div class="inscricao-grade">
+        <div>
+          <h2 class="titulo" id="h-inscricao">Segunda, 19 de outubro. A sua conta, feita com você.</h2>
+          <blockquote class="citacao citacao--curta">Você não sai daqui com inspiração. Sai com o seu número na mão.</blockquote>
+          <p class="miudo">R$ 97 · Pix ou cartão · ao vivo e online</p>
         </div>
 
-        <div class="campo">
-          <label for="nome">Seu nome</label>
-          <input type="text" id="nome" name="nome" autocomplete="name" autocapitalize="words" required>
-          <p class="campo-erro" id="erro-nome"></p>
-        </div>
-        <div class="campo">
-          <label for="telefone">Seu WhatsApp, com DDD</label>
-          <input type="tel" id="telefone" name="telefone" autocomplete="tel-national" inputmode="tel" maxlength="20" required>
-          <p class="campo-erro" id="erro-telefone"></p>
-        </div>
-        <div class="campo">
-          <label for="email">Seu e-mail</label>
-          <input type="email" id="email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required>
-          <p class="campo-erro" id="erro-email"></p>
-        </div>
-        <div class="campo">
-          <label for="cidade">Cidade da clínica (opcional)</label>
-          <input type="text" id="cidade" name="cidade" autocomplete="address-level2">
-        </div>
-        <div class="campo">
-          <label class="aceite" for="consentimento">
-            <input type="checkbox" id="consentimento" name="consentimento" value="1" required>
-            <span>Autorizo o uso do meu nome, WhatsApp e e-mail para a inscrição no workshop, para as mensagens sobre ele e, depois dele, para uma mensagem sobre o caminho seguinte, como descrito na <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span>
-          </label>
-          <p class="campo-erro" id="erro-consentimento"></p>
-        </div>
+        <div class="form-caixa">
+          <h3 class="form-titulo" id="h-form">Deixa o seu contato. O pagamento vem em seguida.</h3>
 
-        <div class="form-erro" id="form-erro" role="alert"></div>
+          <form id="form-inscricao" class="form" method="post" action="https://n8n-webhook.clinixsystem.com.br/webhook/wcp/form/lead" aria-labelledby="h-form">
+            <input type="hidden" name="politica_versao" value="2026-09-08">
+            <input type="hidden" name="utm_source" value="">
+            <input type="hidden" name="utm_medium" value="">
+            <input type="hidden" name="utm_campaign" value="">
+            <input type="hidden" name="fbclid" value="">
+            <input type="hidden" name="pagina" value="">
 
-        <button type="submit" class="cta">Ir para o pagamento</button>
-      </form>
+            <div class="hp" aria-hidden="true">
+              <label for="site_url">Não preencha este campo</label>
+              <input type="text" id="site_url" name="site_url" tabindex="-1" autocomplete="off">
+            </div>
 
-      <div class="form-ok" id="form-ok" role="status"></div>
+            <div class="field">
+              <label for="nome">Seu nome</label>
+              <input class="input" type="text" id="nome" name="nome" autocomplete="name" autocapitalize="words" required>
+              <p class="campo-erro" id="erro-nome"></p>
+            </div>
+            <div class="field">
+              <label for="telefone">Seu WhatsApp, com DDD</label>
+              <input class="input" type="tel" id="telefone" name="telefone" autocomplete="tel-national" inputmode="tel" maxlength="20" required>
+              <p class="campo-erro" id="erro-telefone"></p>
+            </div>
+            <div class="field">
+              <label for="email">Seu e-mail</label>
+              <input class="input" type="email" id="email" name="email" autocomplete="email" inputmode="email" autocapitalize="none" spellcheck="false" required>
+              <p class="campo-erro" id="erro-email"></p>
+            </div>
+            <div class="field">
+              <label for="cidade">Cidade da clínica (opcional)</label>
+              <input class="input" type="text" id="cidade" name="cidade" autocomplete="address-level2">
+            </div>
+            <div class="field">
+              <label class="aceite" for="consentimento">
+                <input type="checkbox" id="consentimento" name="consentimento" value="1" required>
+                <span>Autorizo o uso do meu nome, WhatsApp e e-mail para a inscrição no workshop, para as mensagens sobre ele e, depois dele, para uma mensagem sobre o caminho seguinte, como descrito na <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span>
+              </label>
+              <p class="campo-erro" id="erro-consentimento"></p>
+            </div>
+
+            <div class="form-erro" id="form-erro" role="alert"></div>
+
+            <button type="submit" class="btn btn-primary cta btn-block">Ir para o pagamento</button>
+          </form>
+
+          <div class="form-ok" id="form-ok" role="status"></div>
+        </div>
+      </div>
     </div>
   </section>
 
 </main>
 
 <footer class="rodape">
-  <div class="container">
+  <div class="wrap">
     <p>Dr. Dieymisson Mendes · CRO-MG <mark class="pendente">PENDENTE: número</mark> · Dental Center, Taiobeiras e Mato Verde, MG</p>
     <p>Este workshop trata dos números da clínica. Ele não promete resultado, de faturamento, de crescimento ou de pacientes, e não é orientação clínica.</p>
     <p>Vendido por <mark class="pendente">PENDENTE: confirmar se é Clinix System, CNPJ 49.828.144/0001-20</mark>.</p>
@@ -269,7 +327,7 @@
 </footer>
 
 <div class="barra" id="barra-cta">
-  <a class="cta" href="#inscricao">Quero fazer a conta</a>
+  <a class="btn btn-primary cta" href="#inscricao">Quero fazer a conta</a>
 </div>
 
 </body>
