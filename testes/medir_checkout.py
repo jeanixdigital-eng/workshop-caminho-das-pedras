@@ -262,8 +262,16 @@ def main():
             t("tema dark", cfg and cfg["tema"] == "dark")
             t("meios excluídos saíram do objeto (sem lista vazia)",
               cfg and sorted(cfg["metodos"]) == ["bankTransfer", "creditCard", "maxInstallments"], cfg and cfg["metodos"])
-            t("customVariables vieram dos tokens do Nocturne",
-              cfg and cfg["vars"].get("formBackgroundColor", "").lower() == "#232532", cfg and cfg["vars"].get("formBackgroundColor"))
+            # 08/09: a asserção comparava com valores FIXOS do Nocturne e quebrou quando o Jean
+            # pediu a paleta da Clinix. O código sempre esteve certo: ele lê o token vivo. Então
+            # o teste passa a ler o token vivo também, e assim ele continua valendo em qualquer
+            # paleta futura. 🔑 Teste que fixa o valor do tema vira teste que proíbe trocar de tema.
+            tokens = pg.evaluate("() => { const c = getComputedStyle(document.documentElement);\n                const v = (n) => c.getPropertyValue(n).trim();\n                return {superficie: v('--color-surface'), fundo: v('--color-bg'), acento: v('--color-accent')}; }")
+            t("customVariables leem os tokens VIVOS da página",
+              cfg and cfg["vars"]["formBackgroundColor"] == tokens["superficie"]
+                  and cfg["vars"]["inputBackgroundColor"] == tokens["fundo"]
+                  and cfg["vars"]["baseColor"] == tokens["acento"],
+              f'fundo do formulário {cfg and cfg["vars"]["formBackgroundColor"]} = token {tokens["superficie"]}')
             t("sem vazamento para produção", not c.vazamentos, c.vazamentos[:2] or "-")
             pg.screenshot(path=os.path.join(AQUI, "capturas", f"checkout-{nome}.png"), full_page=True)
             c.fecha(); ctx.close()

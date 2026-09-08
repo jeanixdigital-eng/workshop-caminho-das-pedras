@@ -16,8 +16,11 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#161826"><!-- = --color-bg do Nocturne; meta não aceita var() -->
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<!-- Inter hospedada por nós; nenhuma requisição de terceiro sai desta página. -->
+<!-- Inter e Newsreader hospedadas por nós; nenhuma requisição de terceiro sai desta página. -->
+<link rel="preload" href="assets/fontes/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fontes/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/inter.css">
+<link rel="stylesheet" href="assets/newsreader.css">
 <link rel="stylesheet" href="nocturne/styles.css">
 <link rel="stylesheet" href="assets/estilo.css">
 <script src="assets/pagina.js" defer></script>
@@ -26,12 +29,19 @@
 
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
-<div class="faixa" role="note">VERSÃO DE TRABALHO · <span id="n-pendencias">10</span> pendências</div>
+<div class="faixa" role="note">VERSÃO DE TRABALHO · <span id="n-pendencias">11</span> pendências</div>
 
 <header class="cabecalho">
   <nav class="nav" aria-label="Identificação e inscrição">
     <span class="nav-brand">Dr. Dieymisson Mendes</span>
     <span class="nav-cro">CRO-MG <mark class="pendente">PENDENTE: número</mark></span>
+    <span class="nav-links">
+      <a href="#a-conta">A conta</a>
+      <a href="#o-que-acontece">O dia</a>
+      <a href="#quem-faz">Quem faz</a>
+      <a href="#detalhes">Detalhes</a>
+      <a href="#faq">Perguntas</a>
+    </span>
     <a class="btn btn-primary cta" href="#inscricao">Quero fazer a conta</a>
   </nav>
   <div class="progresso" aria-hidden="true"></div>
@@ -39,35 +49,61 @@
 
 <main id="conteudo">
 
+  <!-- ══ 1. HERO ══════════════════════════════════════════════════════════ -->
   <section class="secao hero" id="topo" aria-labelledby="h-topo">
-    <div class="wrap">
-      <p class="kicker">Workshop 19/10</p>
-      <h1 class="display" id="h-topo"><span class="line">Dia 19 de outubro eu vou fazer a sua conta com você.</span></h1>
-      <p class="lead">Não é motivação e não é aula assistida. É um workshop ao vivo e online em que você abre a sua planilha e levanta, comigo, os números que a sua clínica tem e você não sabe de cor.</p>
-      <div class="botoes">
-        <a class="btn btn-primary cta" id="cta-hero" href="#inscricao">Quero fazer a conta</a>
-        <a class="btn btn-ghost cta" href="#a-conta">A conta
-          <svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15m0 0 6-6m-6 6-6-6"/></svg>
-        </a>
+    <div class="wrap wrap--larga hero-grade">
+      <div class="hero-texto">
+        <p class="kicker">Workshop 19/10</p>
+        <h1 class="display" id="h-topo">Dia 19 de outubro eu vou fazer <em class="grifo">a sua conta</em> com você.</h1>
+        <p class="lead">Não é motivação e não é aula assistida. É um workshop ao vivo e online em que você abre a sua planilha e levanta, comigo, os números que a sua clínica tem e você não sabe de cor.</p>
+        <div class="botoes">
+          <a class="btn btn-primary cta" id="cta-hero" href="#inscricao">Quero fazer a conta</a>
+          <a class="btn btn-ghost cta" href="#a-conta">A conta
+            <svg class="seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15m0 0 6-6m-6 6-6-6"/></svg>
+          </a>
+        </div>
+        <p class="micro">Segunda, 19 de outubro de 2026 · R$ 97 · ao vivo e online</p>
       </div>
-      <p class="micro">Segunda, 19 de outubro de 2026 · R$ 97 · ao vivo e online</p>
+
+      <!-- O palco do topo. Um site de software põe o mockup do produto aqui; o
+           equivalente honesto aqui é A CONTA, com os números reais da clínica do
+           Dr. Dieymisson e o mês declarado, na frente do objeto que ela mede.
+           ⛔ Nada inventado, nada de gráfico decorativo, nada de porcentagem. -->
+      <figure class="palco">
+        <img class="palco-obj" src="assets/img/cadeira.webp" width="1024" height="1024"
+             alt="Uma cadeira odontológica, em ilustração tridimensional, sobre fundo escuro."
+             fetchpriority="high" decoding="async">
+        <div class="folha">
+          <div class="folha-topo">
+            <span class="folha-ponto"></span><span class="folha-ponto"></span><span class="folha-ponto"></span>
+            <span class="folha-nome">hora clínica</span>
+          </div>
+          <dl class="folha-linhas">
+            <div><dt>Custo fixo do mês</dt><dd data-conta="40844" data-formato="brl0">R$ 40.844</dd></div>
+            <div><dt>Horas de cadeira</dt><dd data-conta="988" data-formato="int">988</dd></div>
+            <div class="folha-res"><dt>Cada hora custou</dt><dd data-conta="41.34" data-formato="brl2">R$ 41,34</dd></div>
+          </dl>
+          <p class="folha-pe">Clínica do Dr. Dieymisson · agosto de 2026</p>
+        </div>
+      </figure>
     </div>
   </section>
 
+  <!-- ══ 2. FAIXA DE NÚMEROS ══════════════════════════════════════════════ -->
   <section class="numeros" aria-labelledby="h-numeros">
-    <div class="wrap">
+    <div class="wrap wrap--larga">
       <h2 class="kicker" id="h-numeros">Na minha clínica, agosto de 2026</h2>
       <dl class="numeros-grade">
         <div>
-          <dt>R$ 41,34</dt>
+          <dt data-conta="41.34" data-formato="brl2">R$ 41,34</dt>
           <dd>Por hora de cadeira</dd>
         </div>
         <div>
-          <dt>84</dt>
+          <dt data-conta="84" data-formato="int">84</dt>
           <dd>Faltas em agosto</dd>
         </div>
         <div>
-          <dt>R$ 394.249,81</dt>
+          <dt data-conta="394249.81" data-formato="brl2">R$ 394.249,81</dt>
           <dd>Orçamentos não aprovados</dd>
         </div>
       </dl>
@@ -75,10 +111,13 @@
     </div>
   </section>
 
+  <!-- ══ 3. PARA QUEM ═════════════════════════════════════════════════════ -->
   <section class="secao" id="para-quem" aria-labelledby="h-para-quem">
-    <div class="wrap">
-      <p class="kicker">Para quem</p>
-      <h2 class="titulo" id="h-para-quem">É para você se uma destas frases é sua:</h2>
+    <div class="wrap wrap--larga">
+      <div class="cabeca">
+        <p class="kicker">Para quem</p>
+        <h2 class="titulo" id="h-para-quem">É para você se uma destas frases é sua:</h2>
+      </div>
       <ul class="frases revela">
         <li>"Atendo o dia inteiro, a agenda não tem buraco, e no fim do mês não sobra nada."</li>
         <li>"Sei o faturamento de cabeça. O lucro, não."</li>
@@ -92,10 +131,19 @@
     </div>
   </section>
 
-  <section class="secao secao--tinta" id="a-conta" aria-labelledby="h-a-conta">
-    <div class="wrap">
-      <h2 class="titulo titulo--grande" id="h-a-conta">A conta</h2>
-      <mark class="pendente pendente--linha">PENDENTE: aprovação D4 do Dr. Dieymisson para expor estes números</mark>
+  <!-- ══ 4. A CONTA ═══════════════════════════════════════════════════════ -->
+  <section class="secao secao--tinta secao--cena" id="a-conta" aria-labelledby="h-a-conta">
+    <!-- A sala vazia é a primeira linha da conta: "tudo que a clínica paga por
+         mês mesmo de porta fechada". Fica atrás do título, sob um véu escuro
+         que garante o contraste do texto. `aria-hidden`: é cenário, não informação. -->
+    <img class="cena" src="assets/img/clinica-fechada.webp" width="1600" height="1067"
+         alt="" aria-hidden="true" loading="lazy" decoding="async">
+    <div class="wrap wrap--larga">
+      <div class="cabeca">
+        <p class="kicker">Agosto de 2026</p>
+        <h2 class="titulo titulo--grande" id="h-a-conta">A conta</h2>
+        <mark class="pendente pendente--linha">PENDENTE: aprovação D4 do Dr. Dieymisson para expor estes números</mark>
+      </div>
 
       <h3 class="sub">A hora clínica, em três linhas:</h3>
       <ol class="receita">
@@ -106,75 +154,196 @@
 
       <h3 class="sub">Na minha clínica, agosto de 2026:</h3>
 
-      <div class="equacao revela">
-        <div class="parcela">
-          <p class="rotulo">Custo fixo do mês</p>
-          <span class="parcela-valor">R$ 40.844</span>
+      <!-- ILUSTRAÇÃO 1 · a conta se armando. Os três números são os declarados
+           de agosto/2026 e nada mais entra aqui. -->
+      <figure class="quadro revela">
+        <div class="quadro-par">
+          <div class="equacao">
+            <div class="parcela">
+              <p class="rotulo">Custo fixo do mês</p>
+              <span class="parcela-valor" data-conta="40844" data-formato="brl0">R$ 40.844</span>
+            </div>
+            <div class="op" aria-hidden="true">÷</div>
+            <div class="parcela">
+              <p class="rotulo">Horas de cadeira no mês</p>
+              <span class="parcela-valor" data-conta="988" data-formato="int">988</span>
+            </div>
+            <div class="op" aria-hidden="true">=</div>
+            <div class="parcela parcela--total">
+              <p class="rotulo">Por hora de cadeira</p>
+              <span class="parcela-valor" data-conta="41.34" data-formato="brl2">R$ 41,34</span>
+            </div>
+          </div>
+          <img class="quadro-obj" src="assets/img/planilha.webp" width="700" height="700"
+               alt="Uma folha de papel pautada em branco, com caneta e calculadora, em ilustração tridimensional."
+               loading="lazy" decoding="async">
         </div>
-        <div class="op" aria-hidden="true">÷</div>
-        <div class="parcela">
-          <p class="rotulo">Horas de cadeira no mês</p>
-          <span class="parcela-valor">988</span>
-        </div>
-        <div class="op" aria-hidden="true">=</div>
-        <div class="parcela parcela--total">
-          <p class="rotulo">Por hora de cadeira</p>
-          <span class="parcela-valor">R$ 41,34</span>
-        </div>
-      </div>
+        <p class="quadro-legenda">Fonte dos três números: a clínica do Dr. Dieymisson, <b>agosto de 2026</b>. As horas são a média de 2026, não a contagem exata do mês.</p>
+      </figure>
 
       <p class="miudo equacao-nota">São 4 cadeiras, 9 horas e meia por dia, 26 dias. É a média de 2026, não a contagem exata de agosto, e eu digo isso porque número redondo demais é número chutado. R$ 40.844 ÷ 988 horas = R$ 41,34 por hora de cadeira. Vazia ou ocupada, ela custou isso.</p>
 
       <h3 class="sub">Agora os dois números que quase ninguém põe na frente da hora clínica:</h3>
 
+      <ul class="tintas" aria-label="O que cada cor representa nas ilustrações">
+        <li><i style="background: var(--tinta-capacidade)"></i> a capacidade que a clínica tem</li>
+        <li><i style="background: var(--ruim)"></i> o que foi pago e ficou parado</li>
+        <li><i style="background: var(--color-accent)"></i> a conta que a gente faz</li>
+      </ul>
+
       <div class="maus">
-        <div class="mau revela">
+
+        <!-- ILUSTRAÇÃO 2 · 988 horas de capacidade, 84 pagas com a cadeira vazia.
+             A largura vermelha é 84/988 da barra, medida, não estimada. Os 26
+             riscos verticais são os 26 dias trabalhados que compõem as 988 h. -->
+        <figure class="quadro mau revela">
           <p class="rotulo">Faltas em agosto</p>
-          <span class="mau-valor">84</span>
+          <span class="mau-valor" data-conta="84" data-formato="int">84</span>
           <p class="mau-passo">84 × R$ 41,34 =</p>
-          <span class="mau-valor">R$ 3.472,56</span>
+          <span class="mau-valor" data-conta="3472.56" data-formato="brl2">R$ 3.472,56</span>
+
+          <div class="quadro-par">
+            <svg class="ilustra" viewBox="0 0 560 84" role="img"
+                 aria-label="Barra da capacidade do mês: 988 horas de cadeira em agosto de 2026, das quais 84 horas, no trecho final, foram pagas com a cadeira vazia.">
+              <defs>
+                <pattern id="dias" width="21.538" height="40" patternUnits="userSpaceOnUse">
+                  <rect x="0" y="0" width="1" height="40" fill="#161826" opacity=".55"></rect>
+                </pattern>
+              </defs>
+              <g class="barra-cresce">
+                <rect x="0" y="22" width="560" height="40" rx="6" fill="var(--tinta-capacidade)" opacity=".5"></rect>
+                <rect x="512.4" y="22" width="47.6" height="40" fill="var(--ruim)" opacity=".9"></rect>
+                <rect x="0" y="22" width="560" height="40" rx="6" fill="url(#dias)"></rect>
+                <rect x="0" y="22" width="560" height="40" rx="6" fill="none" stroke="var(--tinta-capacidade)" stroke-width="1"></rect>
+                <line x1="512.4" y1="14" x2="512.4" y2="70" stroke="var(--ruim)" stroke-width="1.5" opacity=".85"></line>
+              </g>
+            </svg>
+            <img class="quadro-obj" src="assets/img/agenda.webp" width="700" height="700"
+                 alt="Uma agenda aberta com páginas pautadas em branco, em ilustração tridimensional."
+                 loading="lazy" decoding="async">
+          </div>
+          <p class="quadro-legenda"><b>988</b> horas de cadeira no mês · <b>84</b> delas pagas com a cadeira vazia · <b>26</b> riscos, os 26 dias trabalhados</p>
+
           <p class="miudo">Contadas na agenda, sem aviso, sem remarcação. Contando uma hora por falta, que é a conta mais simples e a que a gente refina no dia, são 84 horas pagas com a cadeira vazia: 84 × R$ 41,34 = R$ 3.472,56 de estrutura paga para ninguém sentar.</p>
-        </div>
-        <div class="mau revela">
+        </figure>
+
+        <!-- ILUSTRAÇÃO 3 · 490 orçamentos, um ponto cada. A grade é 35 × 14, que
+             dá 490 pontos EXATOS, nem arredondamento nem enfeite. -->
+        <figure class="quadro mau revela">
           <p class="rotulo">Orçamentos apresentados e não aprovados no fechamento de agosto</p>
-          <span class="mau-valor">490</span>
+          <span class="mau-valor" data-conta="490" data-formato="int">490</span>
           <p class="mau-passo">somando</p>
-          <span class="mau-valor">R$ 394.249,81</span>
+          <span class="mau-valor" data-conta="394249.81" data-formato="brl2">R$ 394.249,81</span>
+
+          <div class="quadro-par">
+            <svg class="ilustra" viewBox="0 0 560 224" role="img"
+                 aria-label="Grade de 490 pontos, um para cada orçamento apresentado e não aprovado no fechamento de agosto de 2026.">
+              <defs>
+                <pattern id="orcamentos" width="16" height="16" patternUnits="userSpaceOnUse">
+                  <circle cx="8" cy="8" r="4.2" fill="var(--ruim)" opacity=".55"></circle>
+                </pattern>
+              </defs>
+              <g class="pontos-cortina">
+                <rect x="0" y="0" width="560" height="224" fill="url(#orcamentos)"></rect>
+              </g>
+            </svg>
+            <img class="quadro-obj" src="assets/img/pasta.webp" width="700" height="700"
+                 alt="Uma pilha de folhas em branco dentro de uma pasta, em ilustração tridimensional."
+                 loading="lazy" decoding="async">
+          </div>
+          <p class="quadro-legenda"><b>490</b> pontos, um por orçamento · grade de 35 por 14 · fechamento de <b>agosto de 2026</b></p>
+
           <p class="miudo">É a foto do fechamento, e inclui o que ainda está no prazo de decisão. Mesmo assim: dinheiro que já esteve na mesa, com o paciente diagnosticado e o orçamento na mão dele.</p>
-        </div>
+        </figure>
       </div>
 
       <p class="corpo conta-fim">Essa é a versão simples da conta. No dia a gente refina com a sua ocupação real. Mas é ela que a maioria nunca fez, e é ela que troca a pergunta "quanto eu faturei?" por "quanto cada hora de cadeira me devolveu?".</p>
     </div>
   </section>
 
+  <!-- ══ 5. O QUE ACONTECE NO DIA ═════════════════════════════════════════ -->
   <section class="secao" id="o-que-acontece" aria-labelledby="h-o-que-acontece">
-    <div class="wrap">
-      <p class="kicker">O que acontece no dia</p>
-      <h2 class="titulo" id="h-o-que-acontece">Você não assiste. Você faz.</h2>
-      <p class="lead">Durante o workshop você abre a sua planilha, ou uma folha em branco, e levanta os cinco números que a sua clínica tem e você não sabe de cor. Eu faço a mesma conta na tela, com os números da minha clínica, enquanto você faz a sua.</p>
+    <div class="wrap wrap--larga">
+      <div class="cabeca">
+        <p class="kicker">O que acontece no dia</p>
+        <h2 class="titulo" id="h-o-que-acontece">Você não assiste. <em class="grifo">Você faz.</em></h2>
+        <p class="lead">Durante o workshop você abre a sua planilha, ou uma folha em branco, e levanta os cinco números que a sua clínica tem e você não sabe de cor. Eu faço a mesma conta na tela, com os números da minha clínica, enquanto você faz a sua.</p>
+      </div>
 
       <h3 class="sub">Os cinco números que você vai levantar:</h3>
-      <ol class="linhas">
-        <li class="revela">
-          <p class="linha-t">Quanto a clínica custa por mês de porta fechada.</p>
-          <p class="linha-b">Aluguel, folha, contador, software, energia, internet, parcela do equipamento. Tudo que você paga mesmo se ninguém for atendido. Material, laboratório e comissão ficam de fora: isso sobe com a produção.</p>
+
+      <!-- Os cinco cartões, cada um com o próprio desenho. Os desenhos são
+           ESQUEMÁTICOS de propósito: nenhum número aparece neles, porque
+           nenhum destes cinco números é do Dr. Dieymisson: são os SEUS. -->
+      <ol class="cartoes">
+        <li class="cartao revela">
+          <svg class="cartao-fig" viewBox="0 0 200 84" role="img" aria-label="Desenho: barras de mesma altura sob uma linha constante, o custo que não muda com o movimento.">
+            <line x1="8" y1="20" x2="192" y2="20" stroke="var(--color-accent)" stroke-width="1.5" stroke-dasharray="5 5" opacity=".85"></line>
+            <g fill="var(--tinta-capacidade)" opacity=".75">
+              <rect x="14" y="24" width="18" height="50" rx="3"></rect>
+              <rect x="44" y="24" width="18" height="50" rx="3"></rect>
+              <rect x="74" y="24" width="18" height="50" rx="3"></rect>
+              <rect x="104" y="24" width="18" height="50" rx="3"></rect>
+              <rect x="134" y="24" width="18" height="50" rx="3"></rect>
+              <rect x="164" y="24" width="18" height="50" rx="3"></rect>
+            </g>
+          </svg>
+          <span class="cartao-n" aria-hidden="true"></span>
+          <p class="cartao-t">Quanto a clínica custa por mês de porta fechada.</p>
+          <p class="cartao-b">Aluguel, folha, contador, software, energia, internet, parcela do equipamento. Tudo que você paga mesmo se ninguém for atendido. Material, laboratório e comissão ficam de fora: isso sobe com a produção.</p>
         </li>
-        <li class="revela">
-          <p class="linha-t">Quantas horas de cadeira você tem no mês.</p>
-          <p class="linha-b">Cadeiras em uso, vezes horas por dia, vezes dias trabalhados. É a capacidade, não o que foi ocupado.</p>
+        <li class="cartao revela">
+          <svg class="cartao-fig" viewBox="0 0 200 84" role="img" aria-label="Desenho: quatro fileiras de blocos, as cadeiras vezes as horas do dia, a capacidade do mês.">
+            <defs>
+              <pattern id="cap" width="19" height="19" patternUnits="userSpaceOnUse">
+                <rect x="1" y="1" width="15" height="15" rx="3" fill="var(--tinta-capacidade)" opacity=".7"></rect>
+              </pattern>
+            </defs>
+            <rect x="10" y="6" width="171" height="76" fill="url(#cap)"></rect>
+          </svg>
+          <span class="cartao-n" aria-hidden="true"></span>
+          <p class="cartao-t">Quantas horas de cadeira você tem no mês.</p>
+          <p class="cartao-b">Cadeiras em uso, vezes horas por dia, vezes dias trabalhados. É a capacidade, não o que foi ocupado.</p>
         </li>
-        <li class="revela">
-          <p class="linha-t">Quanto entra de verdade por procedimento.</p>
-          <p class="linha-b">O que cai na conta, com o desconto que você dá no balcão. Não o que está na tabela.</p>
+        <li class="cartao revela">
+          <svg class="cartao-fig" viewBox="0 0 200 84" role="img" aria-label="Desenho: uma barra cheia, a tabela, e abaixo dela uma barra menor com o trecho que falta pontilhado, o desconto do balcão.">
+            <rect x="10" y="16" width="180" height="18" rx="4" fill="var(--tinta-capacidade)" opacity=".45"></rect>
+            <rect x="10" y="50" width="126" height="18" rx="4" fill="var(--color-accent)" opacity=".85"></rect>
+            <rect x="136" y="50" width="54" height="18" rx="4" fill="none" stroke="var(--ruim)" stroke-width="1.5" stroke-dasharray="4 4"></rect>
+          </svg>
+          <span class="cartao-n" aria-hidden="true"></span>
+          <p class="cartao-t">Quanto entra de verdade por procedimento.</p>
+          <p class="cartao-b">O que cai na conta, com o desconto que você dá no balcão. Não o que está na tabela.</p>
         </li>
-        <li class="revela">
-          <p class="linha-t">Quantas faltas você teve no mês passado.</p>
-          <p class="linha-b">Número absoluto, contado na sua agenda. Remarcação avisada não conta. Falta é a cadeira que ficou parada sem aviso.</p>
+        <li class="cartao revela">
+          <svg class="cartao-fig" viewBox="0 0 200 84" role="img" aria-label="Desenho: uma coluna de horários da agenda com duas faixas vazias, contornadas, no meio das ocupadas.">
+            <g>
+              <rect x="10" y="6" width="180" height="13" rx="3" fill="var(--tinta-capacidade)" opacity=".6"></rect>
+              <rect x="10" y="24" width="180" height="13" rx="3" fill="none" stroke="var(--ruim)" stroke-width="1.5" stroke-dasharray="4 4"></rect>
+              <rect x="10" y="42" width="180" height="13" rx="3" fill="var(--tinta-capacidade)" opacity=".6"></rect>
+              <rect x="10" y="60" width="180" height="13" rx="3" fill="none" stroke="var(--ruim)" stroke-width="1.5" stroke-dasharray="4 4"></rect>
+            </g>
+          </svg>
+          <span class="cartao-n" aria-hidden="true"></span>
+          <p class="cartao-t">Quantas faltas você teve no mês passado.</p>
+          <p class="cartao-b">Número absoluto, contado na sua agenda. Remarcação avisada não conta. Falta é a cadeira que ficou parada sem aviso.</p>
         </li>
-        <li class="revela">
-          <p class="linha-t">Quanto você apresentou de orçamento e não fechou.</p>
-          <p class="linha-b">Os últimos 90 dias. É o dinheiro que já esteve na mesa e não virou nada.</p>
+        <li class="cartao revela">
+          <svg class="cartao-fig" viewBox="0 0 200 84" role="img" aria-label="Desenho: três folhas de orçamento sobrepostas, a da frente ainda em contorno pontilhado, sem assinatura.">
+            <g fill="var(--tinta-capacidade)" opacity=".5">
+              <rect x="34" y="8" width="52" height="68" rx="5"></rect>
+              <rect x="72" y="8" width="52" height="68" rx="5"></rect>
+            </g>
+            <rect x="110" y="8" width="52" height="68" rx="5" fill="none" stroke="var(--ruim)" stroke-width="1.5" stroke-dasharray="5 4"></rect>
+            <g stroke="var(--ruim)" stroke-width="1.5" opacity=".7" stroke-linecap="round">
+              <line x1="120" y1="26" x2="152" y2="26"></line>
+              <line x1="120" y1="38" x2="152" y2="38"></line>
+              <line x1="120" y1="50" x2="140" y2="50"></line>
+            </g>
+          </svg>
+          <span class="cartao-n" aria-hidden="true"></span>
+          <p class="cartao-t">Quanto você apresentou de orçamento e não fechou.</p>
+          <p class="cartao-b">Os últimos 90 dias. É o dinheiro que já esteve na mesa e não virou nada.</p>
         </li>
       </ol>
 
@@ -187,42 +356,93 @@
     </div>
   </section>
 
-  <section class="secao secao--tinta" id="nao-vou-fazer" aria-labelledby="h-nao-vou-fazer">
-    <div class="wrap">
-      <h2 class="titulo" id="h-nao-vou-fazer">O que eu não vou fazer</h2>
-      <blockquote class="citacao">Eu não vou te prometer 35% de crescimento. Eu vou te mostrar onde estão os seus 35%.</blockquote>
-      <p class="corpo">Não vou te falar de mentalidade. Mentalidade é o vídeo 49. Antes disso tem 48 contas pra fazer, e a primeira é a da sua hora clínica.</p>
-      <p class="corpo">Não vou te apressar. Não tem contagem regressiva nesta página nem "últimas vagas". A data é 19 de outubro e o preço é R$ 97. Você decide no seu tempo.</p>
+  <!-- ══ 6. O QUE EU NÃO VOU FAZER ════════════════════════════════════════ -->
+  <section class="secao secao--baixa" id="nao-vou-fazer" aria-labelledby="h-nao-vou-fazer">
+    <div class="wrap wrap--larga">
+      <div class="cabeca">
+        <p class="kicker">A régua</p>
+        <h2 class="titulo" id="h-nao-vou-fazer">O que eu não vou fazer</h2>
+      </div>
+      <blockquote class="citacao citacao--centro">Eu não vou te prometer 35% de crescimento. Eu vou te mostrar onde estão os seus 35%.</blockquote>
+      <div class="recusa">
+        <div>
+          <p class="corpo">Não vou te falar de mentalidade. Mentalidade é o vídeo 49. Antes disso tem 48 contas pra fazer, e a primeira é a da sua hora clínica.</p>
+          <!-- ILUSTRAÇÃO 4 · os 50 vídeos de O Caminho das Pedras, com o 49 marcado.
+               Os dois números vêm da própria copy: "50 vídeos em 8 partes" e
+               "Mentalidade é o vídeo 49". Nada mais. -->
+          <figure class="quadro">
+            <svg class="ilustra" viewBox="0 0 600 44" role="img"
+                 aria-label="Cinquenta traços, um por vídeo do método O Caminho das Pedras. O quadragésimo nono, o de mentalidade, está destacado no fim.">
+              <defs>
+                <pattern id="videos" width="12" height="44" patternUnits="userSpaceOnUse">
+                  <rect x="0" y="14" width="8" height="16" rx="2" fill="var(--tinta-capacidade)" opacity=".6"></rect>
+                </pattern>
+              </defs>
+              <rect x="0" y="0" width="600" height="44" fill="url(#videos)"></rect>
+              <rect x="576" y="6" width="8" height="32" rx="2" fill="var(--color-accent)"></rect>
+            </svg>
+            <p class="quadro-legenda">O Caminho das Pedras: <b>50</b> vídeos. O destacado é o <b>49</b>.</p>
+          </figure>
+        </div>
+        <p class="corpo">Não vou te apressar. Não tem contagem regressiva nesta página nem "últimas vagas". A data é 19 de outubro e o preço é R$ 97. Você decide no seu tempo.</p>
+      </div>
     </div>
   </section>
 
+  <!-- ══ 7. QUEM FAZ A CONTA COM VOCÊ ═════════════════════════════════════ -->
   <section class="secao" id="quem-faz" aria-labelledby="h-quem-faz">
-    <div class="wrap">
-      <h2 class="titulo" id="h-quem-faz">Quem faz a conta com você</h2>
-      <blockquote class="citacao citacao--curta">Eu sou dentista, tenho clínica, e mostro a conta que a sua clínica não faz.</blockquote>
-      <p class="corpo">Dr. Dieymisson Mendes. Cirurgião-dentista, implantodontia e prótese. Dono do Dental Center, em Taiobeiras e Mato Verde, MG. Autor do método O Caminho das Pedras: 50 vídeos em 8 partes, que começam pelo dinheiro que está escorrendo da clínica hoje e deixam mentalidade para o fim, de propósito.</p>
-      <p class="corpo">Os números desta página são da minha clínica, com o mês declarado. Eu não uso número de outra clínica para te convencer.</p>
-      <p class="assinatura">Dr. Dieymisson Mendes · CRO-MG <mark class="pendente">PENDENTE: número</mark></p>
+    <div class="wrap wrap--larga">
+      <div class="cabeca">
+        <p class="kicker">Quem faz</p>
+        <h2 class="titulo" id="h-quem-faz">Quem faz a conta com você</h2>
+      </div>
+      <div class="autor">
+        <!-- ⛔ O retrato do Dr. Dieymisson NÃO existe no acervo (medido em 08/09).
+             Não entra rosto de banco de imagem nem gerado por IA no lugar dele:
+             a página nomeia a pessoa e põe o CRO ao lado. O que pedir a ele está
+             em rascunho/fotos-pedidas.md. -->
+        <figure class="retrato">
+          <span class="retrato-sigla" aria-hidden="true">DM</span>
+          <figcaption class="retrato-pe">
+            O retrato do Dr. Dieymisson entra aqui.<br>
+            <mark class="pendente">PENDENTE: foto (rascunho/fotos-pedidas.md)</mark>
+          </figcaption>
+        </figure>
+        <div>
+          <blockquote class="citacao citacao--curta">Eu sou dentista, tenho clínica, e mostro a conta que a sua clínica não faz.</blockquote>
+          <p class="corpo">Dr. Dieymisson Mendes. Cirurgião-dentista, implantodontia e prótese. Dono do Dental Center, em Taiobeiras e Mato Verde, MG. Autor do método O Caminho das Pedras: 50 vídeos em 8 partes, que começam pelo dinheiro que está escorrendo da clínica hoje e deixam mentalidade para o fim, de propósito.</p>
+          <p class="corpo">Os números desta página são da minha clínica, com o mês declarado. Eu não uso número de outra clínica para te convencer.</p>
+          <p class="assinatura">Dr. Dieymisson Mendes · CRO-MG <mark class="pendente">PENDENTE: número</mark></p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="secao" id="detalhes" aria-labelledby="h-detalhes">
-    <div class="wrap">
-      <h2 class="titulo" id="h-detalhes">Detalhes</h2>
+  <!-- ══ 8. DETALHES ══════════════════════════════════════════════════════ -->
+  <section class="secao secao--tinta" id="detalhes" aria-labelledby="h-detalhes">
+    <div class="wrap wrap--larga">
+      <div class="cabeca">
+        <p class="kicker">O combinado</p>
+        <h2 class="titulo" id="h-detalhes">Detalhes</h2>
+      </div>
       <dl class="detalhes">
-        <div><dt>Data</dt><dd>segunda-feira, 19 de outubro de 2026</dd></div>
-        <div><dt>Horário</dt><dd><mark class="pendente">PENDENTE: horário</mark></dd></div>
-        <div><dt>Duração</dt><dd><mark class="pendente">PENDENTE: duração</mark></dd></div>
-        <div><dt>Formato</dt><dd>ao vivo e online. O link da sala chega no seu WhatsApp no dia, 15 minutos antes.</dd></div>
-        <div><dt>Preço</dt><dd>R$ 97, no Pix ou no cartão</dd></div>
-        <div><dt>O que você precisa</dt><dd>celular ou computador com internet, a sua agenda e o extrato do mês passado. Planilha, se tiver. Folha e caneta servem.</dd></div>
+        <div><dt><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>Data</dt><dd>segunda-feira, 19 de outubro de 2026</dd></div>
+        <div><dt><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Horário</dt><dd><mark class="pendente">PENDENTE: horário</mark></dd></div>
+        <div><dt><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10M7 21h10M8 3v4l4 5 4-5V3M8 21v-4l4-5 4 5v4"/></svg>Duração</dt><dd><mark class="pendente">PENDENTE: duração</mark></dd></div>
+        <div><dt><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M6.5 7.5a7 7 0 0 0 0 9M17.5 7.5a7 7 0 0 1 0 9M3.5 4.5a11 11 0 0 0 0 15M20.5 4.5a11 11 0 0 1 0 15"/></svg>Formato</dt><dd>ao vivo e online. O link da sala chega no seu WhatsApp no dia, 15 minutos antes.</dd></div>
+        <div><dt><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12.5 12.5 20a2 2 0 0 1-2.8 0l-6-6A2 2 0 0 1 3.1 12L4 4l8-.9a2 2 0 0 1 2 .6l6 6a2 2 0 0 1 0 2.8Z"/><circle cx="8.5" cy="8.5" r="1.2"/></svg>Preço</dt><dd>R$ 97, no Pix ou no cartão</dd></div>
+        <div><dt><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 11 2.5 2.5L16 8M8 17h5"/></svg>O que você precisa</dt><dd>celular ou computador com internet, a sua agenda e o extrato do mês passado. Planilha, se tiver. Folha e caneta servem.</dd></div>
       </dl>
     </div>
   </section>
 
+  <!-- ══ 9. FAQ ═══════════════════════════════════════════════════════════ -->
   <section class="secao" id="faq" aria-labelledby="h-faq">
-    <div class="wrap">
-      <h2 class="titulo" id="h-faq">FAQ</h2>
+    <div class="wrap wrap--larga">
+      <div class="cabeca">
+        <p class="kicker">Perguntas</p>
+        <h2 class="titulo" id="h-faq">FAQ</h2>
+      </div>
       <div class="faq-lista">
         <details>
           <summary><h3>Mais um guru de gestão?</h3><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
@@ -252,11 +472,13 @@
     </div>
   </section>
 
-  <section class="secao secao--tinta" id="inscricao" aria-labelledby="h-inscricao">
-    <div class="wrap">
+  <!-- ══ 10. INSCRIÇÃO ════════════════════════════════════════════════════ -->
+  <section class="secao secao--baixa" id="inscricao" aria-labelledby="h-inscricao">
+    <div class="wrap wrap--larga">
       <div class="inscricao-grade">
         <div>
-          <h2 class="titulo" id="h-inscricao">Segunda, 19 de outubro. A sua conta, feita com você.</h2>
+          <p class="kicker">Inscrição</p>
+          <h2 class="titulo" id="h-inscricao">Segunda, 19 de outubro. <em class="grifo">A sua conta</em>, feita com você.</h2>
           <blockquote class="citacao citacao--curta">Você não sai daqui com inspiração. Sai com o seu número na mão.</blockquote>
           <p class="miudo">R$ 97 · Pix ou cartão · ao vivo e online</p>
         </div>
@@ -318,7 +540,7 @@
 </main>
 
 <footer class="rodape">
-  <div class="wrap">
+  <div class="wrap wrap--larga">
     <p>Dr. Dieymisson Mendes · CRO-MG <mark class="pendente">PENDENTE: número</mark> · Dental Center, Taiobeiras e Mato Verde, MG</p>
     <p>Este workshop trata dos números da clínica. Ele não promete resultado, de faturamento, de crescimento ou de pacientes, e não é orientação clínica.</p>
     <p>Vendido por <mark class="pendente">PENDENTE: confirmar se é Clinix System, CNPJ 49.828.144/0001-20</mark>.</p>

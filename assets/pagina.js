@@ -162,7 +162,9 @@
   }
 
   /* ---------- Entrada dos blocos: só IntersectionObserver, e só se a pessoa
-       não pediu menos movimento. Sem ScrollTrigger, sem cálculo de posição. ---------- */
+       não pediu menos movimento. Sem ScrollTrigger, sem cálculo de posição.
+       ⛔ Nunca `opacity: 0` de repouso: o CSS só translada, e as ilustrações
+       têm a rede `html:not(.js)` no estado final. ---------- */
   var querMovimento = !window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var alvos = document.querySelectorAll('.revela');
   if (querMovimento && 'IntersectionObserver' in window && alvos.length) {
@@ -174,6 +176,60 @@
     Array.prototype.forEach.call(alvos, function (el) { obs.observe(el); });
   } else {
     Array.prototype.forEach.call(alvos, function (el) { el.classList.add('dentro'); });
+  }
+
+  /* ---------- Números que se montam ao entrar na tela ------------------------
+     🔑 O valor final está ESCRITO NO HTML. Este bloco só o troca por um valor
+     menor durante a animação e devolve o texto original, caractere por
+     caractere, no último quadro. Sem JavaScript, com o observador falhando ou
+     com `prefers-reduced-motion`, a pessoa vê o número certo, nunca um zero.
+     ⛔ Nenhum número nasce aqui: `data-conta` é só a mesma quantia em forma de
+     máquina, para o navegador saber de onde contar. Todos são de agosto/2026,
+     da clínica do Dr. Dieymisson. -------------------------------------------- */
+  var FORMATO = {
+    int:  function (v) { return Math.round(v).toLocaleString('pt-BR'); },
+    brl0: function (v) { return 'R$ ' + Math.round(v).toLocaleString('pt-BR'); },
+    brl2: function (v) { return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  };
+  var contas = document.querySelectorAll('[data-conta]');
+  if (querMovimento && 'IntersectionObserver' in window && contas.length && window.requestAnimationFrame) {
+    var obsN = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        obsN.unobserve(e.target);
+        var el = e.target;
+        var alvo = parseFloat(el.dataset.conta);
+        var fmt = FORMATO[el.dataset.formato] || FORMATO.int;
+        var original = el.textContent;               /* a verdade, tal como escrita */
+        if (!isFinite(alvo)) return;
+        var dur = 900, t0 = 0, fim = false;
+        /* trava a largura para o número não fazer a caixa pular enquanto sobe */
+        var largura = el.getBoundingClientRect().width;
+        if (largura) { el.style.display = 'inline-block'; el.style.minWidth = largura + 'px'; }
+        function fecha() {
+          if (fim) return;
+          fim = true;
+          el.textContent = original; el.style.minWidth = ''; el.style.display = '';
+        }
+        /* 🔴 REDE OBRIGATÓRIA. `requestAnimationFrame` PARA quando a aba vai para
+           segundo plano, e o número congelaria num valor intermediário. Numa
+           página cuja tese é "os números são os reais da minha clínica", deixar
+           R$ 3.321,20 no lugar de R$ 3.472,56 é o pior defeito possível: não é
+           layout feio, é número errado. Este relógio devolve o valor verdadeiro
+           mesmo que a animação nunca chegue ao fim. */
+        setTimeout(fecha, dur + 400);
+        function passo(agora) {
+          if (fim) return;
+          if (!t0) t0 = agora;
+          var p = Math.min((agora - t0) / dur, 1);
+          var suave = 1 - Math.pow(1 - p, 3);        /* ease-out cúbico */
+          if (p < 1) { el.textContent = fmt(alvo * suave); requestAnimationFrame(passo); }
+          else { fecha(); }
+        }
+        requestAnimationFrame(passo);
+      });
+    }, { rootMargin: '0px 0px -12% 0px' });
+    Array.prototype.forEach.call(contas, function (el) { obsN.observe(el); });
   }
 
   /* ---------- Pixel da Meta: só com data-pixel-id preenchido (§5). Hoje vazio: nenhuma requisição sai daqui ---------- */

@@ -1,0 +1,24 @@
+/* Newsreader (Production Type), SIL Open Font License 1.1, a família de
+   display da página. Hospedada por nós. ⛔ Nunca voltar ao CDN do Google: a
+   política de privacidade lista quem recebe dado do visitante, e o CDN
+   receberia o IP de cada pessoa que abre a página.
+
+   Como o arquivo foi feito (08/09/2026), para dar para refazer:
+     1. baixado o woff2 latin de fonts.gstatic.com (132 KB, variável em opsz+wght)
+     2. `python3 -m fontTools.subset` para o latin básico + pontuação tipográfica
+        (vezes, dividido, menos, ponto medio, aspas, reticencias). O resto do repertório não aparece na página
+     3. `fontTools.varLib.instancer` fixando o eixo opsz em 40 (o tamanho óptico
+        de título, que é o único uso da família aqui)
+   Resultado: 53,8 KB, com o eixo wght 200..800 preservado.
+
+   Uso: SÓ display (h1, títulos de seção, citações, marca do cabeçalho, sigla do
+   retrato). Corpo, rótulo, número e interface continuam em Inter: dois papéis,
+   duas famílias, nunca as duas na mesma função. */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('fontes/newsreader-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2122, U+2212, U+2215;
+}
