@@ -9,10 +9,6 @@
   var bloco = document.getElementById('form-erro');
   var ok = document.getElementById('form-ok');
 
-  /* ---------- Faixa "versão de trabalho": conta as pendências que estão no DOM ---------- */
-  var n = document.getElementById('n-pendencias');
-  if (n) n.textContent = String(document.querySelectorAll('.pendente').length);
-
   /* ---------- UTM / fbclid → campos escondidos; pagina = URL sem a query ---------- */
   if (form) {
     var q = new URLSearchParams(location.search);

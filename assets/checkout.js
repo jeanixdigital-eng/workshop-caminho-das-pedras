@@ -50,10 +50,6 @@
 
   var sessao = null, token = null, controlador = null, emailPix = '', pronto = false;
 
-  /* ---------- Faixa "versão de trabalho": conta as pendências que estão no DOM ---------- */
-  var n = el('n-pendencias');
-  if (n) n.textContent = String(document.querySelectorAll('.pendente').length);
-
   /* ---------- Textos. Frase curta, "você", sem culpar quem está pagando ---------- */
   var MSG = {
     SEM_TOKEN: 'Este endereço veio sem o código do seu pagamento. Volte à página do workshop e deixe o seu contato de novo: o link do pagamento chega em seguida.',

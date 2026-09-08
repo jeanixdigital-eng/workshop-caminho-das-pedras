@@ -118,7 +118,7 @@ Dr. Dieymisson Mendes. Cirurgião-dentista, implantodontia e prótese. Dono do D
 
 Os números desta página são da minha clínica, com o mês declarado. Eu não uso número de outra clínica para te convencer.
 
-Dr. Dieymisson Mendes · CRO-MG [PENDENTE: número]
+Dr. Dieymisson Mendes · CRO-MG 57966
 
 ## DETALHES
 
@@ -193,7 +193,7 @@ Recebi, {primeiro nome}. Agora é o pagamento: R$ 97, Pix ou cartão. Estou te l
 
 ## RODAPÉ
 
-Dr. Dieymisson Mendes · CRO-MG [PENDENTE: número] · Dental Center, Taiobeiras e Mato Verde, MG
+Dr. Dieymisson Mendes · CRO-MG 57966 · Dental Center, Taiobeiras e Mato Verde, MG
 
 Este workshop trata dos números da clínica. Ele não promete resultado, de faturamento, de crescimento ou de pacientes, e não é orientação clínica.
 
@@ -205,10 +205,11 @@ Vendido por [PENDENTE: confirmar se é Clinix System, CNPJ 49.828.144/0001-20].
 
 ## PENDÊNCIAS
 
+**Resolvida em 08/09/2026:** o número do CRO-MG (57966) chegou pelo Jean e está na página, na política e em `wcp.config.cro`.
+
 | # | O que está pendente | Onde na copy | De quem |
 |:-:|---|---|---|
 | 1 | **Aprovação D4 para expor os números da clínica** na página pública: custo fixo R$ 40.844, 988 horas, 84 faltas, R$ 394.249,81 em 490 orçamentos (agosto/2026). A decisão de 02/09 cobriu o R$ 97 e o 35% no Reel; a exposição dos números da clínica numa página aberta é outra decisão. Inclui a premissa "uma hora por falta" na conta das 84: se a duração média do horário for outra, o número muda | A CONTA (bloco inteiro) | Dr. Dieymisson |
-| 2 | **Número do CRO-MG** (as cadências do funil usam `{{cro}}`; o guardião do CRO barra mensagem sem ele) | QUEM FAZ A CONTA · RODAPÉ | Dr. Dieymisson (entra também na bio, J3 do Jean) |
 | 3 | **Horário** do workshop (a mensagem de véspera `wcp_vespera` também tem o horário em branco) | DETALHES | Dr. Dieymisson, com o Bruno |
 | 4 | **Duração** do workshop | DETALHES · FAQ "não tenho tempo" | Dr. Dieymisson, com o Bruno |
 | 5 | **A gravação:** a FAQ diz que ela não está nos R$ 97 e existe à parte só para quem comprou. Isso bate com o B7 ("a gravação está dentro do bump") e com a W6. Mas a **W13 libera a gravação por 48 horas para quem comprou e faltou**. Se a W13 ficar, a resposta da FAQ tem de dizer isso; se cair, fica como está. O preço e o nome da oferta à parte (B3, aberto desde 24/08) não entram na página até serem decididos | FAQ "e se eu não puder no dia?" | Bruno |

@@ -11,7 +11,7 @@ Esta página e ao formulário de inscrição no workshop de 19 de outubro de 202
 ## 1. Quem é responsável pelos seus dados
 Controlador: **Clinix System**, CNPJ 49.828.144/0001-20, Almenara, Taiobeiras/MG, CEP 39550-000.
 `[PENDENTE: confirmar com o Jean quem é o vendedor de registro deste workshop. Se não for a Clinix System, trocar aqui e no rodapé da página.]`
-O workshop é conduzido pelo Dr. Dieymisson Mendes, cirurgião-dentista, CRO-MG `[PENDENTE: número]`.
+O workshop é conduzido pelo Dr. Dieymisson Mendes, cirurgião-dentista, CRO-MG 57966.
 
 ## 2. O que coletamos, exatamente
 ### 2.1 O que você digita no formulário

@@ -73,7 +73,7 @@ ok_n = ruim_n = 0
 
 SESSAO_OK = {"ok": True, "valor": 97, "primeiro_nome": "Marcelo", "email": "marcelo@example.com",
              "public_key": CHAVE_FALSA, "max_parcelas": 6, "teste": False,
-             "expira_em": "2026-09-10T12:00:00-03:00"}
+             "expira_em": daqui(48 * 3600)}   # 🔑 relativo: data fixa vence e reprova sozinha
 
 # Dublê do SDK: implementa só o que a nossa página usa, e guarda a configuração
 # recebida para o teste conferir que o tema e o valor saíram do lugar certo.
@@ -461,7 +461,9 @@ def main():
                     "metodo": "bank_transfer",
                     "pix": {"qr_code": "00020126580014BR.GOV.BCB.PIX0136teste-copia-e-cola-do-workshop5204000053039865802BR",
                             "qr_code_base64": qr, "ticket_url": "https://www.mercadopago.com.br/payments/987/ticket",
-                            "expira_em": "2026-09-08T18:30:00.000-03:00"}})
+                            # 🔑 prazo RELATIVO: cravar a hora fazia o teste passar só antes
+                            #    das 18:30 de 08/09 e reprovar sozinho depois disso.
+                            "expira_em": daqui(1800)}})
         pg.fill("#cpf", "12345678909")
         pg.click("#cpf-segue")
         pg.wait_for_timeout(700)
@@ -739,7 +741,8 @@ def main():
         marcas = pg.eval_on_selector_all(".pendente", "e => e.length")
         faixa = pg.inner_text(".faixa")
         # a faixa é caixa alta por CSS: compara sem diferenciar maiúscula
-        t("a contagem da faixa bate com as marcas do DOM", f"{marcas} pendências" in faixa.lower(), f"{marcas} × {faixa}")
+        # "1 pendência" e "3 pendências": o prefixo cobre os dois
+        t("a contagem da faixa bate com as marcas do DOM", f"{marcas} pendência" in faixa.lower(), f"{marcas} × {faixa}")
         pg.screenshot(path=os.path.join(AQUI, "capturas", "obrigado-390x844.png"), full_page=True)
         c.fecha()
         ctx.close()

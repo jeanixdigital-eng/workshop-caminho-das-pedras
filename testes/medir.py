@@ -55,7 +55,8 @@ def sem_travessao():
     facilmente vira travessao numa frase quando alguem copia o trecho."""
     print("\n═══ Texto: travessão no meio de frase")
     for nome in ("index.html", "assets/estilo.css", "assets/pagina.js",
-                 "assets/newsreader.css", "assets/inter.css", "privacidade.html"):
+                 "assets/faixa.js", "assets/newsreader.css", "assets/inter.css",
+                 "privacidade.html", "obrigado.html"):
         bruto = open(os.path.join(RAIZ, nome), encoding="utf-8").read()
         achados = [c for c in ("—", "–", "&mdash;", "&ndash;") if c in bruto]
         t(f"{nome} sem travessão", not achados, achados or "-")
