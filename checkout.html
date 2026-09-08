@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pagamento · Workshop 19/10 · R$ 97</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="same-origin"><!-- o token da sessão vive na query: ele não sai no cabeçalho de referência para terceiro nenhum -->
+<meta name="theme-color" content="#161826"><!-- = --color-bg do Nocturne; meta não aceita var() -->
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<!-- Inter hospedada por nós. A única requisição de terceiro desta página é o Mercado Pago (SDK + API), que a política de privacidade já lista. -->
+<link rel="stylesheet" href="assets/inter.css">
+<link rel="stylesheet" href="nocturne/styles.css">
+<link rel="stylesheet" href="assets/estilo.css">
+<link rel="stylesheet" href="assets/checkout.css">
+<script src="https://sdk.mercadopago.com/js/v2" defer></script>
+<script src="assets/checkout.js" defer></script>
+</head>
+<body class="checkout">
+
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<div class="faixa" role="note">VERSÃO DE TRABALHO · <span id="n-pendencias">0</span> pendências</div>
+<div class="faixa faixa--teste" id="faixa-teste" role="note" hidden>SESSÃO DE TESTE · o valor cobrado é de R$ 1</div>
+
+<header class="cabecalho">
+  <nav class="nav" aria-label="Identificação">
+    <span class="nav-brand">Dr. Dieymisson Mendes</span>
+    <span class="nav-cro">CRO-MG <mark class="pendente">PENDENTE: número</mark></span>
+  </nav>
+</header>
+
+<main id="conteudo" class="secao pagar">
+  <div class="wrap">
+
+    <h1 class="titulo" id="h-pagar">Agora é o pagamento.</h1>
+    <p class="lead" id="saudacao">Assim que o pagamento cair, o acesso chega no seu WhatsApp.</p>
+
+    <div class="pagar-grade">
+
+      <!-- ── Resumo do pedido. Vem antes do pagamento no código: no celular a pessoa
+              lê o que está comprando e só depois paga. ── -->
+      <aside class="resumo" id="resumo" aria-labelledby="h-resumo">
+        <h2 class="resumo-titulo" id="h-resumo">O seu pedido</h2>
+
+        <dl class="resumo-linhas">
+          <div>
+            <dt>Workshop</dt>
+            <dd>A conta que a sua clínica não faz. Ao vivo e online, com o Dr. Dieymisson.</dd>
+          </div>
+          <div>
+            <dt>Data</dt>
+            <dd>segunda-feira, 19 de outubro de 2026 · <mark class="pendente">PENDENTE: horário</mark></dd>
+          </div>
+          <div>
+            <dt>Pagamento</dt>
+            <dd>Pix ou cartão</dd>
+          </div>
+        </dl>
+
+        <p class="resumo-total" id="total">
+          <span class="resumo-total-rotulo">Total</span>
+          <strong class="resumo-valor" id="valor">
+            <span class="resumo-valor-carregando" id="valor-carregando">carregando</span>
+          </strong>
+        </p>
+
+        <h3 class="resumo-sub">O que você recebe</h3>
+        <ul class="resumo-lista">
+          <li>A sua vaga no workshop ao vivo de 19 de outubro.</li>
+          <li>O link da sala no seu WhatsApp, no dia, 15 minutos antes.</li>
+          <li>A conta da sua clínica, feita por você, com o Dr. Dieymisson fazendo a dele na tela.</li>
+        </ul>
+        <p class="miudo">A gravação não faz parte deste ingresso. Ele é o ao vivo.</p>
+      </aside>
+
+      <!-- ── Pagamento. O Brick do Mercado Pago é montado dentro de #brick. ── -->
+      <section class="pagamento" id="pagamento" aria-labelledby="h-pagamento">
+        <h2 class="visualmente-oculto" id="h-pagamento">Pagamento</h2>
+
+        <p class="estado" id="estado" role="status">Carregando o pagamento.</p>
+
+        <div class="recusa" id="recusa" role="alert" hidden>
+          <p class="recusa-texto" id="recusa-texto"></p>
+          <a class="btn btn-primary cta" id="recusa-volta" href="index.html#inscricao">Voltar e deixar o contato de novo</a>
+        </div>
+
+        <div class="erro-pagamento" id="erro-pagamento" role="alert"></div>
+
+        <!-- CPF: fica escondido e só aparece se o formulário do Mercado Pago não
+             trouxer o documento do pagador (é o caso do Pix). Ninguém digita duas vezes. -->
+        <div class="cpf-bloco" id="cpf-bloco" hidden>
+          <div class="field">
+            <label for="cpf">Seu CPF</label>
+            <input class="input" type="text" id="cpf" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" aria-describedby="cpf-ajuda">
+            <p class="miudo" id="cpf-ajuda">O Mercado Pago pede o CPF de quem paga no Pix.</p>
+            <p class="campo-erro" id="erro-cpf"></p>
+          </div>
+          <button type="button" class="btn btn-primary cta btn-block" id="cpf-segue">Gerar o código do Pix</button>
+        </div>
+
+        <div id="brick"></div>
+
+        <!-- Pix pago: o QR e o copia e cola ficam aqui, na nossa página. -->
+        <div class="pix" id="pix" hidden>
+          <h3 class="pix-titulo">Pague o Pix para garantir a vaga</h3>
+          <img class="pix-qr" id="pix-qr" src="" alt="QR Code do Pix para pagar o workshop" width="240" height="240">
+          <p class="miudo" id="pix-prazo"></p>
+          <label class="pix-rotulo" for="pix-codigo">Pix copia e cola</label>
+          <textarea class="input pix-codigo" id="pix-codigo" rows="3" readonly spellcheck="false"></textarea>
+          <button type="button" class="btn btn-secondary cta btn-block" id="pix-copiar">Copiar o código</button>
+          <p class="pix-copiado" id="pix-copiado" role="status"></p>
+          <p class="miudo">Abra o aplicativo do seu banco, escolha Pix, cole o código e confirme. O acesso chega no seu WhatsApp assim que o pagamento cair.</p>
+          <p class="miudo">Não feche esta página enquanto paga. Se fechar, você não perde a compra: o mesmo código vale até o prazo acima, e a confirmação segue chegando no WhatsApp.</p>
+        </div>
+      </section>
+
+      <!-- ── Segurança: só o que é verdade e se pode mostrar. ── -->
+      <aside class="selos" id="seguranca" aria-labelledby="h-seguranca">
+        <h2 class="resumo-sub" id="h-seguranca">Sobre o pagamento</h2>
+        <ul class="selos-lista">
+          <li>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            <p>O pagamento é processado pelo Mercado Pago. A cobrança é feita por ele.</p>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            <p>Os dados do seu cartão não passam pelo nosso servidor. Eles vão do seu navegador direto para o Mercado Pago.</p>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21a9 9 0 1 0-9-9"/><path d="M3 3v5h5"/><path d="M12 8v4l3 2"/></svg>
+            <p>Compra feita pela internet tem 7 dias de arrependimento, previstos no Código de Defesa do Consumidor. Se você desistir nesse prazo, é só pedir no WhatsApp da inscrição e o valor volta.</p>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg>
+            <p>Na fatura do cartão a compra aparece como CLINIXSYSTEM.</p>
+          </li>
+        </ul>
+        <p class="miudo">A venda fecha quando o workshop começa, no dia 19 de outubro.</p>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<footer class="rodape">
+  <div class="wrap">
+    <p>Dr. Dieymisson Mendes · CRO-MG <mark class="pendente">PENDENTE: número</mark> · Dental Center, Taiobeiras e Mato Verde, MG</p>
+    <p>Este workshop trata dos números da clínica. Ele não promete resultado, de faturamento, de crescimento ou de pacientes, e não é orientação clínica.</p>
+    <p>Vendido por <mark class="pendente">PENDENTE: confirmar se é Clinix System, CNPJ 49.828.144/0001-20</mark>.</p>
+    <p><a href="privacidade.html">Política de Privacidade</a> · Para não receber mais mensagens, responda SAIR no WhatsApp.</p>
+  </div>
+</footer>
+
+</body>
+</html>

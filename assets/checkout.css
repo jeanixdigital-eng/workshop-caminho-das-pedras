@@ -1,0 +1,204 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Página de pagamento do Workshop · assets/checkout.css
+   Carrega DEPOIS de nocturne/styles.css e de assets/estilo.css. Aqui só entra
+   o que é exclusivo do checkout: a grade de duas colunas, o resumo do pedido,
+   os selos, o bloco do Pix e o tema do Brick do Mercado Pago.
+   ⛔ Cor, fonte, espaço, raio e sombra saem SEMPRE das variáveis do Nocturne
+      (--color-*, --font-*, --space-*, --radius-*, --shadow-*) e do estilo.css
+      (--leading, --meio, --edge, --measure, --coluna, --ruim, --pend).
+   ⛔ Nenhuma regra aqui mira classe do Brick: os nomes dele são gerados no
+      build do Mercado Pago e mudam sem aviso. O Brick se veste por tema e
+      `customVariables`, no checkout.js.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ---------- 1. Utilidades e faixas ---------- */
+
+.visualmente-oculto {
+  position: absolute; width: 1px; height: 1px; margin: -1px;
+  padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+.faixa[hidden] { display: none; }
+/* A faixa de teste usa o mesmo amarelo de pendência: é aviso de versão, não erro. */
+.faixa--teste { border-bottom: 1px solid color-mix(in srgb, var(--pend) 28%, transparent); }
+
+/* ---------- 2. Cabeçalho da página de pagamento ---------- */
+
+/* Sem CTA no topo: quem chegou aqui já decidiu, e o único caminho é pagar. */
+.checkout .nav-cro { margin-right: 0; }
+.checkout .pagar { padding-block: calc(var(--leading) * 1.5) calc(var(--leading) * 2); }
+.checkout h1.titulo { margin-bottom: var(--meio); }
+.checkout .lead { margin-bottom: calc(var(--leading) * 1.5); }
+
+/* ---------- 3. A grade: pagamento à esquerda, resumo à direita ---------- */
+
+/* No celular a ordem do código manda: resumo (o que é e quanto custa), depois
+   pagamento, depois os selos. Ler antes de pagar, e nada de `order` do CSS
+   trocando a ordem de leitura por baixo de quem usa teclado ou leitor de tela. */
+.pagar-grade { display: grid; gap: var(--leading); align-items: start; }
+
+@media (min-width: 980px) {
+  .pagar-grade {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
+    gap: var(--leading) calc(var(--leading) * 1.5);
+  }
+  .resumo    { grid-column: 2; grid-row: 1; }
+  .pagamento { grid-column: 1; grid-row: 1 / span 2; }
+  .selos     { grid-column: 2; grid-row: 2; }
+}
+
+/* ---------- 4. Resumo do pedido ---------- */
+
+.resumo, .pagamento {
+  padding: var(--space-8);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+.resumo-titulo { margin: 0 0 var(--leading); font-size: 19px; line-height: 26px; letter-spacing: -.01em; }
+
+.resumo-linhas { margin: 0; }
+.resumo-linhas > div {
+  padding-block: var(--space-4);
+  background: linear-gradient(to right,
+    transparent, var(--color-divider) 48px,
+    var(--color-divider) calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;
+}
+.resumo-linhas > div:first-child { padding-top: 0; }
+.resumo-linhas dt {
+  font-size: 12px; line-height: 20px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--color-accent);
+}
+.resumo-linhas dd { margin: 0; font-size: 15px; line-height: 23px; color: var(--color-neutral-200); }
+
+.resumo-total[hidden] { display: none; }
+.resumo-total {
+  display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-4);
+  margin: var(--leading) 0 0;
+}
+.resumo-total-rotulo {
+  font-size: 12px; line-height: 20px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--color-neutral-400);
+}
+.resumo-valor {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(28px, 3vw, 36px); line-height: 1.1; letter-spacing: -.015em;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+/* Enquanto o servidor não respondeu, o lugar do valor não fica vazio nem chuta
+   um número: o valor da tela é sempre o que veio da sessão. */
+.resumo-valor-carregando { font-size: 15px; letter-spacing: 0; color: var(--color-neutral-400); }
+
+.resumo-sub {
+  margin: calc(var(--leading) * 1.2) 0 var(--space-4);
+  font-size: 13px; line-height: 20px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--color-accent);
+}
+.resumo-lista { margin: 0 0 var(--space-6); padding-left: 1.15em; }
+.resumo-lista li { margin-bottom: var(--space-3); font-size: 15px; line-height: 23px; color: var(--color-neutral-200); }
+
+/* ---------- 5. Coluna do pagamento ---------- */
+
+.estado { margin: 0; font-size: 15px; line-height: 23px; color: var(--color-neutral-300); }
+.estado[hidden] { display: none; }
+
+.recusa[hidden] { display: none; }
+.recusa-texto { font-size: 16px; line-height: 25px; color: var(--color-text); max-width: var(--measure); }
+.recusa .cta { margin-top: var(--space-4); }
+
+.erro-pagamento {
+  margin-bottom: var(--space-6); padding: var(--space-4) var(--space-6);
+  font-size: 15px; line-height: 23px; color: var(--ruim);
+  border: 1px solid color-mix(in srgb, var(--ruim) 40%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--ruim) 8%, transparent);
+}
+.erro-pagamento:empty { display: none; }
+.erro-pagamento a { color: var(--ruim); }
+/* Recado que não é erro (pagamento em análise, falta o CPF). Vermelho só no que
+   deu errado: se tudo for vermelho, o vermelho para de significar erro. */
+.erro-pagamento.aviso {
+  color: var(--color-neutral-200);
+  border-color: var(--color-divider);
+  background: color-mix(in srgb, var(--color-text) 5%, transparent);
+}
+.erro-pagamento.aviso a { color: var(--color-accent); }
+
+/* O contêiner do Brick. Só reserva espaço e herda a fonte: o desenho de dentro
+   é do Mercado Pago, vestido por `customVariables` no checkout.js. */
+#brick { min-height: 0; }
+#brick:not(:empty) { margin-top: var(--space-6); }
+
+/* ---------- 6. O CPF que o Brick não entrega ---------- */
+
+.cpf-bloco { margin-bottom: var(--space-6); }
+.cpf-bloco[hidden] { display: none; }
+.cpf-bloco .field { margin-bottom: var(--space-6); }
+.cpf-bloco .field > label { display: block; font-size: 13px; margin-bottom: 6px; color: var(--color-neutral-300); }
+.cpf-bloco .input {
+  min-height: 48px; padding: 12px 14px; font-size: 16px; line-height: 24px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg); border-color: var(--color-neutral-600);
+  font-variant-numeric: tabular-nums;
+}
+.cpf-bloco .input:hover { border-color: var(--color-neutral-400); }
+.cpf-bloco .input[aria-invalid="true"] { border-color: var(--ruim); }
+.cpf-bloco .miudo { margin: 6px 0 0; }
+
+/* ---------- 7. Pix: QR, prazo e copia e cola ---------- */
+
+.pix[hidden] { display: none; }
+.pix-titulo { margin: 0 0 var(--space-6); font-size: 19px; line-height: 26px; letter-spacing: -.01em; }
+/* O QR precisa de fundo claro para a câmera ler. --color-neutral-100 é o passo
+   mais claro da rampa do sistema: claro o bastante para a leitura, e ainda do
+   sistema (nada de #fff solto). */
+.pix-qr {
+  width: 240px; height: 240px; padding: var(--space-4);
+  background: var(--color-neutral-100);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-6);
+}
+.pix-rotulo {
+  display: block; margin: var(--space-6) 0 6px;
+  font-size: 13px; color: var(--color-neutral-300);
+}
+.pix-codigo {
+  width: 100%; min-height: 84px; resize: vertical;
+  font-size: 14px; line-height: 21px; word-break: break-all;
+  background: var(--color-bg); border-color: var(--color-neutral-600);
+  border-radius: var(--radius-md); padding: 12px 14px;
+  color: var(--color-neutral-200);
+}
+.pix .cta { margin-bottom: var(--space-4); }
+.pix-copiado { margin: 0 0 var(--space-6); font-size: 14px; line-height: 22px; color: var(--color-accent); }
+.pix-copiado:empty { display: none; }
+.pix .miudo { margin-bottom: var(--space-4); }
+
+/* ---------- 8. Selos: o que é verdade sobre este pagamento ---------- */
+
+.selos-lista { margin: 0 0 var(--space-6); padding: 0; list-style: none; }
+.selos-lista li {
+  display: flex; align-items: flex-start; gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+.selos-lista svg { flex: none; margin-top: 2px; color: var(--color-accent); }
+.selos-lista p {
+  margin: 0; font-size: 14px; line-height: 22px; color: var(--color-neutral-300);
+}
+.selos-lista--simples li { gap: 0; }
+
+/* ---------- 9. Página de obrigado ---------- */
+
+.obrigado-grade { display: grid; gap: var(--leading); align-items: start; }
+@media (min-width: 980px) {
+  .obrigado-grade { grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: var(--leading) calc(var(--leading) * 1.5); }
+}
+.passos {
+  padding: var(--space-8); border-radius: var(--radius-lg);
+  background: var(--color-surface); box-shadow: var(--shadow-md);
+}
+.passos-lista { margin: 0; padding-left: 1.3em; }
+.passos-lista li { margin-bottom: var(--space-6); }
+.passos-lista li:last-child { margin-bottom: 0; }
+.passo-t { margin: 0 0 var(--space-2); font-size: 17px; line-height: 25px; color: var(--color-text); }
+.passo-b { margin: 0; font-size: 15px; line-height: 23px; color: var(--color-neutral-300); max-width: var(--measure); }
