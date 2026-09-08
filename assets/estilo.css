@@ -1026,3 +1026,9 @@ button.cta[aria-busy="true"]::before {
 .politica .indice a { color: var(--color-neutral-200); }
 .politica .indice a:hover { color: var(--color-accent); }
 .politica .pendente { display: inline-block; margin-bottom: var(--leading); }
+
+/* A foto do Dr. Dieymisson chegou em 08/09. A placa tipográfica deixa de ser
+   usada; a regra dela fica no arquivo porque o slot volta a ser placa se um dia
+   a foto sair. */
+.retrato--foto { padding: 0; display: block; overflow: hidden; }
+.retrato--foto img { width: 100%; height: auto; display: block; border-radius: inherit; }

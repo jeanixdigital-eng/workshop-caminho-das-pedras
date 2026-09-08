@@ -29,7 +29,7 @@
 
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
 
-<div class="faixa" role="note">VERSÃO DE TRABALHO · <span id="n-pendencias">11</span> pendências</div>
+<div class="faixa" role="note">VERSÃO DE TRABALHO · <span id="n-pendencias">10</span> pendências</div>
 
 <header class="cabecalho">
   <nav class="nav" aria-label="Identificação e inscrição">
@@ -397,16 +397,18 @@
         <h2 class="titulo" id="h-quem-faz">Quem faz a conta com você</h2>
       </div>
       <div class="autor">
-        <!-- ⛔ O retrato do Dr. Dieymisson NÃO existe no acervo (medido em 08/09).
-             Não entra rosto de banco de imagem nem gerado por IA no lugar dele:
-             a página nomeia a pessoa e põe o CRO ao lado. O que pedir a ele está
-             em rascunho/fotos-pedidas.md. -->
-        <figure class="retrato">
-          <span class="retrato-sigla" aria-hidden="true">DM</span>
-          <figcaption class="retrato-pe">
-            O retrato do Dr. Dieymisson entra aqui.<br>
-            <mark class="pendente">PENDENTE: foto (rascunho/fotos-pedidas.md)</mark>
-          </figcaption>
+        <!-- ✅ 08/09: o retrato CHEGOU. O Jean mandou pelo Telegram e a foto é do
+             próprio Dr. Dieymisson, profissional, fundo escuro, jaleco dele com o
+             nome bordado. O original está em rascunho/referencia/.
+             O tratamento de cor está em ferramentas/tratar-retrato.py e é
+             reproduzível: sombra puxada para o navy da página, realce esfriado de
+             leve, pele PROTEGIDA por máscara (rosto azulado é o defeito clássico
+             de grade em fundo frio, e num retrato de autoridade estraga justo o
+             que a foto existe para dizer). ⛔ Nada de rosto gerado por IA aqui. -->
+        <figure class="retrato retrato--foto">
+          <img src="assets/img/dieymisson.webp" width="900" height="1125" loading="lazy"
+               decoding="async"
+               alt="Dr. Dieymisson Mendes, cirurgião-dentista, de braços cruzados e jaleco escuro com o nome bordado.">
         </figure>
         <div>
           <blockquote class="citacao citacao--curta">Eu sou dentista, tenho clínica, e mostro a conta que a sua clínica não faz.</blockquote>

@@ -9,6 +9,13 @@ de quem depende: Dr. Dieymisson Mendes
 
 # As fotos que faltam na página, e o que pedir ao Dr. Dieymisson
 
+> ✅ **08/09/2026: a foto 1 (o retrato) CHEGOU.** O Jean mandou pelo Telegram: retrato
+> profissional do Dr. Dieymisson, fundo escuro, jaleco dele com o nome bordado. Está no ar
+> em `assets/img/dieymisson.webp`, tratada para a paleta da página.
+> Original guardado em `rascunho/referencia/dieymisson-original.jpg`.
+> Tratamento reproduzível: `jarvis-fundacao/ferramentas/tratar-retrato.py`.
+> **As outras três continuam faltando** (a mesa, a cadeira dele, a clínica fechada).
+
 ## O que é
 
 A página de venda do workshop **nomeia uma pessoa real** e põe o número do CRO ao
