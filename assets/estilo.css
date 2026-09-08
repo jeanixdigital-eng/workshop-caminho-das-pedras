@@ -1,0 +1,295 @@
+/* Página de venda do Workshop (frente @dieymisson_) · CSS compartilhado por index.html e privacidade.html
+   Sistema de design: rascunho/estrutura.md §3 (Gael, 08/09/2026).
+   Papel, tinta e vermelho só no número ruim. Tipografia do sistema: zero fonte carregada. Uma coluna de 680 px. */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  --papel: #F6F3EC;
+  --papel-2: #EDE8DD;
+  --branco: #FFFFFF;
+  --tinta: #14120F;
+  --tinta-2: #2B2823;
+  --grafite: #4A4741;
+  --vermelho: #B42318;
+  --erro-fundo: #FBEAE8;
+  --borda: #8A847A;
+  --linha: #D9D4C9;
+  --pendente: #FFE45C;
+
+  --t-h1: clamp(2.125rem, 1.4rem + 3.2vw, 3.5rem);
+  --t-num: clamp(2.5rem, 1.5rem + 5vw, 5rem);
+  --t-num-2: clamp(1.75rem, 1.2rem + 2.4vw, 2.75rem);
+  --t-h2: clamp(1.5rem, 1.1rem + 1.8vw, 2.25rem);
+  --t-h3: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --t-lead: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --t-cit: clamp(1.25rem, 1.05rem + 1.2vw, 1.75rem);
+  --t-corpo: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  --t-peq: 0.9375rem;
+  --t-min: 0.875rem;
+
+  --e1: 8px;
+  --e2: 16px;
+  --e3: 24px;
+  --e4: 32px;
+  --e5: 48px;
+  --e6: 64px;
+
+  --fonte: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --foco: 3px solid var(--tinta);
+}
+
+/* ---------- 2. Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--fonte);
+  font-size: var(--t-corpo);
+  font-weight: 400;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+h1, h2, h3, p, ul, ol, dl, dd, blockquote { margin: 0; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+:focus-visible { outline: var(--foco); outline-offset: 2px; }
+
+h1 { font-size: var(--t-h1); line-height: 1.08; letter-spacing: -0.02em; font-weight: 700; }
+h2 { font-size: var(--t-h2); line-height: 1.15; letter-spacing: -0.015em; font-weight: 700; margin-bottom: var(--e4); }
+h3 { font-size: var(--t-h3); line-height: 1.3; font-weight: 700; }
+p { max-width: 65ch; }
+p + p { margin-top: var(--e2); }
+strong { font-weight: 700; }
+
+/* ---------- 3. Grade ---------- */
+.container { max-width: 680px; margin: 0 auto; padding: 0 clamp(20px, 5vw, 40px); }
+.secao { padding: clamp(56px, 8vw, 112px) 0; }
+.secao--papel2 { background: var(--papel-2); }
+.secao h2 + h3, .secao h2 + p, .secao h2 + ul, .secao h2 + ol { margin-top: 0; }
+.grupo { margin-top: var(--e5); }
+.grupo > h3 { margin-bottom: var(--e2); }
+
+/* ---------- 4. Topo: pular, faixa de trabalho, header ---------- */
+.pular {
+  position: absolute; left: -10000px; top: 8px; z-index: 20;
+  padding: 12px 16px; background: var(--tinta); color: #fff;
+  border-radius: 8px; font-weight: 700; text-decoration: none;
+}
+.pular:focus { left: 8px; outline: var(--foco); outline-offset: 3px; }
+
+.faixa {
+  min-height: 28px; padding: 4px 12px;
+  background: var(--pendente); color: var(--tinta);
+  font-size: var(--t-min); font-weight: 600; line-height: 20px; text-align: center;
+}
+
+.topo { min-height: 56px; display: flex; align-items: center; font-size: var(--t-min); color: var(--grafite); }
+
+/* ---------- 5. Marcador de pendência (some na versão final: remover cada <mark>) ---------- */
+.pendente {
+  background: var(--pendente); color: var(--tinta);
+  font-weight: 600; padding: 2px 6px; border-radius: 4px;
+}
+.pendente--linha { display: inline-block; margin-bottom: var(--e3); }
+
+/* ---------- 6. Botão CTA (único estilo de botão da página) ---------- */
+.cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; min-height: 56px; padding: 0 24px;
+  background: var(--tinta); color: #fff;
+  font-family: inherit; font-size: 1.0625rem; font-weight: 700; line-height: 1.2;
+  border: 0; border-radius: 8px; text-decoration: none; cursor: pointer;
+  transition: background-color .15s ease, transform .1s ease;
+}
+.cta:hover { background: var(--tinta-2); }
+.cta:active { transform: translateY(1px); }
+.cta:focus-visible { outline: var(--foco); outline-offset: 3px; }
+.cta[disabled] { cursor: progress; opacity: .7; }
+.cta[aria-busy="true"]::before {
+  content: ""; width: 16px; height: 16px; flex: none;
+  border: 2px solid rgba(255, 255, 255, .35); border-top-color: #fff; border-radius: 50%;
+  animation: gira .8s linear infinite;
+}
+@keyframes gira { to { transform: rotate(360deg); } }
+@media (min-width: 768px) { .cta { width: auto; min-width: 280px; } }
+
+/* ---------- 7. Hero ---------- */
+.hero { padding-top: 40px; }
+.hero h1 { margin-bottom: var(--e2); }
+.lead { font-size: var(--t-lead); line-height: 1.45; max-width: 34em; margin-bottom: var(--e3); }
+.micro { font-size: var(--t-peq); color: var(--grafite); margin-top: var(--e2); }
+
+/* ---------- 8. Citações ---------- */
+.frases { list-style: none; padding: 0; }
+.frases li { font-size: var(--t-lead); line-height: 1.45; max-width: 34em; }
+.frases li + li { margin-top: var(--e3); }
+
+.ancora {
+  font-size: var(--t-cit); line-height: 1.3; font-weight: 700;
+  border-left: 4px solid var(--tinta); padding-left: var(--e3);
+  margin-bottom: var(--e4); max-width: 28em;
+}
+
+/* ---------- 9. A conta ---------- */
+.tres { padding-left: 1.4em; max-width: 60ch; }
+.tres li + li { margin-top: var(--e1); }
+
+.num { background: var(--branco); border: 1px solid var(--linha); border-radius: 12px; padding: 20px 24px; }
+.num + .num { margin-top: var(--e2); }
+.num__rotulo { font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); line-height: 1.4; }
+.num__valor {
+  display: block; margin-top: var(--e1);
+  font-size: min(var(--t-num-2), 8vw); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+/* teto por largura de tela: R$ 394.249,81 nunca quebra nem vaza do card no celular (estrutura §8) */
+.num__valor--grande { font-size: min(var(--t-num), 9.2vw, 4.25rem); line-height: 1; }
+.num__valor--ruim { color: var(--vermelho); }
+.num__passo { font-size: var(--t-peq); color: var(--grafite); margin-top: var(--e2); }
+.num__passo + .num__valor { margin-top: 4px; }
+.num__origem { font-size: var(--t-peq); color: var(--grafite); line-height: 1.5; margin-top: var(--e2); max-width: 65ch; }
+.op { text-align: center; font-size: var(--t-h2); font-weight: 700; line-height: 1; color: var(--grafite); padding: var(--e2) 0; }
+.conta-fim { margin-top: var(--e5); }
+
+/* ---------- 10. Os cinco números ---------- */
+.cinco { list-style: none; padding: 0; counter-reset: n; }
+.cinco li { counter-increment: n; display: grid; grid-template-columns: 2.5rem 1fr; column-gap: var(--e2); }
+.cinco li + li { margin-top: var(--e3); }
+.cinco li::before { content: counter(n); font-size: var(--t-h2); font-weight: 700; line-height: 1.15; letter-spacing: -0.015em; }
+.cinco li > div { min-width: 0; }
+.cinco strong { display: block; font-size: var(--t-h3); line-height: 1.3; margin-bottom: 4px; }
+.perto { background: var(--papel-2); border-radius: 12px; padding: var(--e3); margin-top: var(--e4); }
+.perto p { max-width: none; }
+
+/* ---------- 11. Quem faz ---------- */
+.assinatura { font-size: var(--t-h3); font-weight: 700; border-top: 1px solid var(--linha); padding-top: var(--e3); margin-top: var(--e4); }
+
+/* ---------- 12. Detalhes ---------- */
+.detalhes { border-top: 1px solid var(--linha); }
+.detalhes > div { padding: var(--e2) 0; border-bottom: 1px solid var(--linha); }
+.detalhes dt { font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); margin-bottom: 4px; line-height: 1.4; }
+.detalhes dd { max-width: 65ch; }
+@media (min-width: 768px) {
+  .detalhes > div { display: grid; grid-template-columns: 10rem 1fr; column-gap: var(--e3); }
+  .detalhes dt { margin: 0; padding-top: .35em; }
+}
+
+/* ---------- 13. FAQ ---------- */
+.faq details { border-bottom: 1px solid var(--linha); }
+.faq details:first-of-type { border-top: 1px solid var(--linha); }
+.faq summary {
+  list-style: none; cursor: pointer; min-height: 48px;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--e2);
+  padding: 12px 0;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; flex: none; width: 24px; text-align: center; font-size: 1.5rem; font-weight: 400; line-height: 1; color: var(--grafite); }
+.faq details[open] summary::after { content: "−"; }
+.faq summary:hover h3 { color: var(--tinta-2); }
+.faq summary:focus-visible { outline: var(--foco); outline-offset: 2px; }
+.faq .resposta { padding: var(--e1) 40px var(--e4) 0; }
+
+/* ---------- 14. Formulário ---------- */
+.form-titulo { margin: var(--e5) 0 var(--e3); }
+.campo { margin-bottom: var(--e3); }
+.campo label { display: block; font-weight: 700; margin-bottom: 6px; }
+.form input[type="text"], .form input[type="tel"], .form input[type="email"] {
+  display: block; width: 100%; height: 48px; padding: 0 14px;
+  background: var(--branco); color: var(--tinta);
+  border: 1px solid var(--borda); border-radius: 8px;
+  font-family: inherit; font-size: 1rem; line-height: 1.2;
+}
+.form input:focus { border: 2px solid var(--tinta); padding: 0 13px; outline: var(--foco); outline-offset: 2px; }
+.form input[aria-invalid="true"] { border: 2px solid var(--vermelho); padding: 0 13px; }
+.campo-erro { font-size: var(--t-peq); color: var(--vermelho); margin-top: 6px; }
+.campo-erro:empty { display: none; }
+
+.aceite {
+  display: flex; align-items: flex-start; gap: 12px; min-height: 44px;
+  font-size: var(--t-peq); font-weight: 400; line-height: 1.5; cursor: pointer;
+}
+.campo .aceite { display: flex; margin-bottom: 0; font-weight: 400; }
+.aceite input { flex: none; width: 24px; height: 44px; margin: 0; accent-color: var(--tinta); cursor: pointer; }
+.aceite input:focus-visible { outline: var(--foco); outline-offset: 2px; }
+.aceite span { padding-top: 11px; }
+.aceite a { text-decoration: underline; text-underline-offset: 2px; }
+
+.form-erro {
+  background: var(--erro-fundo); color: var(--vermelho);
+  border-left: 4px solid var(--vermelho); border-radius: 8px;
+  padding: var(--e2); font-size: var(--t-peq); line-height: 1.5;
+  margin-bottom: var(--e3); max-width: none;
+}
+.form-erro:empty { display: none; }
+.form-erro a { text-decoration: underline; text-underline-offset: 2px; }
+
+.form-ok { font-size: var(--t-lead); line-height: 1.45; font-weight: 700; margin-top: var(--e5); }
+.form-ok:empty { display: none; }
+.form-ok p { max-width: 34em; }
+.form-ok .cta { margin-top: var(--e3); }
+
+/* campo-armadilha: fora da tela, nunca display:none (§2.3) */
+.hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+
+/* ---------- 15. Rodapé ---------- */
+.rodape { border-top: 1px solid var(--linha); padding: var(--e5) 0 var(--e6); font-size: var(--t-peq); color: var(--grafite); }
+.rodape p { max-width: 65ch; }
+.rodape a { display: inline-block; padding: 12px 0; margin: -12px 0; text-decoration: underline; text-underline-offset: 2px; }
+.rodape a:hover { color: var(--tinta); }
+
+/* ---------- 16. Barra fixa de CTA (só no celular; pagina.js liga e desliga) ---------- */
+.barra { display: none; }
+@media (max-width: 767.98px) {
+  .venda { padding-bottom: 80px; }
+  .barra {
+    display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: var(--papel); border-top: 1px solid var(--linha);
+    padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
+    opacity: 0; visibility: hidden;
+    transition: opacity .15s ease, visibility 0s linear .15s;
+  }
+  .barra.visivel { opacity: 1; visibility: visible; transition-delay: 0s; }
+  .barra .cta { min-height: 52px; }
+}
+
+/* ---------- 17. Política de privacidade ---------- */
+.politica { --t-corpo: clamp(1.0625rem, 1rem + 0.3vw, 1.125rem); padding: var(--e5) 0 var(--e6); }
+.politica h1 { font-size: var(--t-h2); margin-bottom: var(--e2); }
+.politica .versao { color: var(--grafite); font-size: var(--t-peq); }
+.politica .aplica { margin-top: var(--e4); }
+.politica .rotulo { display: block; font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); margin-bottom: 4px; }
+.politica .indice { margin-top: var(--e4); padding-top: var(--e3); border-top: 1px solid var(--linha); }
+.politica .indice ol { padding-left: 1.6em; columns: 1; }
+.politica .indice li + li { margin-top: 0; }
+.politica .indice a { display: block; padding: 10px 0; text-decoration: underline; text-underline-offset: 2px; }
+.politica section { margin-top: var(--e5); padding: 0; }
+.politica h2 { font-size: 1.375rem; line-height: 1.3; letter-spacing: 0; margin-bottom: var(--e2); }
+.politica h3 { margin: var(--e3) 0 var(--e1); }
+.politica ol:not(.indice ol) { padding-left: 1.4em; max-width: 65ch; }
+.politica li + li { margin-top: var(--e1); }
+.politica .pendente { display: inline; }
+.politica p + .pendente, .politica table + .pendente { display: inline-block; margin-top: var(--e2); }
+.politica a { text-decoration: underline; text-underline-offset: 2px; }
+.politica .voltar { display: inline-block; padding: 12px 0; margin-top: var(--e5); font-weight: 700; }
+
+.politica table { width: 100%; border-collapse: collapse; margin: var(--e2) 0; font-size: var(--t-peq); line-height: 1.5; }
+.politica th, .politica td { text-align: left; vertical-align: top; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--linha); }
+.politica th { font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); }
+@media (max-width: 639.98px) {
+  .politica table, .politica tbody, .politica tr, .politica td { display: block; }
+  .politica thead { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .politica tr { padding: 12px 0; border-bottom: 1px solid var(--linha); }
+  .politica td { padding: 4px 0; border: 0; }
+  .politica td::before { content: attr(data-label); display: block; font-size: var(--t-min); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--grafite); }
+}
+
+/* ---------- 18. Movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  html { scroll-behavior: auto; }
+}
