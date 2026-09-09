@@ -238,3 +238,40 @@
 .passos-lista li:last-child { margin-bottom: 0; }
 .passo-t { margin: 0 0 var(--space-2); font-size: 17px; line-height: 25px; color: var(--color-text); }
 .passo-b { margin: 0; font-size: 15px; line-height: 23px; color: var(--color-neutral-300); max-width: var(--measure); }
+
+/* ── O adicional (order bump) ──────────────────────────────────────────────────
+   Entra no resumo, ANTES do total, porque é ele que muda o total.
+   🔑 44 px de alvo de toque: é o que a prova obrigatória mede antes do push.
+   ⛔ Nada aqui mira classe do Brick do Mercado Pago. */
+.adicional[hidden] { display: none; }
+.adicional {
+  margin: 16px 0 0;
+  padding: 14px;
+  border: 1px solid var(--color-neutral-700, #3a3d4f);
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-bg, #161826);
+}
+.adicional-caixa {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  cursor: pointer;
+  /* o alvo inteiro tem 44 px de altura mínima, não só a caixinha */
+  min-height: 44px;
+}
+.adicional-caixa input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  /* centra a caixa na primeira linha de texto sem encolher o alvo */
+  margin: 11px 0 11px 0;
+  accent-color: var(--color-accent, #9184d9);
+  cursor: pointer;
+}
+.adicional-texto { display: block; padding: 8px 0; }
+.adicional-titulo { display: block; font-size: 15px; line-height: 22px; color: var(--color-text, #e9e9ed); }
+.adicional-preco { display: block; font-size: 14px; line-height: 21px; color: var(--color-neutral-200, #d3d6e4); }
+.adicional-aviso:empty { display: none; }
+.adicional-aviso { margin: 10px 0 0; }
+.adicional-caixa input[type="checkbox"]:disabled { cursor: not-allowed; opacity: .5; }
+.adicional--travado .adicional-caixa { cursor: not-allowed; }

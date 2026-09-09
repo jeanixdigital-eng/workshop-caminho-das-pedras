@@ -49,6 +49,11 @@
   var linhaVigia = el('pix-vigia'), caixaPago = el('pago'), caixaAcoes = el('pix-acoes');
 
   var sessao = null, token = null, controlador = null, emailPix = '', pronto = false;
+  /* O adicional (order bump). `bumpMarcado` é a ÚNICA coisa que a página decide sobre
+     dinheiro, e mesmo assim ela decide só o SE, nunca o QUANTO: o preço vem da sessão e
+     quem cobra é o servidor. `bumpTravado` fecha a caixa quando não dá mais para mudar
+     de ideia sem bagunçar uma cobrança que já saiu. */
+  var bumpMarcado = false, bumpTravado = false;
 
   /* ---------- Textos. Frase curta, "você", sem culpar quem está pagando ---------- */
   var MSG = {
@@ -189,6 +194,19 @@
       .then(function () { clearTimeout(t); });
   }
 
+  /* O total da tela. UMA conta, no mesmo formato da que o servidor faz: base + adicional.
+     ⛔ Os dois números saem da sessão; nenhum deles está escrito no HTML. */
+  function totalAtual() {
+    var base = Number(sessao && sessao.valor);
+    var extra = (bumpMarcado && sessao && sessao.bump) ? Number(sessao.bump.valor) : 0;
+    return base + (isFinite(extra) ? extra : 0);
+  }
+
+  function pintaTotal() {
+    var caixaValor = el('valor');
+    if (caixaValor) caixaValor.textContent = moeda(totalAtual());
+  }
+
   function abreSessao(j) {
     sessao = j;
     var valor = Number(j.valor);
@@ -196,8 +214,8 @@
 
     /* O valor da tela é SEMPRE o que veio do servidor. Não existe número de
        preço escrito no HTML desta página. */
-    var caixaValor = el('valor');
-    if (caixaValor) caixaValor.textContent = moeda(valor);
+    montaAdicional(j.bump);
+    pintaTotal();
 
     if (j.teste === true) { var f = el('faixa-teste'); if (f) f.hidden = false; }
 
@@ -207,7 +225,56 @@
       saudacao.textContent = 'Recebi o seu contato, ' + primeiro + '. Assim que o pagamento cair, o acesso chega no seu WhatsApp.';
     }
 
-    montaBrick(valor);
+    montaBrick(totalAtual());
+  }
+
+  /* ---------- 2b. O adicional (order bump) ---------- */
+
+  /* Só existe caixa se o servidor mandou nome E preço. Config pela metade não vira oferta:
+     oferecer o que não se sabe cobrar é o caminho curto para cobrar errado. */
+  function montaAdicional(bump) {
+    var caixa = el('adicional'), campo = el('bump');
+    if (!caixa || !campo) return;
+    if (!bump || !(Number(bump.valor) > 0) || !String(bump.titulo || '').trim()) return;
+
+    var tit = el('bump-titulo'), preco = el('bump-preco');
+    if (tit) tit.textContent = String(bump.titulo).trim();
+    if (preco) preco.textContent = 'Mais ' + moeda(Number(bump.valor)) + ' no mesmo pagamento.';
+    caixa.hidden = false;
+
+    campo.addEventListener('change', function () {
+      if (bumpTravado) { campo.checked = bumpMarcado; return; }
+      bumpMarcado = !!campo.checked;
+      pintaTotal();
+      remontaPorCausaDoAdicional();
+    });
+  }
+
+  /* 🔑 O Brick NÃO aceita trocar o `amount` depois de montado: para mudar o total é
+     preciso desmontar e montar de novo. O preço disso é real e a pessoa precisa
+     saber: o que ela já tinha digitado no cartão se perde, e o foco cai no corpo da página. Por
+     isso o aviso é anunciado (role=status) em vez de a tela mudar em silêncio. */
+  function remontaPorCausaDoAdicional() {
+    var aviso = el('bump-aviso');
+    if (aviso) aviso.textContent = 'Atualizando as formas de pagamento com o novo total. Se você já tinha começado a digitar o cartão, digite de novo.';
+    var caixaEstado = el('estado');
+    if (caixaEstado) { caixaEstado.hidden = false; caixaEstado.textContent = 'Atualizando o pagamento.'; }
+    pronto = false;
+    desmonta();
+    var alvo = el('brick');
+    if (alvo) alvo.innerHTML = '';
+    montaBrick(totalAtual());
+  }
+
+  /* Depois que uma cobrança saiu (Pix gerado, pagamento em voo, pagamento aprovado) não dá
+     mais para mudar de ideia sem bagunçar o que já foi cobrado. A caixa trava e diz por quê,
+     em vez de sumir: sumir esconde do cliente o que ele escolheu e pagou. */
+  function travaAdicional(motivo) {
+    bumpTravado = true;
+    var campo = el('bump'), caixa = el('adicional'), aviso = el('bump-aviso');
+    if (campo) campo.disabled = true;
+    if (caixa) caixa.classList.add('adicional--travado');
+    if (aviso) aviso.textContent = motivo || '';
   }
 
   /* ---------- 3. O Brick ---------- */
@@ -344,7 +411,10 @@
       issuer_id: '',
       email: '',
       cpf: '',
-      device_id: idDoAparelho()
+      device_id: idDoAparelho(),
+      /* 🔑 Só o booleano viaja. O servidor é que sabe quanto o adicional custa, e é ele
+         que soma. Se um dia esta linha virar um número, a trava do preço cai junto. */
+      bump: bumpMarcado
     };
     for (var k in extra) { if (Object.prototype.hasOwnProperty.call(extra, k)) p[k] = extra[k]; }
     return p;
@@ -398,6 +468,7 @@
     }
     if (estadoPag === 'in_process' || estadoPag === 'pending') {
       desmonta();
+      travaAdicional('O pagamento já foi enviado com este total.');
       mostraErro(null, 'O seu pagamento está em análise pelo Mercado Pago. Assim que ele confirmar, o acesso chega no seu WhatsApp. Você não precisa pagar de novo.', true);
       return true;
     }
@@ -408,6 +479,9 @@
   /* ---------- 6. Pix na nossa página ---------- */
 
   function mostraPix(pix, idPagamento) {
+    /* O código do Pix já foi gerado pelo valor que estava marcado. Mudar a caixa agora faria
+       a tela dizer um total e o código cobrar outro, que é o pior dos dois mundos. */
+    travaAdicional('O código do Pix já foi gerado com este total. Para mudar o adicional, gere outro código.');
     desmonta();
     limpaErro();
     if (caixaCpf) caixaCpf.hidden = true;
@@ -546,6 +620,7 @@
 
   function pixCaiu() {
     limpaErro();
+    travaAdicional('');
     if (caixaPix) caixaPix.hidden = true;
     if (caixaAcoes) caixaAcoes.hidden = true;
     vigiaTexto('Pagamento aprovado. O acesso chega no seu WhatsApp.');

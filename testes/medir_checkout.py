@@ -87,6 +87,16 @@ window.MercadoPago = function (chave) {
       create: function (tipo, container, config) {
         return new Promise(function (resolve) {
           var alvo = document.getElementById(container);
+          /* 🔑 09/09: o dublê aceitava `create` duas vezes sem reclamar, então uma
+             remontagem passaria 100% verde aqui e quebraria no navegador do primeiro
+             cliente. Agora ele guarda o histórico e marca quando montaram por cima de
+             um Brick vivo (sem `unmount` no meio), que é o que o SDK de verdade não
+             perdoa. A asserção da remontagem lê isto. */
+          window.__montagens = (window.__montagens || 0) + 1;
+          window.__valores = (window.__valores || []);
+          window.__valores.push(config && config.initialization && config.initialization.amount);
+          if (window.__vivo === true) { window.__montouPorCima = true; }
+          window.__vivo = true;
           alvo.innerHTML = '<div class="brick-duble"><p>formulario do Mercado Pago</p></div>';
           window.__config = config;
           /* O Brick de verdade lê a promessa do onSubmit: resolvida = seguiu,
@@ -100,7 +110,7 @@ window.MercadoPago = function (chave) {
             return true;
           };
           window.__erro = function (e) { return config.callbacks.onError(e); };
-          var ctrl = { unmount: function () { alvo.innerHTML = ''; window.__desmontado = true; } };
+          var ctrl = { unmount: function () { alvo.innerHTML = ''; window.__desmontado = true; window.__vivo = false; } };
           window.paymentBrickController = ctrl;
           setTimeout(function () { config.callbacks.onReady(); }, 20);
           resolve(ctrl);
@@ -752,6 +762,88 @@ def main():
         pg.screenshot(path=os.path.join(AQUI, "capturas", "obrigado-390x844.png"), full_page=True)
         c.fecha()
         ctx.close()
+
+        # ── 12.1 A faixa de pendências da PÁGINA DE PAGAMENTO ────────────────
+        # 🔑 09/09: só a faixa da obrigado.html era conferida. A da checkout.html, que é
+        #    quem barra a publicação de uma página que cobra dinheiro, nunca foi medida.
+        print("\n═══ checkout.html: a faixa conta as pendências")
+        ctx = nav.new_context(viewport={"width": 390, "height": 844})
+        c = Cenario(ctx, base)
+        pg = c.abre()
+        marcas = pg.eval_on_selector_all(".pendente", "e => e.length")
+        faixa = pg.inner_text(".faixa")
+        t("a faixa da página de pagamento bate com as marcas do DOM",
+          f"{marcas} pendência" in faixa.lower(), f"{marcas} × {faixa.strip()}")
+
+        # ── 12.2 O adicional (order bump) ────────────────────────────────────
+        print("\n═══ O adicional (order bump)")
+        t("a caixa NÃO aparece quando o servidor não oferece adicional",
+          pg.is_hidden("#adicional"), "sessão sem bump")
+        c.fecha(); ctx.close()
+
+        COM_BUMP = dict(SESSAO_OK, bump={"valor": 20, "titulo": "Estrutura Completa"})
+        ctx = nav.new_context(viewport={"width": 390, "height": 844})
+        c = Cenario(ctx, base, sessao=COM_BUMP)
+        pg = c.abre()
+        t("com adicional na sessão, a caixa aparece", pg.is_visible("#adicional"))
+        t("  o título vem do SERVIDOR", pg.inner_text("#bump-titulo").strip() == "Estrutura Completa",
+          pg.inner_text("#bump-titulo"))
+        t("  o preço também, e nenhum número de dinheiro está no HTML",
+          "20" in pg.inner_text("#bump-preco"), pg.inner_text("#bump-preco"))
+        t("  o total começa sem o adicional", "97" in pg.inner_text("#valor"), pg.inner_text("#valor"))
+        t("  o Brick nasceu com o total sem adicional",
+          pg.evaluate("() => window.__valores[0]") == 97, pg.evaluate("() => window.__valores[0]"))
+
+        # 🔑 O alvo de toque: a mesma régua de 44 px que a página inteira segue.
+        cx = pg.eval_on_selector(".adicional-caixa", "e => e.getBoundingClientRect().height")
+        t("  o alvo de toque tem 44 px ou mais", cx >= 44, f"{cx:.0f} px")
+
+        pg.check("#bump")
+        pg.wait_for_timeout(400)
+        t("marcando a caixa, o total passa a somar o adicional",
+          "117" in pg.inner_text("#valor"), pg.inner_text("#valor"))
+        t("  🔑 o Brick foi REMONTADO com o novo total",
+          pg.evaluate("() => window.__valores[window.__valores.length - 1]") == 117,
+          str(pg.evaluate("() => window.__valores")))
+        t("  🔑 e a remontagem desmontou o anterior (o SDK de verdade não perdoa montar por cima)",
+          pg.evaluate("() => window.__montouPorCima !== true"),
+          "montouPorCima=" + str(pg.evaluate("() => window.__montouPorCima")))
+        t("  a pessoa é AVISADA de que precisa digitar o cartão de novo",
+          "digite de novo" in pg.inner_text("#bump-aviso").lower(), pg.inner_text("#bump-aviso"))
+
+        pg.uncheck("#bump")
+        pg.wait_for_timeout(400)
+        t("desmarcando, o total volta", "97" in pg.inner_text("#valor"), pg.inner_text("#valor"))
+        pg.check("#bump")
+        pg.wait_for_timeout(400)
+
+        # ── o que sai no POST: o booleano, e NADA de dinheiro ────────────────
+        c.responde({"ok": True, "status": "approved", "payment_id": "77", "metodo": "credit_card"})
+        pg.evaluate("""() => window.__enviar({ formData: { token: 'tok', payment_method_id: 'master',
+          installments: 1, payer: { email: 'm@example.com', identification: { type: 'CPF', number: '39053344705' } } } })""")
+        pg.wait_for_timeout(700)
+        # `envios` guarda o corpo CRU do POST, não um dicionário: quem decodifica é quem lê.
+        enviado = json.loads(c.envios[-1]) if c.envios else {}
+        t("o pedido leva o booleano do adicional", enviado.get("bump") is True, json.dumps(enviado.get("bump")))
+        dinheiro = [k for k in enviado if re.search(r"valor|preco|price|amount|total", k, re.I)]
+        t("🔑 e NENHUMA chave de dinheiro (quem soma é o servidor)", not dinheiro, dinheiro or "nenhuma")
+        c.fecha(); ctx.close()
+
+        # ── depois que a cobrança sai, a caixa trava ─────────────────────────
+        ctx = nav.new_context(viewport={"width": 390, "height": 844})
+        c = Cenario(ctx, base, sessao=COM_BUMP)
+        pg = c.abre()
+        pg.check("#bump")
+        pg.wait_for_timeout(300)
+        gera_pix(c, pg, payment_id="881")
+        pg.wait_for_timeout(400)
+        t("com o Pix gerado, a caixa do adicional trava",
+          pg.eval_on_selector("#bump", "e => e.disabled") is True)
+        t("  e diz por quê, em vez de sumir",
+          "pix" in pg.inner_text("#bump-aviso").lower(), pg.inner_text("#bump-aviso"))
+        t("  a caixa continua na tela, mostrando o que a pessoa escolheu",
+          pg.is_visible("#adicional") and pg.eval_on_selector("#bump", "e => e.checked") is True)
+        c.fecha(); ctx.close()
 
         # ── 13. O Brick de verdade (só com --real-sdk) ───────────────────────
         if a.real_sdk:

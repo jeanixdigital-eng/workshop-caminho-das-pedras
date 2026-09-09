@@ -67,6 +67,26 @@
           </div>
         </dl>
 
+        <!-- ── O adicional (order bump). ──────────────────────────────────────────
+             🔑 Só aparece se o SERVIDOR mandar nome E preço: config pela metade não vira
+                caixa na tela. Melhor não oferecer do que oferecer o que não se sabe cobrar.
+             ⛔ NENHUM número de dinheiro escrito aqui. O preço chega pela sessão, como o
+                do workshop: é a mesma trava, e ela vale igual para o adicional.
+             ⚠️ O que VEM DENTRO não está escrito porque escolher isso é decidir o B3, que
+                é do Bruno e está aberto desde 24/08. A marca de pendência é o que impede
+                esta página de ser publicada antes disso. -->
+        <div class="adicional" id="adicional" hidden>
+          <label class="adicional-caixa" for="bump">
+            <input type="checkbox" id="bump" name="bump" aria-describedby="bump-nota">
+            <span class="adicional-texto">
+              <strong class="adicional-titulo" id="bump-titulo"></strong>
+              <span class="adicional-preco" id="bump-preco"></span>
+              <span class="miudo" id="bump-nota"><mark class="pendente">PENDENTE: o que vem na Estrutura Completa, e o preço dela, são o B3 do Bruno, aberto desde 24/08. Enquanto isso, o valor da tela é provisório.</mark></span>
+            </span>
+          </label>
+          <p class="adicional-aviso miudo" id="bump-aviso" role="status" aria-live="polite"></p>
+        </div>
+
         <p class="resumo-total" id="total">
           <span class="resumo-total-rotulo">Total</span>
           <strong class="resumo-valor" id="valor">
@@ -80,7 +100,7 @@
           <li>O link da sala no seu WhatsApp, no dia, 15 minutos antes.</li>
           <li>A conta da sua clínica, feita por você, com o Dr. Dieymisson fazendo a dele na tela.</li>
         </ul>
-        <p class="miudo">A gravação não faz parte deste ingresso. Ele é o ao vivo.</p>
+        <p class="miudo">A gravação não faz parte deste ingresso. Ele é o ao vivo. <mark class="pendente">PENDENTE: quando o B3 disser o que vem no adicional, esta linha e a resposta da FAQ sobre a gravação (index.html) precisam ser reescritas no mesmo turno, senão a página se contradiz.</mark></p>
       </aside>
 
       <!-- ── Pagamento. O Brick do Mercado Pago é montado dentro de #brick. ── -->
