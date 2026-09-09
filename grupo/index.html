@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Entrando no grupo do workshop</title>
+<!--
+  Fachada da rota do grupo. Existe por um motivo só: o link que chega no WhatsApp e no
+  e-mail de quem comprou precisa parecer o que é (o workshop), não a engrenagem por trás.
+
+  Como funciona:
+    1. pergunta ao funil, em JSON, qual é o convite (`?c=<id>&formato=json`). Essa mesma
+       chamada é o que REGISTRA que a pessoa clicou: grava `group.joined`, marca a tag e
+       encerra a cobrança do W7;
+    2. manda a pessoa direto para o convite do WhatsApp.
+  Resultado: ela vê o endereço do workshop e depois o do WhatsApp. Nunca o do meio.
+
+  🔑 O convite NÃO fica escrito aqui. Ele é dado operacional (vive em `wcp.config`, fora de
+     git) e quem o devolve é o servidor. Este arquivo é público; o convite não pode ser.
+  ⛔ Se o JavaScript falhar ou estiver desligado, o <noscript> e o botão mandam pela rota
+     antiga, que também registra: perde-se o endereço bonito, nunca a entrada no grupo.
+-->
+<link rel="stylesheet" href="../assets/estilo.css">
+<style>
+  .aguarde { min-height: 60vh; display: grid; place-items: center; text-align: center; padding: 24px; }
+  .aguarde p { max-width: 36ch; margin: 12px auto 0; }
+  .manual { margin-top: 24px; }
+</style>
+</head>
+<body>
+<noscript>
+  <meta http-equiv="refresh" content="0; url=https://n8n-webhook.clinixsystem.com.br/webhook/wcp/r/grupo">
+</noscript>
+
+<main class="aguarde">
+  <div>
+    <h1>Abrindo o grupo…</h1>
+    <p class="corpo" id="recado">Só um instante.</p>
+    <p class="manual"><a class="btn" id="manual" href="#">Entrar no grupo</a></p>
+  </div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var ROTA = 'https://n8n-webhook.clinixsystem.com.br/webhook/wcp/r/grupo';
+  var c = new URLSearchParams(location.search).get('c') || '';
+  var comId = c ? '?c=' + encodeURIComponent(c) : '';
+
+  /* O botão manual aponta para a rota antiga: quem clicar nele também é registrado. */
+  var manual = document.getElementById('manual');
+  manual.href = ROTA + comId;
+
+  /* Sem `c` não há quem registrar: manda pela rota mesmo, que decide o destino. */
+  if (!c) { location.replace(ROTA); return; }
+
+  var ctrl = new AbortController();
+  var desistir = setTimeout(function () { ctrl.abort(); }, 6000);
+
+  fetch(ROTA + comId + '&formato=json', { signal: ctrl.signal })
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function (d) {
+      clearTimeout(desistir);
+      if (d && d.destino) { location.replace(d.destino); return; }
+      throw new Error('sem destino');
+    })
+    .catch(function () {
+      /* 🔑 Qualquer tropeço (rede, CORS, tempo) cai na rota antiga, que registra do mesmo
+         jeito. O clique mais importante do funil nunca depende deste JavaScript dar certo. */
+      clearTimeout(desistir);
+      document.getElementById('recado').textContent = 'Abrindo…';
+      location.replace(ROTA + comId);
+    });
+})();
+</script>
+</body>
+</html>
