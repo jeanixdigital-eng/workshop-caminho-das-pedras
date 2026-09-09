@@ -737,7 +737,13 @@ def main():
         mede_estrutura(pg, c.erros_js, True, "")
         t("não mostra o p= da URL em lugar nenhum", "123456789" not in pg.inner_text("body"))
         t("diz quem libera o acesso", "não esta página" in pg.inner_text("body"))
-        t("tem a data do workshop", "19 de outubro" in pg.inner_text("body"))
+        # 🔑 09/09, duas vezes seguidas: primeiro esta asserção travava em "19 de outubro" e
+        #    reprovava a página CERTA depois da mudança de data. Troquei por "24 e 25 de
+        #    outubro" e ela reprovou DE NOVO, porque a copy escreve "Sábado, 24, e domingo,
+        #    25 de outubro" — com vírgulas. Frase exata é fato mutável: casa os dois números
+        #    e o mês, que é o que a asserção quer dizer de verdade.
+        corpo = pg.inner_text("body")
+        t("tem a data do workshop", "24" in corpo and "25 de outubro" in corpo, corpo[:0])
         marcas = pg.eval_on_selector_all(".pendente", "e => e.length")
         faixa = pg.inner_text(".faixa")
         # a faixa é caixa alta por CSS: compara sem diferenciar maiúscula

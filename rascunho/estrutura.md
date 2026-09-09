@@ -1,12 +1,12 @@
 ---
 tipo: estrutura
 frente: workshop
-peça: página de venda do workshop (R$ 97, segunda 19/10/2026, ao vivo e online) + página de política de privacidade
+peça: página de venda do workshop (R$ 97, sábado 24 e domingo 25/10/2026, 15h às 20h, ao vivo e online) + página de política de privacidade
 criado: 2026-09-08
 autor: Gael (mkt.site)
 estado: PROPOSTA de estrutura para construir em staging. Publicar é ato do Jean (Alba → fila do Aprovador antes).
 copy: rascunho/copy.md (Lia, 08/09) · texto da política: rascunho/privacidade-texto.md · prova: testes/medir.py
-lido antes de decidir: cofre-workshop/20 Estratégia (Posicionamento, Tom de Voz, Persona Dr. Marcelo, Restrições de Conteúdo, Regras do CFO, Escada de Produtos) · 40 Peças/Dia 19 de outubro · 40 Peças/Duas agendas de 8 horas (direção de arte) · 60 Números/Os 5 Números da Clínica · 90 Fontes/02-diagnostico · jarvis-n8n-clinix/workshop/motores_wcp.py (porteiro `wcp/form/lead`, medido) · jarvis-site-clinix/.claude/skills (as seis) · jarvis-site-clinix/index.html (paleta e fontes da Clinix, para NÃO repetir)
+lido antes de decidir: cofre-workshop/20 Estratégia (Posicionamento, Tom de Voz, Persona Dr. Marcelo, Restrições de Conteúdo, Regras do CFO, Escada de Produtos) · 40 Peças/Dia 24 e 25 de outubro · 40 Peças/Duas agendas de 8 horas (direção de arte) · 60 Números/Os 5 Números da Clínica · 90 Fontes/02-diagnostico · jarvis-n8n-clinix/workshop/motores_wcp.py (porteiro `wcp/form/lead`, medido) · jarvis-site-clinix/.claude/skills (as seis) · jarvis-site-clinix/index.html (paleta e fontes da Clinix, para NÃO repetir)
 ---
 
 # Página de venda do Workshop · estrutura e sistema de design
@@ -75,7 +75,7 @@ O que aparece **sem rolar** em 390×844, com a faixa de "versão de trabalho" ai
    │ Dr. Dieymisson Mendes · CRO-MG [PEND] │  header, 56 px, texto 14 px grafite
 84 ├──────────────────────────────────────┤
    │                                       │  respiro 40 px
-   │ Dia 19 de outubro eu vou             │  h1 ≈ 35 px, 3 linhas, line-height 1.08 ≈ 115 px
+   │ Dia 24 e 25 de outubro eu vou             │  h1 ≈ 35 px, 3 linhas, line-height 1.08 ≈ 115 px
    │ fazer a sua conta com você.          │
    │                                       │  16 px
    │ Não é motivação e não é aula          │  lead 18 px, 5 linhas ≈ 130 px
@@ -84,7 +84,7 @@ O que aparece **sem rolar** em 390×844, com a faixa de "versão de trabalho" ai
    │ ┌──────────────────────────────────┐ │
    │ │      Quero fazer a conta          │ │  botão 56 px, largura total
    │ └──────────────────────────────────┘ │
-   │ Segunda, 19 de outubro de 2026 ·      │  microcopy 15 px grafite, 2 linhas
+   │ Segunda, 24 e 25 de outubro de 2026 ·      │  microcopy 15 px grafite, 2 linhas
    │ R$ 97 · ao vivo e online              │
 ≈540├──────────────────────────────────────┤
    │ (respiro da seção)                    │
@@ -100,7 +100,7 @@ Em **1440×900** a coluna de 680 px fica centralizada, texto alinhado à esquerd
 
 | Seção | h2 | Origem |
 |---|---|---|
-| 1 | *Dia 19 de outubro eu vou fazer a sua conta com você.* | HERO · headline (**é o h1**, único da página) |
+| 1 | *Dias 24 e 25 de outubro eu vou fazer a sua conta com você.* | HERO · headline (**é o h1**, único da página) |
 | 2 | *É para você se uma destas frases é sua:* | PARA QUEM · primeira linha |
 | 3 | *A conta* | nome do bloco, em caixa normal (Lia confirma) |
 | 4 | *Você não assiste. Você faz.* | O QUE ACONTECE · primeira linha |
@@ -108,7 +108,7 @@ Em **1440×900** a coluna de 680 px fica centralizada, texto alinhado à esquerd
 | 6 | *Quem faz a conta com você* | nome do bloco (Lia confirma) |
 | 7 | *Detalhes* | nome do bloco (Lia confirma) |
 | 8 | *FAQ* | nome do bloco (Lia confirma; se quiser outro título, é copy dela) |
-| 9 | *Segunda, 19 de outubro. A sua conta, feita com você.* | CTA FINAL · headline. O título do bloco FORMULÁRIO (*Deixa o seu contato. O pagamento vem em seguida.*) vira **h3** logo acima dos campos |
+| 9 | *Sábado e domingo, 24 e 25 de outubro. A sua conta, feita com você.* | CTA FINAL · headline. O título do bloco FORMULÁRIO (*Deixa o seu contato. O pagamento vem em seguida.*) vira **h3** logo acima dos campos |
 
 ---
 
@@ -491,7 +491,7 @@ Nada de GSAP, Lenis, ScrollTrigger, partículas ou ApexCharts (as bibliotecas do
 
 **O que pedir a ele** (um pedido só, para não gastar um dia de câmera dele):
 - Retrato **vertical**, original com ≥ 1600×2000 px, sem filtro, sem recorte apertado.
-- Na clínica, **sentado à mesa com o computador** (é o enquadramento do Reel *Dia 19 de outubro*: quem vem do vídeo reconhece o lugar). Nenhuma tela com nome de paciente legível, nenhum paciente ao fundo (Regras do CFO, achado 1).
+- Na clínica, **sentado à mesa com o computador** (é o enquadramento do Reel *Dia 24 e 25 de outubro*: quem vem do vídeo reconhece o lugar). Nenhuma tela com nome de paciente legível, nenhum paciente ao fundo (Regras do CFO, achado 1).
 - Luz de janela, olhando para a câmera, expressão neutra: sem sorriso de banner, sem braço cruzado de palestrante. Roupa de trabalho (jaleco ou scrub): é a credencial *"tenho clínica"* em tempo presente.
 - Fundo real da clínica, nada de stock nem estúdio.
 
@@ -509,7 +509,7 @@ Estrutura, a partir de `privacidade-texto.md`:
 header   (a mesma linha nome · CRO)
 main.container (max-width 680px; medida de texto 65ch)
   h1  Política de Privacidade
-  p.versao   "Workshop de 19 de outubro · versão 2026-09-08"    ← a string da versão TEM de ser igual ao hidden politica_versao
+  p.versao   "Workshop de 24 e 25 de outubro · versão 2026-09-08"    ← a string da versão TEM de ser igual ao hidden politica_versao
   p   "Aplica-se a ..."
   nav[aria-label] > ol   os 12 títulos numerados, como links de âncora (#s1 ... #s12): no celular é o índice; são 12 seções
   section#s1 > h2 "1. Quem é responsável pelos seus dados" ... até section#s12

@@ -1,33 +1,33 @@
 ---
 tipo: copy
 frente: workshop
-peça: página de venda do workshop (R$ 97, segunda 19/10/2026, ao vivo e online)
-canal: página no celular, chegando do Reel "Dia 19 de outubro" ou de anúncio
+peça: página de venda do workshop (R$ 97, sábado 24 e domingo 25/10/2026, 15h às 20h, ao vivo e online)
+canal: página no celular, chegando do Reel "Dia 24 e 25 de outubro" ou de anúncio
 criado: 2026-09-08
 autor: Lia (mkt.copy)
 status: rascunho, com pendências marcadas
-fontes: cofre-workshop · 20 Estratégia (Posicionamento, Tom de Voz, Persona Dr. Marcelo, Restrições de Conteúdo, Regras do CFO, Escada de Produtos, O Funil do Workshop, Os 4 Pilares) · 40 Peças/Dia 19 de outubro · 60 Números/Os 5 Números da Clínica · 70 Pessoas/Dr Dieymisson · 90 Fontes (O Caminho das Pedras, 03-estrategia) · 20 Estratégia/Cadências do Funil · 50 Tarefas/Funil em GHL + n8n
+fontes: cofre-workshop · 20 Estratégia (Posicionamento, Tom de Voz, Persona Dr. Marcelo, Restrições de Conteúdo, Regras do CFO, Escada de Produtos, O Funil do Workshop, Os 4 Pilares) · 40 Peças/Dia 24 e 25 de outubro · 60 Números/Os 5 Números da Clínica · 70 Pessoas/Dr Dieymisson · 90 Fontes (O Caminho das Pedras, 03-estrategia) · 20 Estratégia/Cadências do Funil · 50 Tarefas/Funil em GHL + n8n
 ---
 
 # Página de venda do Workshop · copy
 
 Um objetivo só: a pessoa preenche nome, WhatsApp e e-mail e vai pagar.
-Quem lê: o Dr. Marcelo, no celular, entre um paciente e outro, vindo do Reel "Dia 19 de outubro" ou de um anúncio.
+Quem lê: o Dr. Marcelo, no celular, entre um paciente e outro, vindo do Reel "Dia 24 e 25 de outubro" ou de um anúncio.
 Regra desta página: ela continua a promessa do Reel sem contradizer uma palavra dele.
 Tudo entre colchetes com `PENDENTE` é lacuna declarada, não texto para publicar. A lista completa está no último bloco.
 
 ## META
 
 **Title (58 caracteres):**
-Workshop 19/10 · R$ 97 · a conta que a sua clínica não faz
+Workshop 24 e 25/10 · R$ 97 · a conta que a sua clínica não faz
 
 **Description (152 caracteres):**
-Segunda, 19 de outubro, ao vivo e online. Você abre a sua planilha e faz, com o Dr. Dieymisson, a conta que a sua clínica não faz. R$ 97, Pix ou cartão.
+Sábado 24 e domingo 25 de outubro, das 15h às 20h, ao vivo e online. Você abre a sua planilha e faz, com o Dr. Dieymisson, a conta que a sua clínica não faz. R$ 97, Pix ou cartão.
 
 ## HERO
 
 **Headline (12 palavras):**
-Dia 19 de outubro eu vou fazer a sua conta com você.
+Dias 24 e 25 de outubro eu vou fazer a sua conta com você.
 
 **Subheadline:**
 Não é motivação e não é aula assistida. É um workshop ao vivo e online em que você abre a sua planilha e levanta, comigo, os números que a sua clínica tem e você não sabe de cor.
@@ -36,10 +36,10 @@ Não é motivação e não é aula assistida. É um workshop ao vivo e online em
 Quero fazer a conta
 
 **Microcopy embaixo do botão:**
-Segunda, 19 de outubro de 2026 · R$ 97 · ao vivo e online
+Sábado 24 e domingo 25 de outubro, das 15h às 20h · R$ 97 pelos dois dias · ao vivo e online
 
 *Alternativas de headline consideradas e descartadas (registro, não opção de uso):*
-- *"Dia 19 de outubro eu não vou te dar motivação."* É a primeira frase do Reel, mas quem chega de anúncio, sem ter visto o Reel, lê só a negação e não sabe o que vai receber. Clareza vence.
+- *"Dia 24 e 25 de outubro eu não vou te dar motivação."* É a primeira frase do Reel, mas quem chega de anúncio, sem ter visto o Reel, lê só a negação e não sabe o que vai receber. Clareza vence.
 - *"A conta que a sua clínica não faz, feita com você."* Correta, mas não repete a data, e a data é o que o Reel deixou na cabeça da pessoa.
 
 ## PARA QUEM
@@ -108,7 +108,7 @@ Eu não vou te prometer 35% de crescimento. Eu vou te mostrar onde estão os seu
 
 Não vou te falar de mentalidade. Mentalidade é o vídeo 49. Antes disso tem 48 contas pra fazer, e a primeira é a da sua hora clínica.
 
-Não vou te apressar. Não tem contagem regressiva nesta página nem "últimas vagas". A data é 19 de outubro e o preço é R$ 97. Você decide no seu tempo.
+Não vou te apressar. Não tem contagem regressiva nesta página nem "últimas vagas". As datas são 24 e 25 de outubro e o preço é R$ 97 pelos dois dias. Você decide no seu tempo.
 
 ## QUEM FAZ A CONTA COM VOCÊ
 
@@ -122,7 +122,7 @@ Dr. Dieymisson Mendes · CRO-MG 57966
 
 ## DETALHES
 
-- **Data:** segunda-feira, 19 de outubro de 2026
+- **Data:** sábado, 24, e domingo, 25 de outubro de 2026
 - **Horário:** [PENDENTE: horário]
 - **Duração:** [PENDENTE: duração]
 - **Formato:** ao vivo e online. O link da sala chega no seu WhatsApp no dia, 15 minutos antes.
@@ -152,7 +152,7 @@ Não. Quase todo programa de gestão odontológica no Brasil começa por mentali
 ## CTA FINAL
 
 **Headline:**
-Segunda, 19 de outubro. A sua conta, feita com você.
+Sábado e domingo, 24 e 25 de outubro. A sua conta, feita com você.
 
 **Botão:**
 Quero fazer a conta

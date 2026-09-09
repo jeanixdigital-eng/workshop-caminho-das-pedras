@@ -1,4 +1,4 @@
-# Política de Privacidade — Workshop de 19 de outubro (texto-base)
+# Política de Privacidade — Workshop de 24 e 25 de outubro (texto-base)
 
 > Rascunho de 08/09/2026, adaptado da política do site da Clinix System (versão 2026-09-06),
 > que já passou pelas três travas do Gael: controlador identificado, sem número de artigo de lei,
@@ -6,7 +6,7 @@
 > Versão da política: **2026-09-08** (é a string que a página manda ao servidor como `politica_versao`).
 
 ## Aplica-se a
-Esta página e ao formulário de inscrição no workshop de 19 de outubro de 2026.
+Esta página e ao formulário de inscrição no workshop de 24 e 25 de outubro de 2026.
 
 ## 1. Quem é responsável pelos seus dados
 Controlador: **Clinix System**, CNPJ 49.828.144/0001-20, Almenara, Taiobeiras/MG, CEP 39550-000.

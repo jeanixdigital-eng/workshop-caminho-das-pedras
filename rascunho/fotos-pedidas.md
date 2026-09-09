@@ -57,7 +57,7 @@ pessoas**. Nenhum deles é apresentado como fotografia da clínica dele.
 | **Onde entra** | Seção "Quem faz a conta com você", ao lado do texto. Substitui a placa `DM` |
 | **Enquadramento** | **Vertical, 4:5.** Da cintura para cima, ou meio corpo. Ele ocupa a metade central do quadro |
 | **Arquivo** | ≥ 1600 × 2000 px, JPG ou HEIC direto da câmera. Sem filtro, sem moldura, sem texto |
-| **Onde** | Dentro da clínica dele, sentado à mesa com o computador. **O mesmo enquadramento do Reel "Dia 19 de outubro"** — quem vier do Reel precisa reconhecer o lugar na hora |
+| **Onde** | Dentro da clínica dele, sentado à mesa com o computador. **O mesmo enquadramento do Reel "Dia 24 e 25 de outubro"** — quem vier do Reel precisa reconhecer o lugar na hora |
 | **Luz** | Luz de janela, de lado. Nada de flash direto na cara |
 | **Ele** | Olhando para a câmera, expressão neutra ou levemente séria. Jaleco ou scrub. ⛔ Sem sorriso de propaganda: a página não promete resultado, e o rosto tem de combinar |
 | **⛔ Não pode aparecer** | Nenhuma tela com nome de paciente legível, nenhum paciente ao fundo, nenhum prontuário aberto, nenhuma foto de boca na parede (Regras do CFO + LGPD) |
