@@ -275,3 +275,23 @@
 .adicional-aviso { margin: 10px 0 0; }
 .adicional-caixa input[type="checkbox"]:disabled { cursor: not-allowed; opacity: .5; }
 .adicional--travado .adicional-caixa { cursor: not-allowed; }
+
+/* ── A fronteira do Brick ──────────────────────────────────────────────────────
+   🔴 Medido em 09/09 (o Jean viu a barra verde cortando "Parcelamento disponível"):
+   o Mercado Pago declara, no CSS dele,
+
+       .extra-extra-small { line-height: var(--font-size-extra-extra-small) }
+
+   e essa variável NÃO existe no tema escuro deles. Variável ausente torna a
+   declaração inválida, e `line-height` inválido não cai no padrão do navegador: ele
+   HERDA. Herda da nossa página, que estava mandando 28 px para dentro do componente.
+   O selo tem 16 px de altura fixa, o texto ficava com 28, e o fundo verde só pintava
+   a faixa do meio.
+
+   ⛔ A correção NÃO mira classe do Mercado Pago (a regra do repo proíbe, e o nome
+   `extra-extra-small-lA2YO2` tem um sufixo gerado que muda a cada build deles).
+   Ela mira `#brick`, que é NOSSA div, e apenas para a nossa tipografia de vazar para
+   dentro. O que vale lá dentro passa a ser o deles, que é como deveria ser.
+   ⚠️ Não trocar por `--font-size-extra-extra-small: 11px`: funciona hoje e amarra a
+   página a um nome de variável privado que eles podem renomear sem avisar. */
+#brick { line-height: normal; }

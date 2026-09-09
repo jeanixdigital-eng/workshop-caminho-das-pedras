@@ -874,6 +874,27 @@ def main():
             ruins = [r for r in respostas if r[0] >= 400]
             t("o Brick de verdade abriu (formulário dentro de #brick)", pronto,
               (ruins[:1] or [pg.inner_text('#recusa-texto')[:60]]))
+            # 🔴 09/09: a nossa tipografia vazava para dentro do Brick. O Mercado Pago
+            #    declara `line-height: var(--font-size-extra-extra-small)` e essa variável
+            #    não existe no tema escuro deles; declaração inválida HERDA, e herdava os
+            #    28 px da nossa página. O selo "Parcelamento disponível" tem 16 px de altura
+            #    e o texto ficava com 28: o fundo verde virava uma barra cortando a frase.
+            #    Esta asserção mede o SINTOMA (algo transbordando do pai lá dentro), não a
+            #    correção: se eles mudarem de nome de classe, ela continua valendo.
+            if pronto:
+                transbordos = pg.evaluate("""() => {
+                  const ruins = [];
+                  document.querySelectorAll('#brick *').forEach(e => {
+                    const p = e.parentElement; if (!p) return;
+                    const a = e.getBoundingClientRect(), c = p.getBoundingClientRect();
+                    if (c.height > 0 && a.height > c.height + 2 && getComputedStyle(p).overflow === 'visible') {
+                      ruins.push(((e.textContent || '').trim().slice(0, 30)) + ' (' + Math.round(a.height) + ' em ' + Math.round(c.height) + ')');
+                    }
+                  });
+                  return ruins;
+                }""")
+                t("nada transborda dentro do Brick (a nossa tipografia não vaza para lá)",
+                  not transbordos, transbordos[:3] or "-")
             pg.screenshot(path=os.path.join(AQUI, "capturas", "checkout-brick-real.png"), full_page=True)
             c.fecha(); ctx.close()
 
@@ -881,6 +902,15 @@ def main():
     srv.shutdown()
 
     sem_travessao()
+
+    # A barreira do Brick, conferida SEM navegador. A asserção de cima (o transbordo real)
+    # só roda com --real-sdk, que exige rede e chave; esta roda sempre. As duas juntas
+    # cobrem o caso "alguém apagou a linha achando que era enfeite".
+    print("\n═══ A fronteira do Brick")
+    css = open(os.path.join(RAIZ, "assets/checkout.css"), encoding="utf-8").read()
+    t("o CSS impede a nossa tipografia de vazar para dentro do #brick",
+      re.search(r"#brick\s*\{[^}]*line-height:\s*normal", css) is not None)
+
     print(f"\n{ok_n} ✅ · {ruim_n} 🔴")
     return 1 if ruim_n else 0
 
